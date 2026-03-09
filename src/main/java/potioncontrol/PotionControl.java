@@ -7,11 +7,15 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.config.EarlyConfigReader;
 import potioncontrol.config.classdump.PotionClassWriter;
+import potioncontrol.config.descriptions.DescriptionReader;
+import potioncontrol.config.descriptions.EmptyPotionWriter;
+import potioncontrol.config.descriptions.NamesReader;
 import potioncontrol.config.potioninfojsons.PotionInfoConfigReader;
 import potioncontrol.config.potioninfojsons.PotionInfoInferrerWriter;
 import potioncontrol.config.potioninfojsons.PotionInfoWriter;
@@ -24,7 +28,9 @@ import java.util.Map;
         modid = PotionControl.MODID,
         version = PotionControl.VERSION,
         name = PotionControl.NAME,
-        dependencies = "required-after:fermiumbooter@[1.3.2,)"
+        dependencies =
+                "required-after:fermiumbooter@[1.3.2,);"+
+                "before:potiondescriptions"
 )
 public class PotionControl {
     public static final String MODID = "potioncontrol";
@@ -53,6 +59,12 @@ public class PotionControl {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         PotionClassWriter.postInit(); //write /tmp/potionclasses.dump for next startup (sad that this is after late mixin load. classgraph could fix that if i could get it to work. then i wouldn't even need a custom file)
+        if(event.getSide() == Side.CLIENT) {
+            DescriptionReader.readDescriptions();
+            EmptyPotionWriter.write(DescriptionReader.PATH);
+            NamesReader.init();
+            EmptyPotionWriter.write(NamesReader.PATH);
+        }
 
         PotionInfoConfigReader.applyManualOverrides(); //apply manual overrides for attribute modifiers
 

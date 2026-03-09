@@ -22,6 +22,10 @@ public class ConfigHandler {
 	@Config.Name("Blacklists")
 	public static BlacklistConfig blacklists = new BlacklistConfig();
 
+	@Config.Comment("Various toggleable options")
+	@Config.Name("Mixin Toggles")
+	public static MixinToggleConfig mixinToggles = new MixinToggleConfig();
+
 	@Config.Comment("Debug Options")
 	@Config.Name("Debug")
 	public static DebugConfig debug = new DebugConfig();

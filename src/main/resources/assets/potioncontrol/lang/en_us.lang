@@ -1,0 +1,161 @@
+### A lot of these are taken from RLCraft Dregora, compiled by KameiB ###
+
+# Elenai Dodge
+description.effect.forceful=Increases the distance the player will dodge.
+description.effect.feeble=Decreases the distance the player will dodge.
+description.effect.can_dodge=Grants the ability to dodge.
+description.effect.sluggish=Stops you from dodging altogether.
+description.effect.skystride=Grants you the ability to Dodge in mid-air
+description.effect.nimble=Grants the ability to Wall-Jump if pressed against the wall with your back.
+description.effect.climber=Grants you the ability to grab a ledge.
+
+# More PotionCore
+description.effect.potion_sickness=Applies various negative debuffs
+
+# Champions
+description.champions.jailed=Chance to 'jail' targets, making them unable to move
+description.champions.plague=Infects nearby creatures with Plague, which adds a Poison effect and makes the creature a new Plague host
+description.champions.injured=Decreases healing and increases damage taken.
+
+# Defiled Lands
+description.potion.effect.defiledlands.vulnerability=Increases all damage taken slightly.
+description.potion.effect.defiledlands.grounded=Keeps the victim grounded.
+description.potion.effect.defiledlands.bleeding=You bleed out.
+
+# Mind Palaces
+description.effects.mindpalaces.sleepparalysis=Keep dreaming
+
+# Bountiful Baubles
+description.bountifulbaubles.effect.sinful=Gives an armor, toughness and damage buff.
+
+# First Aid
+description.item.morphine.name=Allowing you to run with broken legs, and punch with broken arms.
+
+# Simple Difficulty
+description.effect.hyperthermia=It's really hot, and it's getting worse over time
+description.effect.hypothermia=It's really cold, and it's getting worse over time
+description.effect.thirsty=You get thirsty even faster.
+description.effect.parasites=This water wasn't quite fresh...
+description.effect.cold_resist=Grants immunity to Hypothermia.
+description.effect.heat_resist=Grants immunity to Hyperthermia.
+
+# Lycanites Mobs
+description.effect.aphagia=Prevents eating and the use of various items.
+description.effect.bleed=Deals damage rapidly over time if the afflicted moves.
+description.effect.cleansed=Removes and grants immunity to wither, bad luck, fear and insomnia.
+description.effect.decay=Reduces all healing received.
+description.effect.fallresist=Prevents falling damage.
+description.effect.fear=You run around uncontrollably.
+description.effect.immunization=Removes and grants immunity to poison, hunger, weakness, nausea and paralysis.
+description.effect.insomnia=Prevents sleeping.
+description.effect.instability=Randomly pushes the afflicted around in all directions.
+description.effect.leech=Steals opponents health when dealing damage.
+description.effect.lifeleak=Causes any damage dealt to heal instead.
+description.effect.paralysis=Drastically reduces movement speed and prevents jumping.
+description.effect.penetration=Weakens defenses, increasing any damage received.
+description.effect.plague=Poisons you and spreads to nearby creatures.
+description.effect.rejuvenation=Boosts all healing received.
+description.effect.repulsion=Pushes away attackers and also prevents being picked up or being latched onto.
+description.effect.smited=Causes the afflicted to burn in sunlight.
+description.effect.smouldering=Constantly applies burning.
+description.effect.swiftswimming=Increases swimming speed.
+description.effect.weight=Prevent jumping and swimming/flying upwards.
+description.effect.envenom=Not Implemented
+description.effect.staticaura=Not Implemented
+description.effect.freezeaura=Not Implemented
+description.effect.heataura=Not Implemented
+description.effect.rage=Not Implemented
+description.effect.recklessness=Not Implemented
+
+# Lycanites Tweaks
+description.effects.lycanitestweaks.consumed=Your life flashes before your eyes, then its getting dark
+description.effects.lycanitestweaks.voided=Lose all hope
+
+# Switch-Bow
+description.Freeze=You cannot move.
+description.In Love=Makes animals ready to breed and makes mobs stop attacking.
+
+# Trinkets and Baubles
+description.xat.effect.sparkling=Replenishes mana a bit
+description.xat.effect.glittering=Replenishes mana a lot and gives Absorption
+description.xat.effect.glowing=Replenishes mana fully and gives Absorption
+description.xat.effect.ice_resistance=Resistance against Dragon Ice Attacks
+description.xat.effect.lightning_resistance=Resistance against Dragon Lightning Attacks
+description.xat.effect.human=Transforms you back to human state.
+description.xat.effect.fairy=Transforms you into the Fairy race.
+description.xat.effect.dwarf=Transforms you into the Dwarven race.
+description.xat.effect.titan=Transforms you into the Titan race.
+description.xat.effect.goblin=Transforms you into the Goblin race.
+description.xat.effect.elf=Transforms you into the Elven race.
+description.xat.effect.faelis=Transforms you into the Faelis race.
+description.xat.effect.dragon=Transforms you into the Dragon race.
+
+# Scape and Run: Parasites
+description.mob_effect.srparasites:antimall=Parasite can't adapt to damages
+description.mob_effect.srparasites:bleed=Inflicts damage over time, especially when moving.
+description.mob_effect.srparasites:corrosive=Damages armor durability
+description.mob_effect.srparasites:coth=Assimilates entities, denying loot from a certain phase on
+description.mob_effect.srparasites:debar=Halts the subtraction of evolution points and item drops.
+description.mob_effect.srparasites:fear=Inflicts major fall damage and cancels controls.
+description.mob_effect.srparasites:foster=Increases Adaptation.
+description.mob_effect.srparasites:link=Makes Parasites share adaptations.
+description.mob_effect.srparasites:needler=Deals massive damage once its level 7
+description.mob_effect.srparasites:pivot=Diverts damage to Rooters, increases attack speed and doubles evolution gain.
+description.mob_effect.srparasites:prey=You create scents and they follow you
+description.mob_effect.srparasites:rage=Increases speed, damage and lowers parasite cooldowns.
+description.mob_effect.srparasites:repel=Reduces the chance of contracting Call of the Hive
+description.mob_effect.srparasites:senses=Buffs parasite follow range and target range.
+description.mob_effect.srparasites:viral=Entities with this effect take heavily increased damage.
+
+# More Rustic
+description.effect.shame=Shame on you!
+description.effect.tipsy=The more you drink, the worse it gets...
+description.effect.fullmetal=Fullmetal
+description.effect.fire_power=Fire Power
+description.effect.full=Full Stomach
+description.effect.undying=Undying
+
+# Quark
+description.quark.potion.blue.name=Blueberry
+description.quark.potion.black.name=Darkening
+description.quark.potion.white.name=Whitening
+description.quark.potion.curse.name=Curse
+
+# Biomes'o'Plenty
+biomesoplenty.curse=Randomly teleports the afflicted in a small radius.
+
+# EagleMixins
+description.eaglemixins.effects.radiation_fatigue=Radiation gives Mining Fatigue
+description.eaglemixins.effects.radiation_weakness=Radiation gives Weakness
+description.eaglemixins.effects.radiation_sickness=Weakens and kills passive mobs, players and parasites, while increasing other mobs stats
+description.eaglemixins.effects.teleportation_sickness=Cancels teleportation through unconventional teleportation methods.
+
+# Ice And Fire
+description.iceandfire.effect.acid=Deals damage over time, can be washed off in water.
+
+# Fish's Undead Rising
+mod_lavacow.corroded=Causes the victim to receive bonus damage.
+mod_lavacow.fragile=Instantly kills afflicted non-boss target if its health is low.
+mod_lavacow.infested=Inflicts Hunger and Slowness, also spawns parasites when the inflicted is dead.
+mod_lavacow.soiled=Causes inflicted entity to be unable to eat food or drink potions.
+mod_lavacow.thorned=Damages attackers, grants immunity against cactus and thorns.
+
+# Better Survival
+#description.effect.cure=Removes all negative effects. #same as potioncore
+#description.effect.dispel=Removes all positive effects. #same as potioncore
+description.effect.antiwarp=Prevents from teleporting.
+description.effect.milk=Removes all potion and status effects.
+description.effect.stun=Locks you in place, cancelling all movement.
+description.effect.warp=Random teleport.
+
+# RLMixins
+description.effects.rlmixins.cow=Sounds like a cow...
+description.effects.rlmixins.curse_break=Removes the curses from your equipment.
+description.effects.rlmixins.encumbered=Decreases all speeds slightly and exhausts you faster.
+description.effects.rlmixins.lesser_fire_resistance=Half fire-resistant and can't be set on fire.
+
+# Scaling Health
+description.effect.scalinghealth.bandaged=Applies Slowness and Heals you over time
+
+# Oceanic Expanse
+description.effect.oe.conduit_power=It's the Conduit from 1.13!
