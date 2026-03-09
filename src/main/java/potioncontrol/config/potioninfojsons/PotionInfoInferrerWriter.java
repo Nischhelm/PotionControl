@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Builds PotionInfo by inspecting Potion objects and writes those to file as an approximate start point.
  */
 public class PotionInfoInferrerWriter {
-    public static final String MAIN_DIR = "config/potioncontrol/inferred-inactive";
+    public static final String MAIN_DIR = "config/potioncontrol/potions/inferred-inactive";
 
     public static void printInferred(){
         PotionInfoWriter.clearDirectoryContents(new File(MAIN_DIR));
@@ -40,9 +40,9 @@ public class PotionInfoInferrerWriter {
                 PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
-        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME, ConfigHandler.dev.printInferred).set(false);
-        ConfigHandler.dev.printInferred = false;
-        PotionControl.configNeedsSaving = true;
+//        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME, ConfigHandler.dev.printInferred).set(false);
+//        ConfigHandler.dev.printInferred = false;
+//        PotionControl.configNeedsSaving = true;
     }
 
     public static List<PotionInfo> inferInfoForAllRegisteredPotions() {

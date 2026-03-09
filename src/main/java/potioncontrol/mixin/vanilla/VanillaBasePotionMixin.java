@@ -39,7 +39,7 @@ public abstract class VanillaBasePotionMixin {
         return original.call();
     }
 
-    @ModifyReturnValue(method = "getCurativeItems", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getCurativeItems", at = @At("RETURN"), remap = false)
     public List<ItemStack> pc_getCurativeItems(List<ItemStack> original) {
         PotionInfo info = PotionInfo.get((Potion) (Object) this);
         if(info != null) {

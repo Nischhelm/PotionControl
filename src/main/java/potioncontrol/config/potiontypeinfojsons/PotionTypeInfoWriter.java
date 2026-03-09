@@ -1,10 +1,10 @@
-package potioncontrol.config.potioninfojsons;
+package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
-import potioncontrol.util.PotionInfo;
+import potioncontrol.util.PotionTypeInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,16 +14,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collection;
 
-public class PotionInfoWriter {
-    public static String modifiablePath = "potions/loaded";
+public class PotionTypeInfoWriter {
+    public static String modifiablePath = "potiontypes/loaded";
     public static final String MAIN_DIR = "config/potioncontrol/";
 
     public static void printLoaded(){
         if (!ConfigHandler.debug.printLoaded) return;
-        writeAllCurrentPotionInfos(PotionInfo.getAll(), MAIN_DIR + modifiablePath);
+        writeAllCurrentPotionTypeInfos(PotionTypeInfo.getAll(), MAIN_DIR + modifiablePath);
     }
 
-    public static void writeAllCurrentPotionInfos(Collection<PotionInfo> infos, String path) {
+    public static void writeAllCurrentPotionTypeInfos(Collection<PotionTypeInfo> infos, String path) {
         // Write one file per potion into config/potioncontrol/out/modid/potionid.json
         try {
             File baseOut = new File(path);
@@ -34,16 +34,16 @@ public class PotionInfoWriter {
             // Clear any existing files so the directory reflects only the current run
             clearDirectoryContents(baseOut);
 
-            for (PotionInfo info : infos) {
-                writeSinglePotionInfo(info, baseOut);
+            for (PotionTypeInfo info : infos) {
+                writeSinglePotionTypeInfo(info, baseOut);
             }
         } catch (Exception e) {
-            PotionControl.LOGGER.warn("Writing loaded potion infos failed!");
+            PotionControl.LOGGER.warn("Writing loaded potion type infos failed!");
         }
     }
 
-    public static void writeSinglePotionInfo(PotionInfo info, File baseOut) {
-        String id = PotionInfo.getPotionId(info);
+    public static void writeSinglePotionTypeInfo(PotionTypeInfo info, File baseOut) {
+        String id = PotionTypeInfo.getTypeId(info);
         String[] split = id.split(":");
         String modid = split[0];
         String potionid = split[1];
@@ -56,13 +56,13 @@ public class PotionInfoWriter {
         File outFile = new File(modDir, potionid + ".json");
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(PotionInfo.class, new PotionInfoDeserialiser())
+                .registerTypeAdapter(PotionTypeInfo.class, new PotionTypeInfoDeserialiser())
                 .setPrettyPrinting()
                 .create();
         try (Writer w = new OutputStreamWriter(Files.newOutputStream(outFile.toPath()), StandardCharsets.UTF_8)) {
-            gson.toJson(info, PotionInfo.class, w);
+            gson.toJson(info, PotionTypeInfo.class, w);
         } catch (IOException e) {
-            PotionControl.LOGGER.warn("Writing potion info for {} failed!", id);
+            PotionControl.LOGGER.warn("Writing potion type info for {} failed!", id);
         }
     }
 

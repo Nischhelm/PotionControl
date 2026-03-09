@@ -48,7 +48,7 @@ public abstract class VanillaPotionMixin extends Potion { //copy of VanillaBaseP
         return original.call();
     }
 
-    @ModifyReturnValue(method = "getCurativeItems()Ljava/util/List;", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getCurativeItems()Ljava/util/List;", at = @At("RETURN"), remap = false)
     public List<ItemStack> pc_getCurativeItems(List<ItemStack> original) {
         PotionInfo info = PotionInfo.get(this);
         if(info != null) {

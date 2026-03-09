@@ -19,6 +19,9 @@ import potioncontrol.config.descriptions.NamesReader;
 import potioncontrol.config.potioninfojsons.PotionInfoConfigReader;
 import potioncontrol.config.potioninfojsons.PotionInfoInferrerWriter;
 import potioncontrol.config.potioninfojsons.PotionInfoWriter;
+import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoConfigReader;
+import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoInferrerWriter;
+import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoWriter;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -54,6 +57,7 @@ public class PotionControl {
         }
 
         PotionInfoConfigReader.preInit(); //read PotionInfo's from /potions
+        PotionTypeInfoConfigReader.preInit(); //read PotionTypeInfo's from /potiontypes
     }
 
     @Mod.EventHandler
@@ -67,10 +71,13 @@ public class PotionControl {
         }
 
         PotionInfoConfigReader.applyManualOverrides(); //apply manual overrides for attribute modifiers
+        PotionTypeInfoConfigReader.applyManualOverrides(); //apply manual overrides (nothing yet)
 
         //infer info from existing potion objects (can be used for testing and development, it creates the best fitting approximation of an potion). these are not loaded
         if(ConfigHandler.dev.printInferred) PotionInfoInferrerWriter.printInferred();
         if (ConfigHandler.debug.printLoaded) PotionInfoWriter.printLoaded();
+        if(ConfigHandler.dev.printInferred) PotionTypeInfoInferrerWriter.printInferred();
+        if (ConfigHandler.debug.printLoaded) PotionTypeInfoWriter.printLoaded();
 
         if(configNeedsSaving) ConfigManager.sync(MODID, Config.Type.INSTANCE);
 

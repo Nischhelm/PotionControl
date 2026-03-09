@@ -13,6 +13,7 @@
     "vanilla.BaseAttributeMixin",
     "vanilla.CommandEffectMixin",
     "vanilla.PotionEffectMixin",
+    "vanilla.PotionTypeMixin",
     "vanilla.SPacketEntityEffectMixin",
     "vanilla.blacklists.ForgePotionRegistryMixin"
   ],

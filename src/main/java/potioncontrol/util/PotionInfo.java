@@ -152,7 +152,7 @@ public class PotionInfo {
         if(this.displayColors != null) {
             format = this.displayColors.stream().map(TextFormatting::toString).collect(Collectors.joining());
             while(potTranslation.startsWith("§"))
-                potTranslation = potTranslation.substring(2); //TODO: might be better to store in lang file
+                potTranslation = potTranslation.substring(2); //TODO: might be better to store in lang file, but annoying if player changes language
         }
         String text = format + potTranslation;
 

@@ -1,13 +1,12 @@
-package potioncontrol.config.potioninfojsons;
+package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import net.minecraft.entity.ai.attributes.BaseAttribute;
 import net.minecraft.potion.Potion;
 import potioncontrol.PotionControl;
 import potioncontrol.mixin.accessor.PotionAccessor;
-import potioncontrol.util.PotionInfo;
+import potioncontrol.util.PotionTypeInfo;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -15,39 +14,39 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PotionInfoConfigReader {
-    public static final String MAIN_DIR = "config/potioncontrol/potions/active";
+public class PotionTypeInfoConfigReader {
+    public static final String MAIN_DIR = "config/potioncontrol/potiontypes/active";
 
     public static void preInit(){
-        // Per-potion files: config/potioncontrol/potions/active/modid/potionid.json
+        // Per-type files: config/potioncontrol/potiontypes/active/modid/typeid.json
         try {
-            List<PotionInfo> readInfos = readPerFileConfigs();
-            PotionInfo.registerAll(readInfos);
+            List<PotionTypeInfo> readInfos = readPerFileConfigs();
+            PotionTypeInfo.registerAll(readInfos);
         } catch (Exception e){
-            PotionControl.LOGGER.warn("Reading potion configs failed!");
+            PotionControl.LOGGER.warn("Reading potion type configs failed!");
             e.printStackTrace(System.out);
         }
     }
 
-    private static PotionInfo readSingleWithGson(InputStream in) throws IOException {
+    private static PotionTypeInfo readSingleWithGson(InputStream in) throws IOException {
         try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(PotionInfo.class, new PotionInfoDeserialiser())
+                    .registerTypeAdapter(PotionTypeInfo.class, new PotionTypeInfoDeserialiser())
                     .create();
-            return gson.fromJson(reader, PotionInfo.class);
+            return gson.fromJson(reader, PotionTypeInfo.class);
         }
     }
 
-    private static List<PotionInfo> readPerFileConfigs() {
+    private static List<PotionTypeInfo> readPerFileConfigs() {
         File base = new File(MAIN_DIR);
         if (!base.exists() && !base.mkdir()) return new ArrayList<>(); // nothing to read but create the folder
 
-        List<PotionInfo> infos = new ArrayList<>();
+        List<PotionTypeInfo> infos = new ArrayList<>();
         readPerFileDirRecursive(base, infos);
         return infos;
     }
 
-    private static List<PotionInfo> readPerFileDirRecursive(File dir, List<PotionInfo> infos)  {
+    private static List<PotionTypeInfo> readPerFileDirRecursive(File dir, List<PotionTypeInfo> infos)  {
         File[] children = dir.listFiles();
         if (children == null) return infos;
         for (File f : children) {
@@ -55,7 +54,7 @@ public class PotionInfoConfigReader {
                 infos.addAll(readPerFileDirRecursive(f, infos));
             } else if (f.isFile() && f.getName().endsWith(".json")) {
                 try (InputStream in = Files.newInputStream(f.toPath())) {
-                    PotionInfo info = readSingleWithGson(in);
+                    PotionTypeInfo info = readSingleWithGson(in);
                     if (info == null)
                         PotionControl.LOGGER.warn("Skipping invalid potion json: {}", f.getPath());
                     else infos.add(info);
@@ -68,14 +67,9 @@ public class PotionInfoConfigReader {
         return infos;
     }
 
-    //Done in post init to modify the final fields ench.rarity and ench.applicableEquipmentTypes
+    //Done in post init to modify nothing yet
     public static void applyManualOverrides(){
-        for(PotionInfo info : PotionInfo.getAll()){
-            if(info.attributeModifierMap == null) continue;
-            Potion potion = PotionInfo.getPotionObject(info);
-            if(!(potion instanceof PotionAccessor)) return;
-            ((PotionAccessor) potion).pc_getAttributeModifierMap().entrySet().removeIf(entry -> entry.getKey() instanceof BaseAttribute); //keeps theoretical iattributes that arent BaseAttribute
-            ((PotionAccessor) potion).pc_getAttributeModifierMap().putAll(info.attributeModifierMap);
+        for(PotionTypeInfo info : PotionTypeInfo.getAll()){
         }
     }
 }
