@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "potioncontrol.mixin",
+  "refmap": "mixins.potioncontrol.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "vanilla.VanillaBasePotionMixin",
+    "vanilla.VanillaPotionMixin"
+  ]
+}
