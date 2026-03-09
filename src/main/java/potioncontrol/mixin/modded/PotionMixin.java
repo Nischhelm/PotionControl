@@ -17,7 +17,7 @@ public abstract class PotionMixin extends Potion { //needs to extend for refmaps
         super(isBadEffectIn, liquidColorIn);
     }
 
-    @WrapMethod(method = "isBadEffect")
+    @WrapMethod(method = "isBadEffect()Z")
     public boolean pc_isBadEffect(Operation<Boolean> original) {
         PotionInfo info = PotionInfo.get(this);
         if(info != null && info.overwritesIsBeneficial) return !info.isBeneficial;
@@ -25,14 +25,14 @@ public abstract class PotionMixin extends Potion { //needs to extend for refmaps
     }
 
     @SideOnly(Side.CLIENT)
-    @WrapMethod(method = "isBeneficial")
+    @WrapMethod(method = "isBeneficial()Z")
     public boolean pc_isBeneficial(Operation<Boolean> original) {
         PotionInfo info = PotionInfo.get(this);
         if(info != null && info.overwritesIsBeneficial) return info.isBeneficial;
         return original.call();
     }
 
-    @WrapMethod(method = "getLiquidColor")
+    @WrapMethod(method = "getLiquidColor()I")
     public int pc_getLiquidColor(Operation<Integer> original) {
         PotionInfo info = PotionInfo.get(this);
         if(info != null && info.liquidColorHex != null) return info.getLiquidColor();

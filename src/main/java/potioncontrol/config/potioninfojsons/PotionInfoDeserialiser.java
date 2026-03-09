@@ -4,10 +4,13 @@ import com.google.gson.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.BaseAttribute;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import potioncontrol.PotionControl;
 import potioncontrol.util.BaseAttributeRegistry;
 import potioncontrol.util.PotionInfo;
+import scala.util.parsing.json.JSONArray;
 
 import java.util.*;
 
@@ -28,12 +31,47 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
         if (isBeneficial != null) info.setBeneficial(isBeneficial);
 
         // displayColor
-        String colorStr = getAsString(jsonObj, "displayColor");
-        if (colorStr != null) info.setTextDisplayColor(TextFormatting.valueOf(colorStr));
+        if(jsonObj.has("displayColor")) {
+            String colorStr = getAsString(jsonObj, "displayColor");
+            if (colorStr != null) info.setTextDisplayColors(Collections.singletonList(TextFormatting.valueOf(colorStr)));
+        } else if(jsonObj.has("displayColors")) {
+            JsonArray colorArray = jsonObj.getAsJsonArray("displayColors");
+            List<TextFormatting> colors = new ArrayList<>();
+            for(JsonElement color : colorArray)
+                colors.add(TextFormatting.valueOf(color.getAsString()));
+            info.setTextDisplayColors(colors);
+        }
 
         // liquidColor
         String liquidColorHex = getAsString(jsonObj, "liquidColor");
         if (liquidColorHex != null) info.setLiquidColor(liquidColorHex);
+
+        Integer maxLvl = getAsInt(jsonObj, "maxLevel");
+        if(maxLvl != null && maxLvl != -1) info.setMaxLevel(maxLvl);
+
+        Integer maxDur = getAsInt(jsonObj, "maxDuration");
+        if(maxDur != null && maxDur != -1) info.setMaxDuration(maxDur);
+
+        Boolean milkCurable = getAsBoolean(jsonObj, "milkRemovable");
+        if(milkCurable != null) info.milkRemovable = milkCurable;
+
+        if(jsonObj.has("curativeItems")) {
+            JsonArray arr = jsonObj.getAsJsonArray("curativeItems");
+            List<ItemStack> curativeItems = new ArrayList<>();
+            for(JsonElement el : arr){
+                JsonObject obj = el.getAsJsonObject();
+                String itemName = obj.get("item").getAsString();
+                Item item = Item.getByNameOrId(itemName);
+                if(item == null){
+                    PotionControl.LOGGER.warn("Unable to find curative Item {} for potion {}, skipping", itemName, id);
+                    continue;
+                }
+                int meta = 0;
+                if(obj.has("metadata")) meta = obj.get("metadata").getAsInt();
+                curativeItems.add(new ItemStack(item, 1, meta));
+            }
+            if(!curativeItems.isEmpty()) info.curativeItems = curativeItems;
+        }
 
         // attribute modifiers
         if (jsonObj.has("attributeModifiers")) {
@@ -70,7 +108,31 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
         if (info.overwritesIsBeneficial) o.addProperty("isGood", info.isBeneficial);
 
         // displayColor
-        if (info.displayColor != null) o.addProperty("displayColor", info.displayColor.name());
+        if (info.displayColors != null){
+            if(info.displayColors.size() == 1)
+                o.addProperty("displayColor", info.displayColors.get(0).name());
+            else {
+                JsonArray colors = new JsonArray();
+                for (TextFormatting color : info.displayColors)
+                    colors.add(color.toString());
+                o.add("displayColors", colors);
+            }
+        }
+
+        // curative items
+        o.addProperty("milkRemovable", info.milkRemovable);
+        if (info.curativeItems != null) {
+            JsonArray curativeItems = new JsonArray();
+            for(ItemStack stack : info.curativeItems) {
+                if(stack.getItem().getRegistryName() == null) continue;
+                JsonObject curativeItem = new JsonObject();
+                curativeItem.addProperty("item", stack.getItem().getRegistryName().toString());
+                if(stack.getItemDamage() != 0)
+                    curativeItem.addProperty("metadata", stack.getItemDamage());
+                curativeItems.add(curativeItem);
+            }
+            o.add("curativeItems", curativeItems);
+        }
 
         // liquidColor
         if (info.liquidColorHex != null) o.addProperty("liquidColor", info.liquidColorHex);
@@ -90,6 +152,9 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             o.add("attributeModifiers", attributeModifiers);
         }
 
+        if(info.maxLevel != -1) o.addProperty("maxLevel", info.maxLevel);
+        if(info.maxDur != -1) o.addProperty("maxDuration", info.maxDur);
+
         return o;
     }
 
@@ -99,6 +164,10 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
 
     private static Boolean getAsBoolean(JsonObject o, String key) {
         return o.has(key) && !o.get(key).isJsonNull() ? o.get(key).getAsBoolean() : null;
+    }
+
+    private static Integer getAsInt(JsonObject o, String key) {
+        return o.has(key) && !o.get(key).isJsonNull() ? o.get(key).getAsInt() : null;
     }
 
     private static Float getAsFloat(JsonObject o, String key) {

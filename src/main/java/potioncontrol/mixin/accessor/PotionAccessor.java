@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.Map;
 
 @Mixin(Potion.class)
-public interface IPotionAccessor {
+public interface PotionAccessor {
     @Accessor("attributeModifierMap")
     Map<IAttribute, AttributeModifier> pc_getAttributeModifierMap();
 }

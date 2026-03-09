@@ -1,20 +1,22 @@
 package potioncontrol.config.potioninfojsons;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.text.TextFormatting;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
-import potioncontrol.mixin.accessor.IPotionAccessor;
+import potioncontrol.mixin.accessor.PotionAccessor;
 import potioncontrol.util.ConfigRef;
 import potioncontrol.util.PotionInfo;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -52,6 +54,8 @@ public class PotionInfoInferrerWriter {
         return out;
     }
 
+    private static final ItemStack milk = new ItemStack(Items.MILK_BUCKET);
+
     public static @Nullable PotionInfo inferInfoForPotion(Potion potion) {
         if (potion == null || potion.getRegistryName() == null) return null;
 
@@ -61,23 +65,49 @@ public class PotionInfoInferrerWriter {
 
         info.setLiquidColor(potion.getLiquidColor());
 
-        Map<IAttribute, AttributeModifier> map = ((IPotionAccessor) potion).pc_getAttributeModifierMap();
+        List<ItemStack> curativeItems = potion.getCurativeItems();
+        List<ItemStack> savedCurativeItems = new ArrayList<>();
+        boolean hasMilk = false;
+        for(ItemStack stack : curativeItems){
+            if(stack.isItemEqual(milk)) hasMilk = true;
+            else savedCurativeItems.add(stack.copy());
+        }
+        if(!savedCurativeItems.isEmpty())
+            info.curativeItems = savedCurativeItems;
+        if(!hasMilk) info.milkRemovable = false;
+
+        //TODO: maybe just if extended info is wanted?
+        info.setMaxLevel(-1);
+        info.setMaxDuration(-1);
+
+        Map<IAttribute, AttributeModifier> map = ((PotionAccessor) potion).pc_getAttributeModifierMap();
         info.setAttributeModifierMap(map.isEmpty() ? null : map);
 
-        TextFormatting fmt = probeDisplayColor(potion); // Display color (only for unusual, not for default none or RED if curse)
-        if (!(!info.isBeneficial && fmt == TextFormatting.RED)) info.setTextDisplayColor(fmt);
+        List<TextFormatting> fmts = probeDisplayColor(potion);
+        if(!fmts.isEmpty())
+            info.setTextDisplayColors(fmts);
 
         return info;
     }
 
-    private static @Nullable TextFormatting probeDisplayColor(Potion potion) {
+    private static final Map<String, TextFormatting> textFormattingByControlString = Arrays.stream(TextFormatting.values()).collect(Collectors.toMap(
+            TextFormatting::toString,
+            Function.identity()
+    ));
+
+    private static List<TextFormatting> probeDisplayColor(Potion potion) {
+        List<TextFormatting> fmts = new ArrayList<>();
         try {
-            String name = "";//potion.getTranslatedName(1); //TODO
-            // Search the start of the name for a textformatting flag
-            for (TextFormatting fmt : TextFormatting.values()) if (name.startsWith(fmt.toString())) return fmt;
+            String name = I18n.format(potion.getName());
+            // Search the start of the name for textformatting flags
+            while(name.startsWith("§")){
+                fmts.add(textFormattingByControlString.get(name.substring(0,2)));
+                name = name.substring(2);
+            }
+            return fmts;
         } catch (Throwable ignored) {
             PotionControl.LOGGER.warn("Failed to probe display color for {}", potion.getRegistryName());
         }
-        return null;
+        return fmts;
     }
 }

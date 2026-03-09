@@ -1,11 +1,12 @@
 package potioncontrol.util;
 
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -15,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PotionInfo {
     // -------- STATIC LOOKUP --------
@@ -69,20 +71,31 @@ public class PotionInfo {
     @SerializedName("isBeneficial")
     public boolean isBeneficial;
 
+    @SerializedName("milkRemovable") //TODO: use
+    public boolean milkRemovable = true;
+
+    @SerializedName("curativeItems") //TODO: use
+    public List<ItemStack> curativeItems = null;
+
+    @SerializedName("maxLevel")
+    public int maxLevel = -1; //-1 means don't read, don't use
+    @SerializedName("maxDuration")
+    public int maxDur = -1;
+
     @SerializedName("liquidColor")
     public String liquidColorHex = null;
 
-    @SerializedName("displayColor") //TODO: implement
-    public TextFormatting displayColor = null;
+    @SerializedName("displayColor")
+    public List<TextFormatting> displayColors = null;
 
     @SerializedName("attributeModifiers")
     public Map<IAttribute, AttributeModifier> attributeModifierMap = null;
 
     //TODO: instant, performEffect, isReady, incompats/auto removal, sources, description
-    //TODO: maxlvl, maxduration
     //TODO: connected types, curative items
     //TODO: default allow extra strong/extra long or stronglong, brewtime
     //TODO: modcompat for inspirations cauldron brewing, rustic alchemy
+    //TODO: prioritise duration vs amp when combining
 
     //-------- CONSTRUCTOR --------
 
@@ -109,8 +122,8 @@ public class PotionInfo {
         this.liquidColorHex = color;
     }
 
-    public void setTextDisplayColor(TextFormatting displayColor) {
-        this.displayColor = displayColor;
+    public void setTextDisplayColors(List<TextFormatting> displayColor) {
+        this.displayColors = displayColor;
     }
 
     public void setBeneficial(boolean isBeneficial) {
@@ -122,26 +135,35 @@ public class PotionInfo {
         this.attributeModifierMap = attributeModifierMap;
     }
 
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
+    public void setMaxDuration(int maxDuration) {
+        this.maxDur = maxDuration;
+    }
+
     // -------- GETTERS --------
 
-    @SideOnly(Side.CLIENT) @SuppressWarnings("deprecation")
-    public String getTranslatedName(Potion ench, int lvl){
-        String s = I18n.translateToLocal(ench.getName());
-
-        if (this.displayColor != null){
-            s = this.displayColor + s;
-        } else if (!this.isBeneficial) {
-            s = TextFormatting.RED + s;
+    @SideOnly(Side.CLIENT)
+    public String getTranslatedName(Potion potion, int amp){
+        String format = "";
+        String potTranslation = I18n.format(potion.getName());
+        if(this.displayColors != null) {
+            format = this.displayColors.stream().map(TextFormatting::toString).collect(Collectors.joining());
+            while(potTranslation.startsWith("§"))
+                potTranslation = potTranslation.substring(2); //TODO: might be better to store in lang file
         }
+        String text = format + potTranslation;
 
-        return s + " " + I18n.translateToLocal("potion.level." + lvl);
+        if(amp > 0 && amp < 10)
+            text += " " + I18n.format("enchantment.level."+(amp+1));
+        else if(amp != 0) text = text + " " + (amp + 1); //lvl 11+ or negative lvls
+
+        return text;
     }
 
     public int getLiquidColor(){
         return Integer.decode("#"+this.liquidColorHex);
-    }
-
-    public Map<IAttribute, AttributeModifier> getAttributeModifierMap(){
-        return this.attributeModifierMap;
     }
 }

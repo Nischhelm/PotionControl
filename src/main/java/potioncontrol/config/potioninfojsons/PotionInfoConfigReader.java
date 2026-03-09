@@ -3,13 +3,10 @@ package potioncontrol.config.potioninfojsons;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.minecraft.entity.ai.attributes.AttributeMap;
 import net.minecraft.entity.ai.attributes.BaseAttribute;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.potion.Potion;
 import potioncontrol.PotionControl;
-import potioncontrol.mixin.accessor.IPotionAccessor;
+import potioncontrol.mixin.accessor.PotionAccessor;
 import potioncontrol.util.PotionInfo;
 
 import java.io.*;
@@ -17,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PotionInfoConfigReader {
     public static final String MAIN_DIR = "config/potioncontrol/potions";
@@ -88,9 +84,9 @@ public class PotionInfoConfigReader {
         for(PotionInfo info : PotionInfo.getAll()){
             if(info.attributeModifierMap == null) continue;
             Potion potion = PotionInfo.getPotionObject(info);
-            if(!(potion instanceof IPotionAccessor)) return;
-            ((IPotionAccessor) potion).pc_getAttributeModifierMap().entrySet().removeIf(entry -> entry.getKey() instanceof BaseAttribute); //keeps theoretical iattributes that arent BaseAttribute
-            ((IPotionAccessor) potion).pc_getAttributeModifierMap().putAll(info.attributeModifierMap);
+            if(!(potion instanceof PotionAccessor)) return;
+            ((PotionAccessor) potion).pc_getAttributeModifierMap().entrySet().removeIf(entry -> entry.getKey() instanceof BaseAttribute); //keeps theoretical iattributes that arent BaseAttribute
+            ((PotionAccessor) potion).pc_getAttributeModifierMap().putAll(info.attributeModifierMap);
         }
     }
 }
