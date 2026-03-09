@@ -8,6 +8,15 @@
   "mixins": [
     "accessor.IPotionAccessor",
     "vanilla.BaseAttributeMixin",
+    "vanilla.CommandEffectMixin",
+    "vanilla.PotionEffectMixin",
+    "vanilla.SPacketEntityEffectMixin",
     "vanilla.blacklists.ForgePotionRegistryMixin"
+  ],
+  "client": [
+    "accessor.I18nAccessor",
+    "accessor.LocaleAccessor",
+    "vanilla.InventoryEffectRendererMixin",
+    "vanilla.NetHandlerPlayClientMixin"
   ]
 }
