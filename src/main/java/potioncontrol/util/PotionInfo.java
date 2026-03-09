@@ -71,10 +71,10 @@ public class PotionInfo {
     @SerializedName("isBeneficial")
     public boolean isBeneficial;
 
-    @SerializedName("milkRemovable") //TODO: use
+    @SerializedName("milkRemovable")
     public boolean milkRemovable = true;
 
-    @SerializedName("curativeItems") //TODO: use
+    @SerializedName("curativeItems")
     public List<ItemStack> curativeItems = null;
 
     @SerializedName("maxLevel")
@@ -91,8 +91,8 @@ public class PotionInfo {
     @SerializedName("attributeModifiers")
     public Map<IAttribute, AttributeModifier> attributeModifierMap = null;
 
-    //TODO: instant, performEffect, isReady, incompats/auto removal, sources, description
-    //TODO: connected types, curative items
+    //TODO: instant, performEffect, isReady, incompats/auto removal, sources
+    //TODO: connected potiontypes
     //TODO: default allow extra strong/extra long or stronglong, brewtime
     //TODO: modcompat for inspirations cauldron brewing, rustic alchemy
     //TODO: prioritise duration vs amp when combining

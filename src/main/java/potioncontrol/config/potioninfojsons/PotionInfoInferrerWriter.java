@@ -54,7 +54,7 @@ public class PotionInfoInferrerWriter {
         return out;
     }
 
-    private static final ItemStack milk = new ItemStack(Items.MILK_BUCKET);
+    public static final ItemStack milk = new ItemStack(Items.MILK_BUCKET);
 
     public static @Nullable PotionInfo inferInfoForPotion(Potion potion) {
         if (potion == null || potion.getRegistryName() == null) return null;
