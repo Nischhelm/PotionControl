@@ -4,6 +4,7 @@ import com.google.gson.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import potioncontrol.PotionControl;
+import potioncontrol.config.ConfigHandler;
 import potioncontrol.util.PotionTypeInfo;
 
 import java.lang.reflect.Type;
@@ -35,19 +36,21 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                 }
 
                 int amp = 0;
-                if(obj.has("amplifier")) amp = obj.get("amplifier").getAsInt() ;
+                if(obj.has("amplifier")) amp = obj.get("amplifier").getAsInt();
                 else if(obj.has("level")) amp = obj.get("level").getAsInt() - 1;
 
                 int dur = 0;
-                if(obj.has("duration")) dur = obj.get("duration").getAsInt() * 20;
+                if(obj.has("duration_tick")) dur = obj.get("duration_tick").getAsInt();
+                else if(obj.has("duration_sec")) dur = obj.get("duration_sec").getAsInt() * 20;
+                else if(obj.has("duration_min")) dur = (int) (obj.get("duration_min").getAsFloat() * 20 * 60);
 
                 boolean ambient = false;
                 if(obj.has("is_beacon_style"))
                     ambient = obj.get("is_beacon_style").getAsBoolean();
 
                 boolean particles = true;
-                if(obj.has("particles"))
-                    particles = obj.get("particles").getAsBoolean();
+                if(obj.has("shows_particles"))
+                    particles = obj.get("shows_particles").getAsBoolean();
 
                 effects.add(new PotionEffect(potion, dur, amp, ambient, particles));
             }
@@ -72,14 +75,17 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                 if(effect.getPotion().getRegistryName() == null) continue;
                 JsonObject obj = new JsonObject();
                 obj.addProperty("potion", effect.getPotion().getRegistryName().toString());
-                if(effect.getAmplifier() != 0)
-                    obj.addProperty("level", effect.getAmplifier() + 1);
-                if(effect.getDuration() != 0)
-                    obj.addProperty("duration", effect.getDuration() / 20);
-                if(effect.getIsAmbient()) //ambient is for Beacon Effects to not flicker when running out and have blue outline
-                    obj.addProperty("is_beacon_style", true);
-                if(!effect.doesShowParticles())
-                    obj.addProperty("particles", false);
+                if(ConfigHandler.dev.asAmplifier) obj.addProperty("amplifier", effect.getAmplifier());
+                else obj.addProperty("level", effect.getAmplifier() + 1);
+
+                switch (ConfigHandler.dev.durationScale){
+                    case TICK: obj.addProperty("duration_tick", effect.getDuration()); break;
+                    case SEC: obj.addProperty("duration_sec", effect.getDuration() / 20); break;
+                    case MIN: obj.addProperty("duration_min", (float) effect.getDuration() / 20F / 60F); break;
+                }
+
+                obj.addProperty("is_beacon_style", effect.getIsAmbient()); //ambient is for Beacon Effects to not flicker when running out and have blue outline
+                obj.addProperty("shows_particles", effect.doesShowParticles());
                 effects.add(obj);
             }
             o.add("effects", effects);

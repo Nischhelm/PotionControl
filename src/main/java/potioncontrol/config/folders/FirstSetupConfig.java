@@ -20,4 +20,15 @@ public class FirstSetupConfig {
     @Config.Name(ConfigRef.DO_INFER_CONFIG_NAME)
     @Config.RequiresMcRestart
     public boolean printInferred = true;
+
+    @Config.Comment("Which time scale to use for durations in inferred potion type infos (MIN as float)")
+    @Config.Name("Duration Time Scale")
+    @Config.RequiresMcRestart
+    public EnumTimeScale durationScale = EnumTimeScale.MIN;
+    public enum EnumTimeScale {TICK, SEC, MIN}
+
+    @Config.Comment("Whether to follow vanillas weird convention of using amplifiers (=lvl-1) instead of levels in inferred potion type infos")
+    @Config.Name("Levels as Amplifiers")
+    @Config.RequiresMcRestart
+    public boolean asAmplifier = false;
 }
