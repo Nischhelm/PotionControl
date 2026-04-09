@@ -33,8 +33,10 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                     PotionControl.LOGGER.warn("Unable to find potion {} for effect of potion type {}, skipping", potionId, id);
                     continue;
                 }
+
                 int amp = 0;
-                if(obj.has("level")) amp = obj.get("level").getAsInt() - 1;
+                if(obj.has("amplifier")) amp = obj.get("amplifier").getAsInt() ;
+                else if(obj.has("level")) amp = obj.get("level").getAsInt() - 1;
 
                 int dur = 0;
                 if(obj.has("duration")) dur = obj.get("duration").getAsInt() * 20;
