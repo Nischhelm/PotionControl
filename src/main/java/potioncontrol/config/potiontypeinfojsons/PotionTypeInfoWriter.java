@@ -24,7 +24,7 @@ public class PotionTypeInfoWriter {
     }
 
     public static void writeAllCurrentPotionTypeInfos(Collection<PotionTypeInfo> infos, String path) {
-        // Write one file per potion into config/potioncontrol/out/modid/potionid.json
+        // Write one file per potion into config/potioncontrol/potiontypes/out/modid/potionid.json
         try {
             File baseOut = new File(path);
             if (!baseOut.exists() && !baseOut.mkdirs()) {

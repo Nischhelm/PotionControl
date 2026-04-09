@@ -93,9 +93,8 @@ public class PotionInfo {
 
     //TODO: instant, performEffect, isReady, incompats/auto removal, sources
     //TODO: connected potiontypes
-    //TODO: default allow extra strong/extra long or stronglong, brewtime
-    //TODO: modcompat for inspirations cauldron brewing, rustic alchemy
     //TODO: prioritise duration vs amp when combining
+    //TODO: modify beacon effects
 
     //-------- CONSTRUCTOR --------
 
@@ -115,7 +114,7 @@ public class PotionInfo {
     //-------- SETTERS --------
 
     public void setLiquidColor(int color){
-        this.liquidColorHex = Integer.toHexString(color).toUpperCase();
+        this.liquidColorHex = "#" + Integer.toHexString(color).toUpperCase();
     }
 
     public void setLiquidColor(String color){
@@ -164,6 +163,6 @@ public class PotionInfo {
     }
 
     public int getLiquidColor(){
-        return Integer.decode("#"+this.liquidColorHex);
+        return Integer.decode(this.liquidColorHex);
     }
 }
