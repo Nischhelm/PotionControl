@@ -41,15 +41,15 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                 int dur = 0;
                 if(obj.has("duration")) dur = obj.get("duration").getAsInt() * 20;
 
-//                boolean ambient = false;
-//                if(obj.has("ambient"))
-//                    ambient = obj.get("ambient").getAsBoolean();
+                boolean ambient = false;
+                if(obj.has("is_beacon_style"))
+                    ambient = obj.get("is_beacon_style").getAsBoolean();
 
                 boolean particles = true;
                 if(obj.has("particles"))
                     particles = obj.get("particles").getAsBoolean();
 
-                effects.add(new PotionEffect(potion, dur, amp, false, particles));
+                effects.add(new PotionEffect(potion, dur, amp, ambient, particles));
             }
             if(!effects.isEmpty()) info.effects = effects;
         }
@@ -76,8 +76,8 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                     obj.addProperty("level", effect.getAmplifier() + 1);
                 if(effect.getDuration() != 0)
                     obj.addProperty("duration", effect.getDuration() / 20);
-//                if(effect.getIsAmbient()) //ambient is for Beacon Effects to not flicker when running out and have blue outline
-//                    obj.addProperty("ambient", true);
+                if(effect.getIsAmbient()) //ambient is for Beacon Effects to not flicker when running out and have blue outline
+                    obj.addProperty("is_beacon_style", true);
                 if(!effect.doesShowParticles())
                     obj.addProperty("particles", false);
                 effects.add(obj);
