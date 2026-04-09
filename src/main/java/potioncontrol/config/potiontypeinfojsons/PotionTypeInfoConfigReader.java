@@ -69,7 +69,7 @@ public class PotionTypeInfoConfigReader {
 
     //Done in post init to modify nothing yet
     public static void applyManualOverrides(){
-        for(PotionTypeInfo info : PotionTypeInfo.getAll()){
-        }
+//        for(PotionTypeInfo info : PotionTypeInfo.getAll()){
+//        }
     }
 }
