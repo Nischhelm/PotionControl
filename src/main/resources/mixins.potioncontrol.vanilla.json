@@ -11,9 +11,11 @@
     "accessor.PotionAccessor",
     "accessor.PotionEffectAccessor",
     "vanilla.BaseAttributeMixin",
+    "vanilla.BrewingRecipeRegistryMixin",
     "vanilla.CommandEffectMixin",
     "vanilla.EntityTippedArrowMixin",
     "vanilla.PotionEffectMixin",
+    "vanilla.PotionHelper_MixPredicateMixin",
     "vanilla.PotionTypeMixin",
     "vanilla.SPacketEntityEffectMixin",
     "vanilla.blacklists.ForgePotionRegistryMixin"
