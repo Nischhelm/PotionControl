@@ -27,6 +27,16 @@ public class FirstSetupConfig {
     public EnumTimeScale durationScale = EnumTimeScale.MIN;
     public enum EnumTimeScale {TICK, SEC, MIN}
 
+    @Config.Comment({
+            "Which brewing direction should be printed into inferred potion types.",
+            " FROM: writes which other potiontypes + reagents can create this potion type",
+            " TO: writes which other potiontypes this one can be brewed to, using which reagents",
+    })
+    @Config.Name("Brewing Recipe Direction")
+    @Config.RequiresMcRestart
+    public EnumBrewRecipeDirection recipeDirection = EnumBrewRecipeDirection.FROM;
+    public enum EnumBrewRecipeDirection {FROM, TO, BOTH, NONE}
+
     @Config.Comment("Whether to follow vanillas weird convention of using amplifiers (=lvl-1) instead of levels in inferred potion type infos")
     @Config.Name("Levels as Amplifiers")
     @Config.RequiresMcRestart

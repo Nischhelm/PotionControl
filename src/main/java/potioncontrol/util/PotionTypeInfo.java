@@ -1,15 +1,15 @@
 package potioncontrol.util;
 
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
+import net.minecraftforge.common.brewing.BrewingRecipe;
+import stanhebben.zenscript.util.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PotionTypeInfo {
     // -------- STATIC LOOKUP --------
@@ -64,7 +64,11 @@ public class PotionTypeInfo {
     @SerializedName("effects")
     public List<PotionEffect> effects = null;
 
-    //TODO: default allow extra strong/extra long or stronglong, brewtime
+    @SerializedName("brews_from")
+    public List<BrewRecipeUtil.BrewRecipe> brewsFrom = null;
+    @SerializedName("brews_to")
+    public List<BrewRecipeUtil.BrewRecipe> brewsTo = null;
+
     @SerializedName("tipped_arrow_duration")
     public int tippedDuration;
     public boolean overwritesTippedDuration;

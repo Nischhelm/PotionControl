@@ -1,10 +1,9 @@
 package potioncontrol.config.potiontypeinfojsons;
 
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
+import potioncontrol.util.BrewRecipeUtil;
 import potioncontrol.util.ConfigRef;
 import potioncontrol.util.PotionTypeInfo;
 
@@ -55,6 +54,10 @@ public class PotionTypeInfoInferrerWriter {
         PotionTypeInfo info = new PotionTypeInfo(type.getRegistryName().toString());
 
         info.effects = type.getEffects();
+        info.brewsFrom = BrewRecipeUtil.recipes.stream().filter(r -> r.out == type).collect(Collectors.toList());
+        info.brewsTo = BrewRecipeUtil.recipes.stream().filter(r -> r.in == type).collect(Collectors.toList());
+        if(info.brewsFrom.isEmpty()) info.brewsFrom = null;
+        if(info.brewsTo.isEmpty()) info.brewsTo = null;
 
         if(info.effects.size() == 1)
             info.setTippedDuration(Math.max(info.effects.get(0).getDuration() / 8, 1));

@@ -1,14 +1,19 @@
 package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
+import potioncontrol.config.folders.FirstSetupConfig;
+import potioncontrol.util.BrewRecipeUtil;
 import potioncontrol.util.PotionTypeInfo;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeInfo>, JsonSerializer<PotionTypeInfo> {
     @Override
@@ -57,6 +62,8 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
             if(!effects.isEmpty()) info.effects = effects;
         }
 
+        //TODO: read in brewing recipes
+
         if(jsonObj.has("tipped_arrow_duration"))
             info.setTippedDuration(jsonObj.get("tipped_arrow_duration").getAsInt());
 
@@ -92,6 +99,60 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                 effects.add(obj);
             }
             o.add("effects", effects);
+        }
+
+        if(info.brewsFrom != null && (ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.FROM || ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.BOTH)) {
+            JsonArray brewsFrom = new JsonArray();
+            for(BrewRecipeUtil.BrewRecipe recipe : info.brewsFrom) {
+                JsonObject obj = new JsonObject();
+                if(recipe.in.getRegistryName() == null) continue;
+                obj.addProperty("from", recipe.in.getRegistryName().toString());
+
+                ResourceLocation loc = recipe.reagent.getItem().getRegistryName();
+                if(loc == null) continue;
+                int meta = recipe.reagent.getMetadata();
+                NBTTagCompound tag = recipe.reagent.getTagCompound();
+
+
+                if(meta == 0 && tag == null){
+                    obj.addProperty("reagent", loc.toString());
+                } else {
+                    JsonObject reagent = new JsonObject();
+                    reagent.addProperty("item", loc.toString());
+                    if (meta != 0) reagent.addProperty("meta", meta);
+                    if (tag != null) reagent.addProperty("tag", tag.toString());
+                    obj.add("reagent", reagent);
+                }
+
+                brewsFrom.add(obj);
+            }
+            o.add("brews_from", brewsFrom);
+        }
+
+        if(info.brewsTo != null && (ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.TO || ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.BOTH)) {
+            JsonArray brewsTo = new JsonArray();
+            for(BrewRecipeUtil.BrewRecipe recipe : info.brewsTo) {
+                JsonObject obj = new JsonObject();
+
+                ResourceLocation loc = recipe.reagent.getItem().getRegistryName();
+                if(loc == null || recipe.out.getRegistryName() == null) continue;
+                int meta = recipe.reagent.getMetadata();
+                NBTTagCompound tag = recipe.reagent.getTagCompound();
+
+                if(meta == 0 && tag == null){
+                    obj.addProperty("reagent", loc.toString());
+                } else {
+                    JsonObject reagent = new JsonObject();
+                    reagent.addProperty("item", loc.toString());
+                    if (meta != 0) reagent.addProperty("meta", meta);
+                    if (tag != null) reagent.addProperty("tag", tag.toString());
+                    obj.add("reagent", reagent);
+                }
+
+                obj.addProperty("to", recipe.out.getRegistryName().toString());
+                brewsTo.add(obj);
+            }
+            o.add("brews_to", brewsTo);
         }
 
         if(info.overwritesTippedDuration)
