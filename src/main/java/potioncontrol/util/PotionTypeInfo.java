@@ -65,6 +65,11 @@ public class PotionTypeInfo {
     public List<PotionEffect> effects = null;
 
     //TODO: default allow extra strong/extra long or stronglong, brewtime
+    @SerializedName("tipped_arrow_duration")
+    public int tippedDuration;
+    public boolean overwritesTippedDuration;
+
+    //TODO: default allow extra strong/extra long or stronglong
     //TODO: modcompat for inspirations cauldron brewing, rustic alchemy
     //TODO: recipes with brewtime
 
@@ -84,6 +89,11 @@ public class PotionTypeInfo {
     }
 
     //-------- SETTERS --------
+
+    public void setTippedDuration(int duration){
+        this.tippedDuration = duration;
+        this.overwritesTippedDuration = true;
+    }
 
     // -------- GETTERS --------
 

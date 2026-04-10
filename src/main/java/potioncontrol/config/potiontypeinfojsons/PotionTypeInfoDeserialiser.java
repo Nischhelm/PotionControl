@@ -57,6 +57,9 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
             if(!effects.isEmpty()) info.effects = effects;
         }
 
+        if(jsonObj.has("tipped_arrow_duration"))
+            info.setTippedDuration(jsonObj.get("tipped_arrow_duration").getAsInt());
+
         return info;
     }
 
@@ -90,6 +93,9 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
             }
             o.add("effects", effects);
         }
+
+        if(info.overwritesTippedDuration)
+            o.addProperty("tipped_arrow_duration", info.tippedDuration);
 
         return o;
     }

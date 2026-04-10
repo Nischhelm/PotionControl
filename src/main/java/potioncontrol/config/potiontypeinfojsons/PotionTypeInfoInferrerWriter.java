@@ -56,6 +56,9 @@ public class PotionTypeInfoInferrerWriter {
 
         info.effects = type.getEffects();
 
+        if(info.effects.size() == 1)
+            info.setTippedDuration(Math.max(info.effects.get(0).getDuration() / 8, 1));
+
         return info;
     }
 }

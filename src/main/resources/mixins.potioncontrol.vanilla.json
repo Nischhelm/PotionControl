@@ -12,6 +12,7 @@
     "accessor.PotionEffectAccessor",
     "vanilla.BaseAttributeMixin",
     "vanilla.CommandEffectMixin",
+    "vanilla.EntityTippedArrowMixin",
     "vanilla.PotionEffectMixin",
     "vanilla.PotionTypeMixin",
     "vanilla.SPacketEntityEffectMixin",
