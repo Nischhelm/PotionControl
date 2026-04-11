@@ -10,7 +10,6 @@ import net.minecraft.util.text.TextFormatting;
 import potioncontrol.PotionControl;
 import potioncontrol.util.BaseAttributeRegistry;
 import potioncontrol.util.PotionInfo;
-import scala.util.parsing.json.JSONArray;
 
 import java.util.*;
 

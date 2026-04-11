@@ -1,6 +1,8 @@
 package potioncontrol.util.brewing;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import potioncontrol.mixin.accessor.PotionHelperAccessor;
@@ -27,8 +29,12 @@ public class BrewRecipeUtil {
     }
 
     public static BrewRecipe addRecipe(Input in, ItemStack reagent, Input out){
-//        for(BrewRecipe r : recipes)
-//            if(r.input == in && areItemStacksEqual(r.reagent, reagent)) return r; //TODO
+        if(in instanceof Input.PotionTypeInput && out instanceof Input.PotionTypeInput){
+            //Use vanilla system
+            PotionHelper.addMix(((Input.PotionTypeInput)in).type, Ingredient.fromStacks(reagent), ((Input.PotionTypeInput)out).type);
+            //via mixin calls addVanillaRecipe
+            return vanillaRecipes.get(vanillaRecipes.size() - 1);
+        }
 
         BrewRecipe recipe = new BrewRecipe(in, reagent, out);
         recipes.add(recipe);

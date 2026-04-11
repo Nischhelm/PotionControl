@@ -66,9 +66,12 @@ dependencies {
     implementation fg.deobf("curse.maven:potioncore-${potioncore_version}")
     implementation fg.deobf("curse.maven:rustic-${rustic_version}")
 
-    compileOnly fg.deobf("CraftTweaker2:CraftTweaker2-${crafttweaker_version}")
-    compileOnly fg.deobf("CraftTweaker2:ZenScript:${zs_version}")
-    compileOnly fg.deobf("CraftTweaker2:CraftTweaker2-API:${zs_version}")
+
+    compileOnly fg.deobf("curse.maven:jei-${jei_version}")
+    compileOnly fg.deobf("curse.maven:contenttweaker-${contenttweaker_version}")
+    implementation fg.deobf("CraftTweaker2:CraftTweaker2-${crafttweaker_version}")
+    implementation fg.deobf("CraftTweaker2:ZenScript:${zs_version}")
+    implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:${zs_version}")
 
     implementation 'io.github.classgraph:classgraph:4.8.184'
 

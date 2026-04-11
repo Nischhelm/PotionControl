@@ -15,10 +15,10 @@ import net.minecraft.util.ResourceLocation;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.config.folders.FirstSetupConfig;
+import potioncontrol.util.PotionTypeInfo;
 import potioncontrol.util.brewing.BrewRecipe;
 import potioncontrol.util.brewing.BrewRecipeUtil;
 import potioncontrol.util.brewing.Input;
-import potioncontrol.util.PotionTypeInfo;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

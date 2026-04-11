@@ -7,9 +7,15 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public interface Input {
     boolean isInput(ItemStack stack);
     ItemStack getOutput(ItemStack input);
+    List<ItemStack> asItemStacks();
 
     class ItemStackInput implements Input {
         public final ItemStack stack;
@@ -23,6 +29,10 @@ public interface Input {
         @Override
         public ItemStack getOutput(ItemStack input) {
             return stack.copy();
+        }
+        @Override
+        public List<ItemStack> asItemStacks(){
+            return Collections.singletonList(stack);
         }
     }
     class PotionTypeInput implements Input {
@@ -38,10 +48,15 @@ public interface Input {
         public ItemStack getOutput(ItemStack input) {
             return PotionUtils.addPotionToItemStack(input.copy(), this.type);
         }
+        @Override
+        public List<ItemStack> asItemStacks(){
+            return items.stream().map(item -> PotionUtils.addPotionToItemStack(new ItemStack(item), type)).collect(Collectors.toList());
+        }
+
+        private static final List<Item> items = Arrays.asList(Items.POTIONITEM, Items.SPLASH_POTION, Items.LINGERING_POTION);
 
         private static boolean isVanillaContainer(ItemStack stack) {
-            Item item = stack.getItem();
-            return item == Items.POTIONITEM || item == Items.SPLASH_POTION || item == Items.LINGERING_POTION || item == Items.GLASS_BOTTLE;
+            return items.contains(stack.getItem());
         }
     }
     static Input getFromObj(Object obj) {
