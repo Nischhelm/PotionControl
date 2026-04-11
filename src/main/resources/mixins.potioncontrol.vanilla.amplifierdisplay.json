@@ -6,9 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.BaseAttributeMixin",
-    "vanilla.PotionTypeMixin",
-    "vanilla.VanillaBasePotionMixin",
-    "vanilla.VanillaPotionMixin"
+  ],
+  "client": [
+    "vanilla.InventoryEffectRendererMixin"
   ]
 }

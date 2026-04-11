@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "potioncontrol.mixin",
+  "refmap": "mixins.potioncontrol.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "accessor.I18nAccessor_translation",
+    "accessor.LanguageMapAccessor",
+    "accessor.PotionAccessor",
+    "accessor.PotionEffectAccessor",
+    "accessor.PotionHelperAccessor"
+  ],
+  "client": [
+    "accessor.I18nAccessor",
+    "accessor.LocaleAccessor"
+  ]
+}

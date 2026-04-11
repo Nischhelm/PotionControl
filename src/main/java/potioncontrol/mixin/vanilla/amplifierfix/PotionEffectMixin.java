@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla;
+package potioncontrol.mixin.vanilla.amplifierfix;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.nbt.NBTTagCompound;

@@ -6,10 +6,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import potioncontrol.PotionControl;
-import potioncontrol.config.folders.BlacklistConfig;
-import potioncontrol.config.folders.BrewingStandConfig;
-import potioncontrol.config.folders.DebugConfig;
-import potioncontrol.config.folders.FirstSetupConfig;
+import potioncontrol.config.folders.*;
 import potioncontrol.config.provider.BlacklistConfigProvider;
 
 @Config(modid = PotionControl.MODID)

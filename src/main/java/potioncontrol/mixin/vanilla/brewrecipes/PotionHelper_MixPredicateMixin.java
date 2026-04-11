@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla;
+package potioncontrol.mixin.vanilla.brewrecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -33,14 +33,11 @@ public abstract class PotionHelper_MixPredicateMixin implements IHasBrewRecipe {
         return this.pc$brewRecipe;
     }
 
-    @Inject(
-            method = "<init>",
-            at = @At("TAIL")
-    )
+    @Inject(method = "<init>", at = @At("TAIL"))
     private void potioncontrol_saveVanillaBrewingRecipes(CallbackInfo ci){
         Object typeIn = input.get();
         Object typeOut = output.get();
-        if(!(typeIn instanceof PotionType) || !(typeOut instanceof PotionType)) return;
+        if(!(typeIn instanceof PotionType) || !(typeOut instanceof PotionType)) return; //discard container changing recipes = ITEM_CONVERSIONS
         PotionType potionTypeIn = (PotionType) typeIn;
         PotionType potionTypeOut = (PotionType) typeOut;
 

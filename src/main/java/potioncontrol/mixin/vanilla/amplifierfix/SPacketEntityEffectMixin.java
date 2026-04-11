@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla;
+package potioncontrol.mixin.vanilla.amplifierfix;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketEntityEffect;

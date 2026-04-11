@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla;
+package potioncontrol.mixin.vanilla.amplifierfix;
 
 import net.minecraft.command.CommandEffect;
 import org.spongepowered.asm.mixin.Mixin;
