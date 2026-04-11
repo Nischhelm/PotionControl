@@ -1,11 +1,9 @@
 package potioncontrol.util;
 
 import com.google.gson.annotations.SerializedName;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
-import net.minecraftforge.common.brewing.BrewingRecipe;
-import stanhebben.zenscript.util.Pair;
+import potioncontrol.util.brewing.BrewRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,9 +63,9 @@ public class PotionTypeInfo {
     public List<PotionEffect> effects = null;
 
     @SerializedName("brews_from")
-    public List<BrewRecipeUtil.BrewRecipe> brewsFrom = null;
+    public List<BrewRecipe> brewsFrom = null;
     @SerializedName("brews_to")
-    public List<BrewRecipeUtil.BrewRecipe> brewsTo = null;
+    public List<BrewRecipe> brewsTo = null;
 
     @SerializedName("tipped_arrow_duration")
     public int tippedDuration;

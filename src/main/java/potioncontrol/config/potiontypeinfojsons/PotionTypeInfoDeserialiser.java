@@ -1,14 +1,23 @@
 package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.config.folders.FirstSetupConfig;
-import potioncontrol.util.BrewRecipeUtil;
+import potioncontrol.util.brewing.BrewRecipe;
+import potioncontrol.util.brewing.BrewRecipeUtil;
+import potioncontrol.util.brewing.Input;
 import potioncontrol.util.PotionTypeInfo;
 
 import java.lang.reflect.Type;
@@ -24,6 +33,7 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
 
         String id = getAsString(jsonObj, "id");
         if (id == null) return null;
+        PotionType potionType = PotionType.getPotionTypeForName(id);
 
         PotionTypeInfo info = new PotionTypeInfo(id);
 
@@ -62,7 +72,87 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
             if(!effects.isEmpty()) info.effects = effects;
         }
 
-        //TODO: read in brewing recipes
+        boolean hasCleared = false;
+        if(potionType != null && jsonObj.has("brews_to")){
+            JsonArray arr = jsonObj.getAsJsonArray("brews_to");
+            for(JsonElement el : arr){
+                JsonObject obj = el.getAsJsonObject();
+
+                PotionType typeOut = null;
+                ItemStack stackOut = null;
+                if(obj.has("to")){
+                    if(obj.get("to").isJsonObject()){
+                        JsonObject to = obj.get("to").getAsJsonObject();
+                        stackOut = getAsItemStack(to);
+                        if(stackOut.isEmpty()) continue;
+                    } else if(obj.get("to").isJsonPrimitive()) {
+                        typeOut = PotionType.getPotionTypeForName(obj.get("to").getAsString());
+                        if(typeOut == null) continue;
+                    }
+                }
+
+                ItemStack reagentStack = ItemStack.EMPTY;
+                if(obj.has("reagent")) {
+                    if (obj.get("reagent").isJsonObject()) {
+                        reagentStack = getAsItemStack(obj.getAsJsonObject("reagent"));
+                    } else if(obj.get("reagent").isJsonPrimitive()) {
+                        Item reagent = Item.getByNameOrId(obj.get("reagent").getAsString());
+                        if(reagent != null) reagentStack = new ItemStack(reagent);
+                    }
+                }
+
+                int brewTime = -1;
+                if(obj.has("brew_time"))
+                    brewTime = obj.get("brew_time").getAsInt();
+
+                if(!hasCleared){
+                    BrewRecipeUtil.removeForType(potionType, true);
+                    hasCleared = true;
+                }
+                BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(potionType), reagentStack, Input.getFromObj(typeOut != null ? typeOut : stackOut));
+                if(brewTime != -1) recipe.setBrewTime(brewTime);
+            }
+        }
+
+        if(potionType != null && jsonObj.has("brews_from")){
+            JsonArray arr = jsonObj.getAsJsonArray("brews_from");
+            for(JsonElement el : arr){
+                JsonObject obj = el.getAsJsonObject();
+
+                PotionType typeIn = null;
+                ItemStack stackIn = null;
+                if(obj.has("from")){
+                    if(obj.get("from").isJsonObject()){
+                        JsonObject from = obj.get("from").getAsJsonObject();
+                        stackIn = getAsItemStack(from);
+                        if(stackIn.isEmpty()) continue;
+                    } else if(obj.get("from").isJsonPrimitive()) {
+                        typeIn = PotionType.getPotionTypeForName(obj.get("from").getAsString());
+                        if(typeIn == null) continue;
+                    }
+                }
+
+                ItemStack reagentStack = ItemStack.EMPTY;
+                if(obj.has("reagent")) {
+                    if (obj.get("reagent").isJsonObject()) {
+                        reagentStack = getAsItemStack(obj.getAsJsonObject("reagent"));
+                    } else if(obj.get("reagent").isJsonPrimitive()) {
+                        Item reagent = Item.getByNameOrId(obj.get("reagent").getAsString());
+                        if(reagent != null) reagentStack = new ItemStack(reagent);
+                    }
+                }
+                int brewTime = -1;
+                if(obj.has("brew_time"))
+                    brewTime = obj.get("brew_time").getAsInt();
+
+                if(!hasCleared){
+                    BrewRecipeUtil.removeForType(potionType, false); //potentially a second clear if both from and to are in the json. the from value will be used
+                    hasCleared = true;
+                }
+                BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(typeIn != null ? typeIn : stackIn), reagentStack, Input.getFromObj(potionType));
+                if(brewTime != -1) recipe.setBrewTime(brewTime);
+            }
+        }
 
         if(jsonObj.has("tipped_arrow_duration"))
             info.setTippedDuration(jsonObj.get("tipped_arrow_duration").getAsInt());
@@ -103,25 +193,27 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
 
         if(info.brewsFrom != null && (ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.FROM || ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.BOTH)) {
             JsonArray brewsFrom = new JsonArray();
-            for(BrewRecipeUtil.BrewRecipe recipe : info.brewsFrom) {
+            for(BrewRecipe recipe : info.brewsFrom) {
                 JsonObject obj = new JsonObject();
-                if(recipe.in.getRegistryName() == null) continue;
-                obj.addProperty("from", recipe.in.getRegistryName().toString());
+
+                if(recipe.input instanceof Input.PotionTypeInput){
+                    PotionType typeFrom = ((Input.PotionTypeInput)recipe.input).type;
+                    if(typeFrom.getRegistryName() == null) continue;
+                    obj.addProperty("from", typeFrom.getRegistryName().toString());
+                } else if(recipe.input instanceof Input.ItemStackInput) {
+                    ItemStack stackFrom = ((Input.ItemStackInput) recipe.input).stack;
+                    obj.add("from", fromItemStack(stackFrom));
+                }
 
                 ResourceLocation loc = recipe.reagent.getItem().getRegistryName();
                 if(loc == null) continue;
                 int meta = recipe.reagent.getMetadata();
                 NBTTagCompound tag = recipe.reagent.getTagCompound();
 
-
                 if(meta == 0 && tag == null){
                     obj.addProperty("reagent", loc.toString());
                 } else {
-                    JsonObject reagent = new JsonObject();
-                    reagent.addProperty("item", loc.toString());
-                    if (meta != 0) reagent.addProperty("meta", meta);
-                    if (tag != null) reagent.addProperty("tag", tag.toString());
-                    obj.add("reagent", reagent);
+                    obj.add("reagent", fromItemStack(recipe.reagent));
                 }
 
                 brewsFrom.add(obj);
@@ -131,25 +223,29 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
 
         if(info.brewsTo != null && (ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.TO || ConfigHandler.dev.recipeDirection == FirstSetupConfig.EnumBrewRecipeDirection.BOTH)) {
             JsonArray brewsTo = new JsonArray();
-            for(BrewRecipeUtil.BrewRecipe recipe : info.brewsTo) {
+            for(BrewRecipe recipe : info.brewsTo) {
                 JsonObject obj = new JsonObject();
 
                 ResourceLocation loc = recipe.reagent.getItem().getRegistryName();
-                if(loc == null || recipe.out.getRegistryName() == null) continue;
+                if(loc == null) continue;
                 int meta = recipe.reagent.getMetadata();
                 NBTTagCompound tag = recipe.reagent.getTagCompound();
 
                 if(meta == 0 && tag == null){
                     obj.addProperty("reagent", loc.toString());
                 } else {
-                    JsonObject reagent = new JsonObject();
-                    reagent.addProperty("item", loc.toString());
-                    if (meta != 0) reagent.addProperty("meta", meta);
-                    if (tag != null) reagent.addProperty("tag", tag.toString());
-                    obj.add("reagent", reagent);
+                    obj.add("reagent", fromItemStack(recipe.reagent));
                 }
 
-                obj.addProperty("to", recipe.out.getRegistryName().toString());
+                if(recipe.output instanceof Input.PotionTypeInput){
+                    PotionType typeTo = ((Input.PotionTypeInput)recipe.output).type;
+                    if(typeTo.getRegistryName() == null) continue;
+                    obj.addProperty("to", typeTo.getRegistryName().toString());
+                } else if(recipe.output instanceof Input.ItemStackInput) {
+                    ItemStack stackTo = ((Input.ItemStackInput) recipe.output).stack;
+                    obj.add("to", fromItemStack(stackTo));
+                }
+
                 brewsTo.add(obj);
             }
             o.add("brews_to", brewsTo);
@@ -159,6 +255,43 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
             o.addProperty("tipped_arrow_duration", info.tippedDuration);
 
         return o;
+    }
+
+    private static ItemStack getAsItemStack(JsonObject reag){
+        Item reagent = Item.getByNameOrId(reag.get("item").getAsString());
+        if(reagent == null) return ItemStack.EMPTY;
+
+        int meta = reag.has("meta") ? reag.get("meta").getAsInt() : 0;
+        ItemStack reagentStack = new ItemStack(reagent, 1, meta);
+
+        NBTTagCompound nbt = null;
+        if(reag.has("tag"))
+            try {
+                nbt = JsonToNBT.getTagFromJson(JsonUtils.getString(reag, "tag"));
+            } catch (NBTException ignored) {}
+        if(nbt != null) reagentStack.setTagCompound(nbt);
+
+        if(reag.has("type")){
+            PotionType type = PotionType.getPotionTypeForName(reag.get("type").getAsString());
+            PotionUtils.addPotionToItemStack(reagentStack, type);
+        }
+
+        return reagentStack;
+    }
+
+    private static JsonObject fromItemStack(ItemStack stack){
+        JsonObject from = new JsonObject();
+
+        ResourceLocation loc = stack.getItem().getRegistryName();
+        if(loc == null) return from;
+        int meta = stack.getMetadata();
+        NBTTagCompound tag = stack.getTagCompound();
+
+        from.addProperty("item", loc.toString());
+        if (meta != 0) from.addProperty("meta", meta);
+        if (tag != null) from.addProperty("tag", tag.toString());
+
+        return from;
     }
 
     private static String getAsString(JsonObject o, String key) {

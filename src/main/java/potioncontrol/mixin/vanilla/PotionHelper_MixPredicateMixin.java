@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import potioncontrol.util.BrewRecipeUtil;
+import potioncontrol.util.brewing.BrewRecipeUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ public abstract class PotionHelper_MixPredicateMixin<T extends net.minecraftforg
             method = "<init>",
             at = @At("TAIL")
     )
-    private void potioncontrol_saveBrewRecipes(CallbackInfo ci){
+    private void potioncontrol_saveVanillaBrewingRecipes(CallbackInfo ci){
         Object typeIn = input.get();
         Object typeOut = output.get();
         if(!(typeIn instanceof PotionType) || !(typeOut instanceof PotionType)) return;
@@ -35,6 +35,8 @@ public abstract class PotionHelper_MixPredicateMixin<T extends net.minecraftforg
 
         List<ItemStack> reagents = Arrays.stream(reagent.getMatchingStacks()).collect(Collectors.toList());
 
-        reagents.forEach(r -> BrewRecipeUtil.recipes.add(new BrewRecipeUtil.BrewRecipe(potionTypeIn, r, potionTypeOut)));
+        if(reagents.isEmpty()) return; //this will always be size 1, except if mods add more Mixes
+
+        reagents.forEach(r -> BrewRecipeUtil.addVanillaRecipe(potionTypeIn, r, potionTypeOut, this));
     }
 }
