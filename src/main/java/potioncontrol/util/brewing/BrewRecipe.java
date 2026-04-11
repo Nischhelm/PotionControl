@@ -17,8 +17,13 @@ public class BrewRecipe implements IBrewingRecipe {
         this.reagent = reagent;
     }
 
-    public void setBrewTime(int brewTime) {
+    public BrewRecipe setBrewTime(int brewTime) {
         this.brewTime = brewTime;
+        return this;
+    }
+
+    public int getBrewTime() {
+        return this.brewTime;
     }
 
     @Override
@@ -34,6 +39,7 @@ public class BrewRecipe implements IBrewingRecipe {
     @Nonnull @Override
     public ItemStack getOutput(@Nonnull ItemStack input, @Nonnull ItemStack ingredient) {
         if(!isInput(input) || !isIngredient(ingredient)) return  ItemStack.EMPTY;
+        BrewRecipeUtil.setCurrentlySelectedRecipe(this);
         return this.output.getOutput(input);
     }
 }

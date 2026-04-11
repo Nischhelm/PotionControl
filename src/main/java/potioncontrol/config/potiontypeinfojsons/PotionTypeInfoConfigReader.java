@@ -73,8 +73,8 @@ public class PotionTypeInfoConfigReader {
                 BrewRecipeUtil.removeForType(PotionTypeInfo.getPotionTypeObject(info), true);
                 info.brewsTo = info.brewsTo.stream()
                         .map(recipe ->
-                                recipe instanceof BrewRecipeUtil.VanillaContainer
-                                    ? BrewRecipeUtil.addRecipe(recipe.input, recipe.reagent, recipe.output) //re-add vanilla recipes and save their instance
+                                recipe instanceof BrewRecipeUtil.VanillaBrewRecipe
+                                    ? BrewRecipeUtil.addRecipe(recipe.input, recipe.reagent, recipe.output).setBrewTime(recipe.getBrewTime()) //re-add vanilla recipes and save their instance
                                     : recipe
                         )
                         .collect(Collectors.toList());
@@ -83,8 +83,8 @@ public class PotionTypeInfoConfigReader {
                 BrewRecipeUtil.removeForType(PotionTypeInfo.getPotionTypeObject(info), false);
                 info.brewsFrom = info.brewsFrom.stream()
                         .map(recipe ->
-                                recipe instanceof BrewRecipeUtil.VanillaContainer
-                                        ? BrewRecipeUtil.addRecipe(recipe.input, recipe.reagent, recipe.output) //re-add vanilla recipes and save their instance
+                                recipe instanceof BrewRecipeUtil.VanillaBrewRecipe
+                                        ? BrewRecipeUtil.addRecipe(recipe.input, recipe.reagent, recipe.output).setBrewTime(recipe.getBrewTime()) //re-add vanilla recipes and save their instance
                                         : recipe
                         )
                         .collect(Collectors.toList());

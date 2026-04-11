@@ -16,8 +16,10 @@
     "vanilla.EntityTippedArrowMixin",
     "vanilla.PotionEffectMixin",
     "vanilla.PotionHelper_MixPredicateMixin",
+    "vanilla.PotionHelperMixin",
     "vanilla.PotionTypeMixin",
     "vanilla.SPacketEntityEffectMixin",
+    "vanilla.TileEntityBrewingStandMixin",
     "vanilla.blacklists.ForgePotionRegistryMixin"
   ],
   "client": [

@@ -7,20 +7,31 @@ import net.minecraftforge.registries.IRegistryDelegate;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import potioncontrol.util.brewing.BrewRecipe;
 import potioncontrol.util.brewing.BrewRecipeUtil;
+import potioncontrol.util.wrapper.IHasBrewRecipe;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mixin(targets = "net.minecraft.potion.PotionHelper.MixPredicate")
-public abstract class PotionHelper_MixPredicateMixin<T extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<T>> {
-    @Shadow @Final IRegistryDelegate<T> input;
+public abstract class PotionHelper_MixPredicateMixin implements IHasBrewRecipe {
+    @Shadow @Final IRegistryDelegate<Object> input;
     @Shadow @Final Ingredient reagent;
-    @Shadow @Final IRegistryDelegate<T> output;
+    @Shadow @Final IRegistryDelegate<Object> output;
+
+    @Unique private BrewRecipe pc$brewRecipe = null;
+    @Unique public void pc$setBrewRecipe(BrewRecipe recipe) {
+        this.pc$brewRecipe = recipe;
+    }
+    @Unique public BrewRecipe pc$getBrewRecipe(){
+        return this.pc$brewRecipe;
+    }
 
     @Inject(
             method = "<init>",
@@ -37,6 +48,10 @@ public abstract class PotionHelper_MixPredicateMixin<T extends net.minecraftforg
 
         if(reagents.isEmpty()) return; //this will always be size 1, except if mods add more Mixes
 
-        reagents.forEach(r -> BrewRecipeUtil.addVanillaRecipe(potionTypeIn, r, potionTypeOut, this));
+        reagents.forEach(r -> {
+            BrewRecipe recipe = BrewRecipeUtil.addVanillaRecipe(potionTypeIn, r, potionTypeOut, this);
+            if(this.pc$getBrewRecipe() == null) //only save the first, this is only for brewTime
+                this.pc$setBrewRecipe(recipe);
+        });
     }
 }

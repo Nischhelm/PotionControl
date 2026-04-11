@@ -216,6 +216,9 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                     obj.add("reagent", fromItemStack(recipe.reagent));
                 }
 
+                if(recipe.getBrewTime() != 400)
+                    obj.addProperty("brew_time", recipe.getBrewTime());
+
                 brewsFrom.add(obj);
             }
             o.add("brews_from", brewsFrom);
