@@ -92,7 +92,6 @@ public class PotionInfo {
     public Map<IAttribute, AttributeModifier> attributeModifierMap = null;
 
     //TODO: instant, performEffect, isReady, incompats/auto removal, sources
-    //TODO: connected potiontypes
     //TODO: prioritise duration vs amp when combining
     //TODO: modify beacon effects
 

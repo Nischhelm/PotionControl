@@ -76,7 +76,6 @@ public class PotionTypeInfo {
 
     //TODO: default allow extra strong/extra long or stronglong
     //TODO: modcompat for inspirations cauldron brewing, rustic alchemy
-    //TODO: recipes with brewtime
 
     //-------- CONSTRUCTOR --------
 
