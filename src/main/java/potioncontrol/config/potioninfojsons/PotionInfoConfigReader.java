@@ -2,7 +2,6 @@ package potioncontrol.config.potioninfojsons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import net.minecraft.entity.ai.attributes.BaseAttribute;
 import net.minecraft.potion.Potion;
 import potioncontrol.PotionControl;

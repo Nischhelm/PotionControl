@@ -7,7 +7,10 @@ import potioncontrol.util.brewing.BrewRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PotionTypeInfo {
     // -------- STATIC LOOKUP --------

@@ -2,10 +2,7 @@ package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.entity.ai.attributes.BaseAttribute;
-import net.minecraft.potion.Potion;
 import potioncontrol.PotionControl;
-import potioncontrol.mixin.accessor.PotionAccessor;
 import potioncontrol.util.PotionTypeInfo;
 
 import java.io.*;

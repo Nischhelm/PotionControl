@@ -8,14 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.text.TextFormatting;
 import potioncontrol.PotionControl;
-import potioncontrol.config.ConfigHandler;
 import potioncontrol.mixin.accessor.PotionAccessor;
-import potioncontrol.util.ConfigRef;
 import potioncontrol.util.PotionInfo;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

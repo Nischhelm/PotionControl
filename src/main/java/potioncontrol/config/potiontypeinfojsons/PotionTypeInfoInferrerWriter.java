@@ -3,9 +3,9 @@ package potioncontrol.config.potiontypeinfojsons;
 import net.minecraft.potion.PotionType;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
-import potioncontrol.util.brewing.BrewRecipeUtil;
 import potioncontrol.util.ConfigRef;
 import potioncontrol.util.PotionTypeInfo;
+import potioncontrol.util.brewing.BrewRecipeUtil;
 
 import javax.annotation.Nullable;
 import java.io.File;

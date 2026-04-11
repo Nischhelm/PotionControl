@@ -5,7 +5,7 @@ import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.potion.PotionType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
 import potioncontrol.util.PotionTypeInfo;
 
 @Mixin(EntityTippedArrow.class)
