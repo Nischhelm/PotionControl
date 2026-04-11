@@ -67,7 +67,7 @@ public class PotionInfoConfigReader {
         return infos;
     }
 
-    //Done in post init to modify the final fields ench.rarity and ench.applicableEquipmentTypes
+    //Done in post init to overwrite the final field potion.attributeModifierMap
     public static void applyManualOverrides(){
         for(PotionInfo info : PotionInfo.getAll()){
             if(info.attributeModifierMap == null) continue;

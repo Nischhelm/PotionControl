@@ -92,6 +92,14 @@ public class PotionTypeInfo {
         this.potionId = potionid;
     }
 
+    public PotionType create() {
+        PotionType type = new PotionType(this.id, this.effects.toArray(new PotionEffect[0]));
+        type.setRegistryName(this.id);
+        byTypeObj.put(type, this);
+        toTypeObj.put(this, type);
+        return type;
+    }
+
     //-------- SETTERS --------
 
     public void setTippedDuration(int duration){

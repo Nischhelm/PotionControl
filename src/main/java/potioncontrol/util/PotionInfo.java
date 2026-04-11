@@ -9,6 +9,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import potioncontrol.core.PotionDummy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -108,6 +109,10 @@ public class PotionInfo {
         this.id = modid + ":" + potionid;
         this.modId = modid;
         this.potionId = potionid;
+    }
+
+    public Potion create() {
+        return new PotionDummy(this);
     }
 
     //-------- SETTERS --------

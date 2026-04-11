@@ -41,4 +41,14 @@ public class FirstSetupConfig {
     @Config.Name("Levels as Amplifiers")
     @Config.RequiresMcRestart
     public boolean asAmplifier = false;
+
+    @Config.Comment("Property jsons for potions found in /config/potioncontrol/potions/active/... that are unknown in game will be created and filled with the given properties.")
+    @Config.Name("Should create unknown Potions")
+    @Config.RequiresMcRestart
+    public boolean shouldCreatePotions = false;
+
+    @Config.Comment("Property jsons for potion types found in /config/potioncontrol/potiontypes/active/... that are unknown in game will be created and filled with the given properties.")
+    @Config.Name("Should create unknown Potion Types")
+    @Config.RequiresMcRestart
+    public boolean shouldCreatePotionTypes = true;
 }

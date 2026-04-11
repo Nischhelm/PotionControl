@@ -1,13 +1,17 @@
 package potioncontrol;
 
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,13 +21,15 @@ import potioncontrol.config.classdump.PotionClassWriter;
 import potioncontrol.config.descriptions.DescriptionReader;
 import potioncontrol.config.descriptions.EmptyPotionWriter;
 import potioncontrol.config.descriptions.NamesReader;
-import potioncontrol.handlers.PotionAddedHandler;
 import potioncontrol.config.potioninfojsons.PotionInfoConfigReader;
 import potioncontrol.config.potioninfojsons.PotionInfoInferrerWriter;
 import potioncontrol.config.potioninfojsons.PotionInfoWriter;
 import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoConfigReader;
 import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoInferrerWriter;
 import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoWriter;
+import potioncontrol.handlers.PotionAddedHandler;
+import potioncontrol.util.PotionInfo;
+import potioncontrol.util.PotionTypeInfo;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -89,5 +95,23 @@ public class PotionControl {
         EarlyConfigReader.clearLines();
 
         loadingComplete = true;
+    }
+
+    @Mod.EventBusSubscriber
+    public static class EventHandler{
+        @SubscribeEvent
+        public static void onRegisterPotionTypes(RegistryEvent.Register<PotionType> event) {
+            if(!ConfigHandler.dev.shouldCreatePotionTypes) return;
+            PotionTypeInfo.getAll().stream()
+                    .filter(info -> PotionType.getPotionTypeForName(info.id) == null)
+                    .forEach(info -> event.getRegistry().register(info.create()));
+        }
+        @SubscribeEvent
+        public static void onRegisterPotions(RegistryEvent.Register<Potion> event) {
+            if(!ConfigHandler.dev.shouldCreatePotions) return;
+            PotionInfo.getAll().stream()
+                    .filter(info -> Potion.getPotionFromResourceLocation(info.id) == null)
+                    .forEach(info -> event.getRegistry().register(info.create()));
+        }
     }
 }
