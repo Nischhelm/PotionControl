@@ -48,7 +48,6 @@ public class PotionTypeInfo {
 
     public static PotionTypeInfo register(PotionTypeInfo info){
         byTypeId.put(info.id, info);
-        //TODO: option to actually register the type to REGISTRY
         return info;
     }
 

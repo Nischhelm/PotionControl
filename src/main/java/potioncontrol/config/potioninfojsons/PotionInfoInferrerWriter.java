@@ -77,10 +77,6 @@ public class PotionInfoInferrerWriter {
             info.curativeItems = savedCurativeItems;
         if(!hasMilk) info.milkRemovable = false;
 
-        //TODO: maybe just if extended info is wanted?
-        info.setMaxLevel(-1);
-        info.setMaxDuration(-1);
-
         Map<IAttribute, AttributeModifier> map = ((PotionAccessor) potion).pc_getAttributeModifierMap();
         info.setAttributeModifierMap(map.isEmpty() ? null : map);
 
