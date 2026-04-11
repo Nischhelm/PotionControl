@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import potioncontrol.PotionControl;
 import potioncontrol.util.PotionTypeInfo;
+import potioncontrol.util.brewing.BrewRecipeUtil;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PotionTypeInfoConfigReader {
     public static final String MAIN_DIR = "config/potioncontrol/potiontypes/active";
@@ -64,9 +66,29 @@ public class PotionTypeInfoConfigReader {
         return infos;
     }
 
-    //Done in post init to modify nothing yet
+    //Done in post init to clear vanilla brewing recipes and replace with the ones from json
     public static void applyManualOverrides(){
-//        for(PotionTypeInfo info : PotionTypeInfo.getAll()){
-//        }
+        for(PotionTypeInfo info : PotionTypeInfo.getAll()){
+            if(info.brewsTo != null){
+                BrewRecipeUtil.removeForType(PotionTypeInfo.getPotionTypeObject(info), true);
+                info.brewsTo = info.brewsTo.stream()
+                        .map(recipe ->
+                                recipe instanceof BrewRecipeUtil.VanillaContainer
+                                    ? BrewRecipeUtil.addRecipe(recipe.input, recipe.reagent, recipe.output) //re-add vanilla recipes and save their instance
+                                    : recipe
+                        )
+                        .collect(Collectors.toList());
+            }
+            if(info.brewsFrom != null){
+                BrewRecipeUtil.removeForType(PotionTypeInfo.getPotionTypeObject(info), false);
+                info.brewsFrom = info.brewsFrom.stream()
+                        .map(recipe ->
+                                recipe instanceof BrewRecipeUtil.VanillaContainer
+                                        ? BrewRecipeUtil.addRecipe(recipe.input, recipe.reagent, recipe.output) //re-add vanilla recipes and save their instance
+                                        : recipe
+                        )
+                        .collect(Collectors.toList());
+            }
+        }
     }
 }

@@ -72,9 +72,11 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
             if(!effects.isEmpty()) info.effects = effects;
         }
 
-        boolean hasCleared = false;
         if(potionType != null && jsonObj.has("brews_to")){
             JsonArray arr = jsonObj.getAsJsonArray("brews_to");
+
+            List<BrewRecipe> recipes = new ArrayList<>();
+
             for(JsonElement el : arr){
                 JsonObject obj = el.getAsJsonObject();
 
@@ -105,17 +107,17 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                 if(obj.has("brew_time"))
                     brewTime = obj.get("brew_time").getAsInt();
 
-                if(!hasCleared){
-                    BrewRecipeUtil.removeForType(potionType, true);
-                    hasCleared = true;
-                }
                 BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(potionType), reagentStack, Input.getFromObj(typeOut != null ? typeOut : stackOut));
                 if(brewTime != -1) recipe.setBrewTime(brewTime);
+                recipes.add(recipe);
             }
+            info.brewsTo = recipes;
         }
 
         if(potionType != null && jsonObj.has("brews_from")){
             JsonArray arr = jsonObj.getAsJsonArray("brews_from");
+            List<BrewRecipe> recipes = new ArrayList<>();
+
             for(JsonElement el : arr){
                 JsonObject obj = el.getAsJsonObject();
 
@@ -145,13 +147,11 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                 if(obj.has("brew_time"))
                     brewTime = obj.get("brew_time").getAsInt();
 
-                if(!hasCleared){
-                    BrewRecipeUtil.removeForType(potionType, false); //potentially a second clear if both from and to are in the json. the from value will be used
-                    hasCleared = true;
-                }
                 BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(typeIn != null ? typeIn : stackIn), reagentStack, Input.getFromObj(potionType));
                 if(brewTime != -1) recipe.setBrewTime(brewTime);
+                recipes.add(recipe);
             }
+            info.brewsFrom = recipes;
         }
 
         if(jsonObj.has("tipped_arrow_duration"))
