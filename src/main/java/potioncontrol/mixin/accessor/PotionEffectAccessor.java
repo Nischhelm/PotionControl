@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(PotionEffect.class)
 public interface PotionEffectAccessor {
     @Accessor("duration")
-    public void setDuration(int duration);
+    void setDuration(int duration);
     @Accessor("amplifier")
-    public void setAmplifier(int amplifier);
+    void setAmplifier(int amplifier);
 }

@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla;
+package potioncontrol.mixin.vanilla.main;
 
 import net.minecraft.entity.ai.attributes.BaseAttribute;
 import net.minecraft.entity.ai.attributes.IAttribute;

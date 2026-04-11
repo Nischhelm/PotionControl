@@ -1,5 +1,6 @@
 package potioncontrol;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
@@ -16,6 +17,7 @@ import potioncontrol.config.classdump.PotionClassWriter;
 import potioncontrol.config.descriptions.DescriptionReader;
 import potioncontrol.config.descriptions.EmptyPotionWriter;
 import potioncontrol.config.descriptions.NamesReader;
+import potioncontrol.handlers.PotionAddedHandler;
 import potioncontrol.config.potioninfojsons.PotionInfoConfigReader;
 import potioncontrol.config.potioninfojsons.PotionInfoInferrerWriter;
 import potioncontrol.config.potioninfojsons.PotionInfoWriter;
@@ -55,6 +57,8 @@ public class PotionControl {
         } catch (Exception e){
             CONFIG = new Configuration(new File(Loader.instance().getConfigDir(), MODID + ".cfg"));
         }
+
+        if(ConfigHandler.mixinToggles.modifyMaxAmpDura) MinecraftForge.EVENT_BUS.register(PotionAddedHandler.class);
 
         PotionInfoConfigReader.preInit(); //read PotionInfo's from /potions
         PotionTypeInfoConfigReader.preInit(); //read PotionTypeInfo's from /potiontypes

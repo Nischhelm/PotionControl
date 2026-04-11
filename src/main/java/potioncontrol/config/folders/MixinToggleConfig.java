@@ -70,4 +70,8 @@ public class MixinToggleConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.vanilla.unregisterpotions.json", defaultValue = true)
     public boolean modifyRegistry = true;
+
+    @Config.Comment("Allows to set a maximum for specific potions level or duration via their jsons. Use keys \"maxLevel\" and \"maxDuration\"")
+    @Config.Name("Modify Max Potion Duration & Level (Vanilla)")
+    public boolean modifyMaxAmpDura = true;
 }

@@ -18,7 +18,7 @@ public class EarlyPotionClassTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         //This class modifies the @Mixin annotation of VanillaPotionMixin to include all early potions
-        if(!name.equals("potioncontrol.mixin.vanilla.VanillaPotionMixin")) return basicClass;
+        if(!name.equals("potioncontrol.mixin.vanilla.main.VanillaPotionMixin")) return basicClass;
 
         //Modify
         ClassNode classNode = new ClassNode(Opcodes.ASM5) {

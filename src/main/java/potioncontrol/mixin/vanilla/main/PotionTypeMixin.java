@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla;
+package potioncontrol.mixin.vanilla.main;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.potion.PotionEffect;
