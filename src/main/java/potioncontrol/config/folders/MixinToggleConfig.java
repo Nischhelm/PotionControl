@@ -26,7 +26,7 @@ public class MixinToggleConfig {
     })
     @Config.Name("Modify Brew Time (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.vanilla.brewtime.json", defaultValue = true)
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.brewtime.json", defaultValue = true)
     public boolean modifyBrewTime = true;
 
     @Config.Comment({
@@ -36,19 +36,19 @@ public class MixinToggleConfig {
     })
     @Config.Name("Fix Amplifier Cap (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.vanilla.amplifierfix.json", defaultValue = true)
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.amplifierfix.json", defaultValue = true)
     public boolean fixAmplifiers = true;
 
     @Config.Comment("Displays Potion Levels outside of the range 1-3 in inventory (1-10 as roman numerals)")
     @Config.Name("Fix Potion Level Display (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.vanilla.amplifierdisplay.json", defaultValue = true)
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.amplifierdisplay.json", defaultValue = true)
     public boolean fixPotionLevelDisplay = true;
 
     @Config.Comment("Allows to modify tipped arrow potion durations (in ticks) via potion type jsons (key: tipped_arrow_duration)")
     @Config.Name("Modify Tipped Arrow Time (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.vanilla.tippedarrowtime.json", defaultValue = true)
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.tippedarrowtime.json", defaultValue = true)
     public boolean modifyTippedArrowTime = true;
 
     @Config.Comment({
@@ -62,13 +62,13 @@ public class MixinToggleConfig {
     })
     @Config.Name("Modify Brewing Recipes (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.vanilla.brewrecipes.json", defaultValue = true)
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.brewrecipes.json", defaultValue = true)
     public boolean modifyBrewRecipes = true;
 
     @Config.Comment("Allows to modify which potions or potion types get registered via \"Registered Potion/Type Blacklist\" configs")
     @Config.Name("Allow Unregister Potions (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.vanilla.unregisterpotions.json", defaultValue = true)
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.unregisterpotions.json", defaultValue = true)
     public boolean modifyRegistry = true;
 
     @Config.Comment("Allows to set a maximum for specific potions level or duration via their jsons. Use keys \"maxLevel\" and \"maxDuration\"")
