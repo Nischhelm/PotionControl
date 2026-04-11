@@ -6,7 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "client": [
-    "modded.potiondescriptions.TooltipHandlerMixin",
-    "modded.potiondescriptions.PotionDescriptionsMixin"
+    "modded.potiondescriptions.PotionDescriptionsMixin",
+    "modded.potiondescriptions.TooltipHandlerMixin"
   ]
 }

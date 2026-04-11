@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import potioncontrol.PotionControl;
 import potioncontrol.config.folders.BlacklistConfig;
+import potioncontrol.config.folders.BrewingStandConfig;
 import potioncontrol.config.folders.DebugConfig;
 import potioncontrol.config.folders.FirstSetupConfig;
 import potioncontrol.config.provider.BlacklistConfigProvider;
@@ -29,6 +30,10 @@ public class ConfigHandler {
 	@Config.Comment("Debug Options")
 	@Config.Name("Debug")
 	public static DebugConfig debug = new DebugConfig();
+
+	@Config.Comment("Brewing Stand Options")
+	@Config.Name("Brewing Stand")
+	public static BrewingStandConfig brewingStand = new BrewingStandConfig();
 
 	@Mod.EventBusSubscriber(modid = PotionControl.MODID)
 	private static class EventHandler {
