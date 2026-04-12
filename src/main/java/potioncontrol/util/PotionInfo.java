@@ -76,6 +76,10 @@ public class PotionInfo {
     @SerializedName("isInstant")
     public boolean isInstant;
 
+    public boolean overwritesIsRepeating = false;
+    @SerializedName("isRepeating")
+    public boolean isRepeating;
+
     @SerializedName("milkRemovable")
     public boolean milkRemovable = true;
 
@@ -141,6 +145,11 @@ public class PotionInfo {
     public void setInstant(boolean isInstant) {
         this.isInstant = isInstant;
         this.overwritesIsInstant = true;
+    }
+
+    public void setRepeating(boolean isRepeating) {
+        this.isRepeating = isRepeating;
+        this.overwritesIsRepeating = true;
     }
 
     public void setAttributeModifierMap(Map<IAttribute, AttributeModifier> attributeModifierMap) {

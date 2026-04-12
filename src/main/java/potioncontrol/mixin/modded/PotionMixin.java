@@ -3,6 +3,7 @@ package potioncontrol.mixin.modded;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,6 +44,13 @@ public abstract class PotionMixin extends Potion { //needs to extend for refmaps
         PotionInfo info = PotionInfo.get(this);
         if(info != null && info.overwritesIsInstant) return info.isInstant;
         return original.call();
+    }
+
+    @WrapMethod(method = "performEffect")
+    public void pc_isRepeating(EntityLivingBase entityLivingBaseIn, int amplifier, Operation<Void> original) {
+        PotionInfo info = PotionInfo.get(this);
+        if(info != null && info.overwritesIsRepeating && !info.isRepeating) return;
+        original.call(entityLivingBaseIn, amplifier);
     }
 
     @WrapMethod(method = "getLiquidColor()I")
