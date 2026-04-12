@@ -38,6 +38,9 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             info.setRepeating(isRepeating, cycle, cycleByAmp);
         }
 
+        Boolean prioritisesDuration = getAsBoolean(jsonObj, "prioritisesDuration");
+        if (prioritisesDuration != null) info.prioritisesDuration = prioritisesDuration;
+
         // displayColor
         if(jsonObj.has("displayColor")) {
             String colorStr = getAsString(jsonObj, "displayColor");
@@ -119,6 +122,7 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             o.addProperty("repeatingPeriod", info.repeatingPeriod);
             o.addProperty("periodAmpModifier", info.periodAmpModifier);
         }
+        if (info.prioritisesDuration) o.addProperty("prioritisesDuration", true);
 
         // displayColor
         if (info.displayColors != null){

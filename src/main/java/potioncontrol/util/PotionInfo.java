@@ -104,8 +104,10 @@ public class PotionInfo {
     @SerializedName("attributeModifiers")
     public Map<IAttribute, AttributeModifier> attributeModifierMap = null;
 
-    //TODO: isReady, incompats/auto removal, sources
-    //TODO: prioritise duration vs amp when combining
+    @SerializedName("prioritisesDuration")
+    public boolean prioritisesDuration = false;
+
+    //TODO: incompats/auto removal, sources
     //TODO: modify beacon effects
 
     //-------- CONSTRUCTOR --------

@@ -74,4 +74,13 @@ public class MixinToggleConfig {
     @Config.Comment("Allows to set a maximum for specific potions level or duration via their jsons. Use keys \"maxLevel\" and \"maxDuration\"")
     @Config.Name("Modify Max Potion Duration & Level (Vanilla)")
     public boolean modifyMaxAmpDura = true;
+
+    @Config.Comment({
+            "Allows to modify whether potions will prioritise high amplifiers (default) or high durations when combining two of the same potions effects",
+            "Use key \"prioritisesDuration\": true in the jsons to set longer effects of this potion to be prefered over stronger effects."
+    })
+    @Config.Name("Allow Prioritise Duration (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.prioritiseduration.json", defaultValue = true)
+    public boolean prioritiseDuration = true;
 }
