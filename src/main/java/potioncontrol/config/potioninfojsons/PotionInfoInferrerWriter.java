@@ -13,10 +13,7 @@ import potioncontrol.util.PotionInfo;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -41,6 +38,7 @@ public class PotionInfoInferrerWriter {
                 PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
+        //Moved to PotionTypeInfoInferrerWriter
 //        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME, ConfigHandler.dev.printInferred).set(false);
 //        ConfigHandler.dev.printInferred = false;
 //        PotionControl.configNeedsSaving = true;
@@ -79,6 +77,8 @@ public class PotionInfoInferrerWriter {
 
         if(potion.isInstant()) info.setInstant(true);
 
+        inferRepeatingProperties(potion, info);
+
         Map<IAttribute, AttributeModifier> map = ((PotionAccessor) potion).pc_getAttributeModifierMap();
         info.setAttributeModifierMap(map.isEmpty() ? null : map);
 
@@ -87,6 +87,96 @@ public class PotionInfoInferrerWriter {
             info.setTextDisplayColors(fmts);
 
         return info;
+    }
+
+    /**
+     * shadertoy:
+     * void mainImage( out vec4 fragColor, in vec2 fragCoord )
+     * {
+     *     // Normalized pixel coordinates (from 0 to 1)
+     *     vec2 uv = fragCoord/iResolution.y;
+     *
+     *     int cycle = 10;
+     *     int cycleByAmp = 1;
+     *
+     *     int duration = int(uv.x*500.);
+     *     int amplifier = int(uv.y*7.);
+     *
+     *     int cycleTot = cycle >> (cycleByAmp * amplifier);
+     *
+     *     float isReady = cycleTot > 0 ? float((duration % cycleTot) == 0) : 0.5;
+     *
+     *     // Output to screen
+     *     fragColor = vec4(isReady);
+     * }
+     */
+    private static void inferRepeatingProperties(Potion potion, PotionInfo info) {
+        int maxDur = 400, maxAmp = 5;
+        int period, periodAmpMod;
+        boolean isRepeating = false;
+        Map<Integer, Integer> cycleAtAmp = new HashMap<>();
+        for(int amp = 0; amp < maxAmp; amp++) {
+            int lastReady = 0;
+            List<Integer> dists = new ArrayList<>();
+            for(int durLeft = 0; durLeft < maxDur; durLeft++){
+                boolean isReady = potion.isReady(durLeft, amp);
+                if(isReady){
+                    dists.add(durLeft - lastReady);
+                    lastReady = durLeft;
+                    if(!isRepeating) isRepeating = true; //if it ever isReady we count it as repeating
+                }
+            }
+
+            //true
+            //durLeft >= 1
+            //amp > 1 && ...
+            if(dists.size() > maxDur * 0.5){
+
+            }
+            else if(dists.size() >= 3 && dists.size() <= maxDur * 0.5) { //needs to have at least three hits, and not almost all of them
+                dists.remove(0); //first doesnt count correctly
+                int mean = dists.stream().mapToInt(Integer::intValue).sum() / dists.size();
+                int sd = (int) (Math.sqrt(dists.stream().mapToInt(Integer::intValue).map(val -> (val-mean)*(val-mean)).sum()) / dists.size());
+
+                if(sd == 0) //all dists the same
+                    cycleAtAmp.put(amp, mean);
+
+                //TODO: what if it isnt
+            }
+        }
+
+        if(!cycleAtAmp.containsKey(0)) return; //TODO set repeating/non repeating?
+
+        //assume
+        // durLeft % cycle == 0 -> all measured cycle durations the same
+        if(cycleAtAmp.entrySet().stream().allMatch(entry -> entry.getValue().equals(cycleAtAmp.get(0)))) {
+            period = cycleAtAmp.get(0);
+            periodAmpMod = 0;
+
+            info.setRepeating(true, period, periodAmpMod);
+        }
+
+        // cycle / 2 ^ cycleAtAmp_i = cycleTotal_i
+
+        //or assume
+        // durLeft % (cycle >> cycleAtAmp) == 0
+        if(cycleAtAmp.size() > 1) {
+            period = cycleAtAmp.get(0);
+
+            List<Double> multis = new ArrayList<>();
+            for(Map.Entry<Integer, Integer> entry : cycleAtAmp.entrySet()) {
+                if(entry.getKey() == 0) continue;
+                double dist = (Math.log(period) - Math.log(entry.getValue()))/Math.log(2) / entry.getKey();
+                multis.add(dist);
+            }
+            double mean = multis.stream().mapToDouble(Double::doubleValue).sum() / multis.size();
+
+            periodAmpMod = (int) Math.round(mean);
+
+            info.setRepeating(true, period, periodAmpMod);
+        }
+
+        if(!isRepeating) info.setNotRepeating();
     }
 
     private static final Map<String, TextFormatting> textFormattingByControlString = Arrays.stream(TextFormatting.values()).collect(Collectors.toMap(

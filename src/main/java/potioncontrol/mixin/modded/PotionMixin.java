@@ -53,6 +53,14 @@ public abstract class PotionMixin extends Potion { //needs to extend for refmaps
         original.call(entityLivingBaseIn, amplifier);
     }
 
+    @WrapMethod(method = "isReady")
+    public boolean pc_isReady(int duration, int amplifier, Operation<Boolean> original) {
+        PotionInfo info = PotionInfo.get(this);
+        if(info == null || !info.overwritesIsRepeating) return original.call(duration, amplifier);
+        if(!info.isRepeating) return false;
+        return info.getIsReady(duration, amplifier);
+    }
+
     @WrapMethod(method = "getLiquidColor()I")
     public int pc_getLiquidColor(Operation<Integer> original) {
         PotionInfo info = PotionInfo.get(this);

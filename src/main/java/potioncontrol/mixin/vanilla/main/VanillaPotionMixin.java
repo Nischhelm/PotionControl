@@ -56,6 +56,13 @@ public abstract class VanillaPotionMixin extends Potion { //copy of VanillaBaseP
         original.call(entityLivingBaseIn, amplifier);
     }
 
+    @WrapMethod(method = "isReady")
+    public boolean pc_isReady(int duration, int amplifier, Operation<Boolean> original) {
+        PotionInfo info = PotionInfo.get(this);
+        if(info == null || !info.overwritesIsRepeating) return original.call(duration, amplifier);
+        return info.getIsReady(duration, amplifier);
+    }
+
     @WrapMethod(method = "getLiquidColor()I")
     public int pc_getLiquidColor(Operation<Integer> original) {
         PotionInfo info = PotionInfo.get(this);

@@ -32,7 +32,11 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
         if (isInstant != null) info.setInstant(isInstant);
 
         Boolean isRepeating = getAsBoolean(jsonObj, "isRepeating");
-        if (isRepeating != null) info.setRepeating(isRepeating);
+        if (isRepeating != null){
+            int cycle = jsonObj.getAsJsonObject( "repeatingPeriod").getAsInt();
+            int cycleByAmp = jsonObj.getAsJsonObject( "periodAmpModifier").getAsInt();
+            info.setRepeating(isRepeating, cycle, cycleByAmp);
+        }
 
         // displayColor
         if(jsonObj.has("displayColor")) {
@@ -110,7 +114,11 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
 
         if (info.overwritesIsBeneficial) o.addProperty("isGood", info.isBeneficial);
         if (info.overwritesIsInstant) o.addProperty("isInstant", info.isInstant);
-        if (info.overwritesIsRepeating) o.addProperty("isRepeating", info.isRepeating);
+        if (info.overwritesIsRepeating){
+            o.addProperty("isRepeating", info.isRepeating);
+            o.addProperty("repeatingPeriod", info.repeatingPeriod);
+            o.addProperty("periodAmpModifier", info.periodAmpModifier);
+        }
 
         // displayColor
         if (info.displayColors != null){

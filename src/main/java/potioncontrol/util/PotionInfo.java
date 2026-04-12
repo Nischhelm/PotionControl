@@ -79,6 +79,10 @@ public class PotionInfo {
     public boolean overwritesIsRepeating = false;
     @SerializedName("isRepeating")
     public boolean isRepeating;
+    @SerializedName("repeatingPeriod")
+    public int repeatingPeriod;
+    @SerializedName("periodAmpModifier")
+    public int periodAmpModifier;
 
     @SerializedName("milkRemovable")
     public boolean milkRemovable = true;
@@ -100,7 +104,7 @@ public class PotionInfo {
     @SerializedName("attributeModifiers")
     public Map<IAttribute, AttributeModifier> attributeModifierMap = null;
 
-    //TODO: instant, performEffect, isReady, incompats/auto removal, sources
+    //TODO: isReady, incompats/auto removal, sources
     //TODO: prioritise duration vs amp when combining
     //TODO: modify beacon effects
 
@@ -147,9 +151,16 @@ public class PotionInfo {
         this.overwritesIsInstant = true;
     }
 
-    public void setRepeating(boolean isRepeating) {
+    public void setNotRepeating() {
+        this.isRepeating = false;
+        this.overwritesIsRepeating = true;
+    }
+
+    public void setRepeating(boolean isRepeating, int period, int periodAmpMod) {
         this.isRepeating = isRepeating;
         this.overwritesIsRepeating = true;
+        this.repeatingPeriod = period;
+        this.periodAmpModifier = periodAmpMod;
     }
 
     public void setAttributeModifierMap(Map<IAttribute, AttributeModifier> attributeModifierMap) {
@@ -186,5 +197,10 @@ public class PotionInfo {
 
     public int getLiquidColor(){
         return Integer.decode(this.liquidColorHex);
+    }
+
+    public boolean getIsReady(int durationLeft, int amplifier) {
+        int cycleTotal = this.repeatingPeriod >> (this.periodAmpModifier * amplifier);
+        return cycleTotal <= 0 || durationLeft % cycleTotal == 0;
     }
 }
