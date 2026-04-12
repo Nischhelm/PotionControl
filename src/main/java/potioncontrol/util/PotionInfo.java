@@ -72,6 +72,10 @@ public class PotionInfo {
     @SerializedName("isBeneficial")
     public boolean isBeneficial;
 
+    public boolean overwritesIsInstant = false;
+    @SerializedName("isInstant")
+    public boolean isInstant;
+
     @SerializedName("milkRemovable")
     public boolean milkRemovable = true;
 
@@ -132,6 +136,11 @@ public class PotionInfo {
     public void setBeneficial(boolean isBeneficial) {
         this.isBeneficial = isBeneficial;
         this.overwritesIsBeneficial = true;
+    }
+
+    public void setInstant(boolean isInstant) {
+        this.isInstant = isInstant;
+        this.overwritesIsInstant = true;
     }
 
     public void setAttributeModifierMap(Map<IAttribute, AttributeModifier> attributeModifierMap) {

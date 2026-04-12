@@ -25,9 +25,11 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
 
         PotionInfo info = new PotionInfo(id);
 
-        // booleans (with legacy aliases)
         Boolean isBeneficial = getAsBoolean(jsonObj, "isGood");
         if (isBeneficial != null) info.setBeneficial(isBeneficial);
+
+        Boolean isInstant = getAsBoolean(jsonObj, "isInstant");
+        if (isInstant != null) info.setInstant(isInstant);
 
         // displayColor
         if(jsonObj.has("displayColor")) {
@@ -103,8 +105,8 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
         // id
         o.addProperty("id", PotionInfo.getPotionId(info));
 
-        // booleans with overwrite flags
         if (info.overwritesIsBeneficial) o.addProperty("isGood", info.isBeneficial);
+        if (info.overwritesIsInstant) o.addProperty("isInstant", info.isInstant);
 
         // displayColor
         if (info.displayColors != null){

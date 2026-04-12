@@ -77,6 +77,8 @@ public class PotionInfoInferrerWriter {
             info.curativeItems = savedCurativeItems;
         if(!hasMilk) info.milkRemovable = false;
 
+        if(potion.isInstant()) info.setInstant(true);
+
         Map<IAttribute, AttributeModifier> map = ((PotionAccessor) potion).pc_getAttributeModifierMap();
         info.setAttributeModifierMap(map.isEmpty() ? null : map);
 

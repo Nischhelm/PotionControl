@@ -32,6 +32,13 @@ public abstract class VanillaBasePotionMixin {
         return original.call();
     }
 
+    @WrapMethod(method = "isInstant")
+    public boolean pc_isInstant(Operation<Boolean> original) {
+        PotionInfo info = PotionInfo.get((Potion) (Object) this);
+        if(info != null && info.overwritesIsInstant) return info.isInstant;
+        return original.call();
+    }
+
     @WrapMethod(method = "getLiquidColor")
     public int pc_getLiquidColor(Operation<Integer> original) {
         PotionInfo info = PotionInfo.get((Potion) (Object) this);
