@@ -84,6 +84,16 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             if(!curativeItems.isEmpty()) info.curativeItems = curativeItems;
         }
 
+        if(jsonObj.has("beaconLevels")) {
+            JsonArray arr = jsonObj.getAsJsonArray("beaconLevels");
+            List<Integer> beaconLevels = new ArrayList<>();
+            for(JsonElement el : arr){
+                int lvl = el.getAsInt();
+                beaconLevels.add(lvl);
+            }
+            info.beaconLevels = beaconLevels;
+        }
+
         // attribute modifiers
         if (jsonObj.has("attributeModifiers")) {
             JsonArray attributeModifiers = jsonObj.getAsJsonArray("attributeModifiers");
@@ -153,6 +163,12 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
 
         // liquidColor
         if (info.liquidColorHex != null) o.addProperty("liquidColor", info.liquidColorHex);
+
+        if (info.beaconLevels != null) {
+            JsonArray beaconLevels = new JsonArray();
+            info.beaconLevels.forEach(beaconLevels::add);
+            o.add("beaconLevels", beaconLevels);
+        }
 
         // attribute modifiers
         if (info.attributeModifierMap != null && !info.attributeModifierMap.isEmpty()) {

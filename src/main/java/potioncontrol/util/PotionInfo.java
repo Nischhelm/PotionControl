@@ -13,10 +13,7 @@ import potioncontrol.core.PotionDummy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PotionInfo {
@@ -107,8 +104,10 @@ public class PotionInfo {
     @SerializedName("prioritisesDuration")
     public boolean prioritisesDuration = false;
 
+    @SerializedName("beaconLevels")
+    public List<Integer> beaconLevels = null;
+
     //TODO: incompats/auto removal, sources
-    //TODO: modify beacon effects
 
     //-------- CONSTRUCTOR --------
 

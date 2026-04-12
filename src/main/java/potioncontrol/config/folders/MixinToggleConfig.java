@@ -83,4 +83,14 @@ public class MixinToggleConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.prioritiseduration.json", defaultValue = true)
     public boolean prioritiseDuration = true;
+
+    @Config.Comment({
+            "Allows to modify which effects are available on each of the levels (1-4) of the beacon.",
+            "Modify by using key \"beaconLevels\":[] in the jsons",
+            "Note: more than 3 entries per level starts looking weird"
+    })
+    @Config.Name("Modify Beacon Effects (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.beaconmodify.json", defaultValue = true)
+    public boolean modifyBeaconEffects = true;
 }

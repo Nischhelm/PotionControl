@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.text.TextFormatting;
 import potioncontrol.PotionControl;
 import potioncontrol.mixin.accessor.PotionAccessor;
@@ -78,6 +79,13 @@ public class PotionInfoInferrerWriter {
         if(potion.isInstant()) info.setInstant(true);
 
         inferRepeatingProperties(potion, info);
+
+        List<Integer> beaconLevels = new ArrayList<>();
+        for(int lvl = 0; lvl < TileEntityBeacon.EFFECTS_LIST.length; lvl++)
+            for(Potion pot : TileEntityBeacon.EFFECTS_LIST[lvl])
+                if(pot == potion) beaconLevels.add(lvl);
+        if(!beaconLevels.isEmpty())
+            info.beaconLevels = beaconLevels;
 
         Map<IAttribute, AttributeModifier> map = ((PotionAccessor) potion).pc_getAttributeModifierMap();
         info.setAttributeModifierMap(map.isEmpty() ? null : map);
