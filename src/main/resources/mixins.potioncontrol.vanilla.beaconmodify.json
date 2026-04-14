@@ -6,9 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.main.TileEntityBeaconMixin"
+    "vanilla.beacon.TileEntityBeaconMixin"
   ],
   "client": [
-    "vanilla.main.BeaconPowerButtonMixin"
+    "vanilla.beacon.BeaconPowerButtonMixin"
   ]
 }

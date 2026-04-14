@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla.main;
+package potioncontrol.mixin.vanilla.beacon;
 
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntityBeacon;

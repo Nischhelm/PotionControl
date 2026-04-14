@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla.main;
+package potioncontrol.mixin.vanilla.beacon;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.init.MobEffects;
