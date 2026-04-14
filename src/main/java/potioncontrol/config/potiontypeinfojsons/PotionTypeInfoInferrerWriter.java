@@ -34,8 +34,8 @@ public class PotionTypeInfoInferrerWriter {
                 PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
-        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME, ConfigHandler.dev.printInferred).set(false);
-        ConfigHandler.dev.printInferred = false;
+        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME_TYPE, ConfigHandler.dev.printInferredTypes).set(false);
+        ConfigHandler.dev.printInferredTypes = false;
         PotionControl.configNeedsSaving = true;
     }
 

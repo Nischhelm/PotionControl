@@ -9,7 +9,9 @@ import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.text.TextFormatting;
 import potioncontrol.PotionControl;
+import potioncontrol.config.ConfigHandler;
 import potioncontrol.mixin.accessor.PotionAccessor;
+import potioncontrol.util.ConfigRef;
 import potioncontrol.util.PotionInfo;
 
 import javax.annotation.Nullable;
@@ -39,10 +41,9 @@ public class PotionInfoInferrerWriter {
                 PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
-        //Moved to PotionTypeInfoInferrerWriter
-//        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME, ConfigHandler.dev.printInferred).set(false);
-//        ConfigHandler.dev.printInferred = false;
-//        PotionControl.configNeedsSaving = true;
+        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME_POTION, ConfigHandler.dev.printInferredPotions).set(false);
+        ConfigHandler.dev.printInferredPotions = false;
+        PotionControl.configNeedsSaving = true;
     }
 
     public static List<PotionInfo> inferInfoForAllRegisteredPotions() {

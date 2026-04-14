@@ -16,8 +16,8 @@ public class DebugConfig {
     @Config.RequiresMcRestart
     public String[] disabledClasses = {};
 
-    @Config.Comment("If enabled, writes all currently loaded potion infos to /config/potioncontrol/potions/loaded/ during startup. Can be used to check if a given config json is actually loaded (and loaded correctly).")
-    @Config.Name("Print Loaded Potion Infos")
+    @Config.Comment("If enabled, writes all currently loaded potion and potion type infos to /config/potioncontrol/potion[type]s/loaded/ during startup. Can be used to check if a given config json is actually loaded (and loaded correctly).")
+    @Config.Name("Print Loaded Potion+Type Infos")
     @Config.RequiresMcRestart
     public boolean printLoaded = false;
 

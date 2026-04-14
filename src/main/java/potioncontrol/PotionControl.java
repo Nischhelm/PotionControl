@@ -84,9 +84,9 @@ public class PotionControl {
         PotionTypeInfoConfigReader.applyManualOverrides(); //apply manual overrides (nothing yet)
 
         //infer info from existing potion objects (can be used for testing and development, it creates the best fitting approximation of an potion). these are not loaded
-        if(ConfigHandler.dev.printInferred) PotionInfoInferrerWriter.printInferred();
+        if(ConfigHandler.dev.printInferredPotions) PotionInfoInferrerWriter.printInferred();
         if (ConfigHandler.debug.printLoaded) PotionInfoWriter.printLoaded();
-        if(ConfigHandler.dev.printInferred) PotionTypeInfoInferrerWriter.printInferred();
+        if(ConfigHandler.dev.printInferredTypes) PotionTypeInfoInferrerWriter.printInferred();
         if (ConfigHandler.debug.printLoaded) PotionTypeInfoWriter.printLoaded();
 
         if(configNeedsSaving) ConfigManager.sync(MODID, Config.Type.INSTANCE);

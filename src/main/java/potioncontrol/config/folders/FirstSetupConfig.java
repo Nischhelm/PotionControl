@@ -11,15 +11,26 @@ public class FirstSetupConfig {
     @Config.Comment({
             "!Disables itself after a one time use!",
             "",
-            "If enabled, during startup this mod will infer info about all registered potions and print them out in /config/potioncontrol/inferred-inactive/.",
+            "If enabled, during startup this mod will infer info about all registered potions and print them out in /config/potioncontrol/potions/inferred-inactive/.",
             "The created json files can be used as blueprints from which to work off of.",
             "To do so, copy everything to /config/potioncontrol/potions/active/, then delete every file + line in file that should stay default/untouched.",
-            "DEBUG: These can also be used to check if the changes you apply to the potions are actually applied, which would reflect in the inferred files",
             "WARNING: All files in /inferred-inactive/ will be overwritten every time you start the game with this option enabled"
     })
-    @Config.Name(ConfigRef.DO_INFER_CONFIG_NAME)
+    @Config.Name(ConfigRef.DO_INFER_CONFIG_NAME_POTION)
     @Config.RequiresMcRestart
-    public boolean printInferred = true;
+    public boolean printInferredPotions = true;
+
+    @Config.Comment({
+            "!Disables itself after a one time use!",
+            "",
+            "If enabled, during startup this mod will infer info about all registered potion types and print them out in /config/potioncontrol/potiontypes/inferred-inactive/.",
+            "The created json files can be used as blueprints from which to work off of.",
+            "To do so, copy everything to /config/potioncontrol/potiontypes/active/, then delete every file + line in file that should stay default/untouched.",
+            "WARNING: All files in /inferred-inactive/ will be overwritten every time you start the game with this option enabled"
+    })
+    @Config.Name(ConfigRef.DO_INFER_CONFIG_NAME_TYPE)
+    @Config.RequiresMcRestart
+    public boolean printInferredTypes = true;
 
     @Config.Comment("Which time scale to use for durations in inferred potion type infos (MIN as float)")
     @Config.Name("Duration Time Scale")
