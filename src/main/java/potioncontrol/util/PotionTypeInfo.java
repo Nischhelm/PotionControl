@@ -73,7 +73,6 @@ public class PotionTypeInfo {
     public int tippedDuration;
     public boolean overwritesTippedDuration;
 
-    //TODO: default allow extra strong/extra long or stronglong
     //TODO: modcompat for inspirations cauldron brewing, rustic alchemy
 
     //-------- CONSTRUCTOR --------

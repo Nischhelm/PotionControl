@@ -107,7 +107,8 @@ public class PotionInfo {
     @SerializedName("beaconLevels")
     public List<Integer> beaconLevels = null;
 
-    //TODO: incompats/auto removal, sources
+    //TODO: sources
+    //TODO: blocksApplicationOf, removesOnApplication
 
     //-------- CONSTRUCTOR --------
 
