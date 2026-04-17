@@ -4,6 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
     id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
     id 'wtf.gofancy.fancygradle' version "${fancy_gradle_version}"
+    id 'com.github.johnrengelman.shadow' version "${shadow_gradle_version}"
 }
 
 version = mod_version
@@ -73,7 +74,7 @@ dependencies {
     implementation fg.deobf("CraftTweaker2:ZenScript:${zs_version}")
     implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:${zs_version}")
 
-    implementation 'io.github.classgraph:classgraph:4.8.184'
+    shadow 'io.github.classgraph:classgraph:4.8.184'
 
     compileOnly fg.deobf("curse.maven:dynamicsurroundings-${dynamicsurroundings_version}")
     compileOnly fg.deobf("curse.maven:dynamicsurroundingshud-${dynamicsurroundingshud_version}")
@@ -116,6 +117,19 @@ processResources {
     }
 }
 
+shadowJar {
+    configurations = [project.configurations.shadow]
+    mergeServiceFiles()
+
+    exclude "META-INF/versions/9/module-info*" //idk why this even exists, can and needs to be deleted
+
+    archiveClassifier.set('1.12.2')
+}
+
+reobf {
+    shadowJar {}
+}
+
 jar {
     manifest {
         def attr = [:]
@@ -134,4 +148,5 @@ jar {
     }
 }
 
-jar.finalizedBy('reobfJar')
+build.dependsOn(shadowJar)
+jar.finalizedBy('reobfShadowJar')
