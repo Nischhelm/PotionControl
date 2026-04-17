@@ -6,6 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "vanilla.main.PotionAttackDamageMixin",
     "vanilla.main.BaseAttributeMixin",
     "vanilla.main.PotionTypeMixin",
     "vanilla.main.VanillaBasePotionMixin",
