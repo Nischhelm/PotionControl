@@ -6,7 +6,10 @@ import net.minecraft.entity.ai.attributes.BaseAttribute;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import potioncontrol.PotionControl;
 import potioncontrol.util.BaseAttributeRegistry;
 import potioncontrol.util.PotionInfo;
@@ -114,6 +117,44 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             info.attributeModifierMap = map;
         }
 
+        if(jsonObj.has("removesOnApplication")) {
+            JsonArray arr = jsonObj.getAsJsonArray("removesOnApplication");
+            Set<Potion> pots = new HashSet<>();
+            for (JsonElement el : arr) {
+                Potion pot = Potion.getPotionFromResourceLocation(el.getAsString());
+                if(pot != null) pots.add(pot);
+            }
+            if(!pots.isEmpty())
+                info.removesOnApplication = new ArrayList<>(pots);
+        }
+
+        if(jsonObj.has("blocksApplicationOf")) {
+            JsonArray arr = jsonObj.getAsJsonArray("blocksApplicationOf");
+            Set<Potion> pots = new HashSet<>();
+            for (JsonElement el : arr) {
+                Potion pot = Potion.getPotionFromResourceLocation(el.getAsString());
+                if(pot != null) pots.add(pot);
+            }
+            if(!pots.isEmpty())
+                info.blocksApplicationOf = new ArrayList<>(pots);
+        }
+
+        if(jsonObj.has("blacklistedTags")) {
+            JsonArray arr = jsonObj.getAsJsonArray("blacklistedTags");
+            Set<String> tags = new HashSet<>();
+            arr.forEach(el -> tags.add(el.getAsString()));
+            if(!tags.isEmpty())
+                info.blacklistedTags = new ArrayList<>(tags);
+        }
+
+        if(jsonObj.has("blacklistedEntities")) {
+            JsonArray arr = jsonObj.getAsJsonArray("blacklistedEntities");
+            Set<String> entities = new HashSet<>();
+            arr.forEach(el -> entities.add(el.getAsString()));
+            if(!entities.isEmpty())
+                info.blacklistedEntities = new ArrayList<>(entities);
+        }
+
         return info;
     }
 
@@ -183,6 +224,38 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
                 attributeModifiers.add(obj);
             }
             o.add("attributeModifiers", attributeModifiers);
+        }
+
+        if(info.removesOnApplication != null && !info.removesOnApplication.isEmpty()) {
+            JsonArray pots = new JsonArray();
+            info.removesOnApplication.stream()
+                    .map(IForgeRegistryEntry.Impl::getRegistryName)
+                    .filter(Objects::nonNull)
+                    .map(ResourceLocation::toString)
+                    .forEach(pots::add);
+            o.add("removesOnApplication", pots);
+        }
+
+        if(info.blocksApplicationOf != null && !info.blocksApplicationOf.isEmpty()) {
+            JsonArray pots = new JsonArray();
+            info.blocksApplicationOf.stream()
+                    .map(IForgeRegistryEntry.Impl::getRegistryName)
+                    .filter(Objects::nonNull)
+                    .map(ResourceLocation::toString)
+                    .forEach(pots::add);
+            o.add("blocksApplicationOf", pots);
+        }
+
+        if(info.blacklistedTags != null && !info.blacklistedTags.isEmpty()) {
+            JsonArray tags = new JsonArray();
+            info.blacklistedTags.forEach(tags::add);
+            o.add("blacklistedTags", tags);
+        }
+
+        if(info.blacklistedEntities != null && !info.blacklistedEntities.isEmpty()) {
+            JsonArray entities = new JsonArray();
+            info.blacklistedEntities.forEach(entities::add);
+            o.add("blacklistedEntities", entities);
         }
 
         if(info.maxLevel != -1) o.addProperty("maxLevel", info.maxLevel);

@@ -107,8 +107,19 @@ public class PotionInfo {
     @SerializedName("beaconLevels")
     public List<Integer> beaconLevels = null;
 
+    @SerializedName("blocksApplicationOf")
+    public List<Potion> blocksApplicationOf = null;
+
+    @SerializedName("removesOnApplication")
+    public List<Potion> removesOnApplication = null;
+
+    @SerializedName("blacklistedEntities")
+    public List<String> blacklistedEntities = null;
+
+    @SerializedName("blacklistedTags")
+    public List<String> blacklistedTags = null;
+
     //TODO: sources
-    //TODO: blocksApplicationOf, removesOnApplication
 
     //-------- CONSTRUCTOR --------
 
