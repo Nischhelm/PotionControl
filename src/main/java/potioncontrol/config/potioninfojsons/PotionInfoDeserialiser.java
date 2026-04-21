@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import potioncontrol.PotionControl;
+import potioncontrol.config.ConfigHandler;
 import potioncontrol.util.BaseAttributeRegistry;
 import potioncontrol.util.PotionInfo;
 
@@ -173,7 +174,8 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             o.addProperty("repeatingPeriod", info.repeatingPeriod);
             o.addProperty("periodAmpModifier", info.periodAmpModifier);
         }
-        if (info.prioritisesDuration) o.addProperty("prioritisesDuration", true);
+        if (info.prioritisesDuration || ConfigHandler.dev.printInferredExpanded)
+            o.addProperty("prioritisesDuration", info.prioritisesDuration);
 
         // displayColor
         if (info.displayColors != null){
@@ -212,7 +214,7 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
         }
 
         // attribute modifiers
-        if (info.attributeModifierMap != null && !info.attributeModifierMap.isEmpty()) {
+        if (info.attributeModifierMap != null && (!info.attributeModifierMap.isEmpty() || ConfigHandler.dev.printInferredExpanded)) {
             JsonArray attributeModifiers = new JsonArray();
             for(Map.Entry<IAttribute, AttributeModifier> entry : info.attributeModifierMap.entrySet()) {
                 JsonObject obj = new JsonObject();
@@ -226,7 +228,7 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             o.add("attributeModifiers", attributeModifiers);
         }
 
-        if(info.removesOnApplication != null && !info.removesOnApplication.isEmpty()) {
+        if(info.removesOnApplication != null && (!info.removesOnApplication.isEmpty() || ConfigHandler.dev.printInferredExpanded)) {
             JsonArray pots = new JsonArray();
             info.removesOnApplication.stream()
                     .map(IForgeRegistryEntry.Impl::getRegistryName)
@@ -236,7 +238,7 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             o.add("removesOnApplication", pots);
         }
 
-        if(info.blocksApplicationOf != null && !info.blocksApplicationOf.isEmpty()) {
+        if(info.blocksApplicationOf != null && (!info.blocksApplicationOf.isEmpty() || ConfigHandler.dev.printInferredExpanded)) {
             JsonArray pots = new JsonArray();
             info.blocksApplicationOf.stream()
                     .map(IForgeRegistryEntry.Impl::getRegistryName)
@@ -246,20 +248,20 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
             o.add("blocksApplicationOf", pots);
         }
 
-        if(info.blacklistedTags != null && !info.blacklistedTags.isEmpty()) {
+        if(info.blacklistedTags != null && (!info.blacklistedTags.isEmpty() || ConfigHandler.dev.printInferredExpanded)) {
             JsonArray tags = new JsonArray();
             info.blacklistedTags.forEach(tags::add);
             o.add("blacklistedTags", tags);
         }
 
-        if(info.blacklistedEntities != null && !info.blacklistedEntities.isEmpty()) {
+        if(info.blacklistedEntities != null && (!info.blacklistedEntities.isEmpty() || ConfigHandler.dev.printInferredExpanded)) {
             JsonArray entities = new JsonArray();
             info.blacklistedEntities.forEach(entities::add);
             o.add("blacklistedEntities", entities);
         }
 
-        if(info.maxLevel != -1) o.addProperty("maxLevel", info.maxLevel);
-        if(info.maxDur != -1) o.addProperty("maxDuration", info.maxDur);
+        if(info.maxLevel != -1 || ConfigHandler.dev.printInferredExpanded) o.addProperty("maxLevel", info.maxLevel);
+        if(info.maxDur != -1 || ConfigHandler.dev.printInferredExpanded) o.addProperty("maxDuration", info.maxDur);
 
         return o;
     }

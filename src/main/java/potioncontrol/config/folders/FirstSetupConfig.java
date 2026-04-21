@@ -32,6 +32,14 @@ public class FirstSetupConfig {
     @Config.RequiresMcRestart
     public boolean printInferredTypes = true;
 
+    @Config.Comment({
+            "Advanced",
+            "When inferring cfg jsons from existing potions+potiontypes, enabling this will print all available options into the jsons, even if they cant be inferred.",
+            "Every property not present in a json will keep the object unmodified for this property, so reduction is advised."
+    })
+    @Config.Name("Print Inferred Expanded")
+    public boolean printInferredExpanded = false;
+
     @Config.Comment("Which time scale to use for durations in inferred potion type infos (MIN as float)")
     @Config.Name("Duration Time Scale")
     @Config.RequiresMcRestart

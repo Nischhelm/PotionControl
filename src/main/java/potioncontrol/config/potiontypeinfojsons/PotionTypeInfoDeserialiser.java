@@ -1,6 +1,7 @@
 package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.*;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
@@ -291,8 +292,11 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
         NBTTagCompound tag = stack.getTagCompound();
 
         from.addProperty("item", loc.toString());
-        if (meta != 0) from.addProperty("meta", meta);
+        if (meta != 0 || ConfigHandler.dev.printInferredExpanded) from.addProperty("meta", meta);
         if (tag != null) from.addProperty("tag", tag.toString());
+        PotionType type = PotionUtils.getPotionFromItem(stack);
+        if (type != PotionTypes.EMPTY && type.getRegistryName() != null || ConfigHandler.dev.printInferredExpanded)
+            from.addProperty("type", type.getRegistryName().toString().toString());
 
         return from;
     }

@@ -38,7 +38,7 @@ public class PotionInfoWriter {
                 writeSinglePotionInfo(info, baseOut);
             }
         } catch (Exception e) {
-            PotionControl.LOGGER.warn("Writing loaded potion infos failed!");
+            PotionControl.LOGGER.warn("Writing potion infos failed!");
         }
     }
 

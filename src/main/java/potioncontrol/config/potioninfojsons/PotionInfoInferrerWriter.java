@@ -27,6 +27,8 @@ public class PotionInfoInferrerWriter {
     public static final String MAIN_DIR = "config/potioncontrol/potions/inferred-inactive";
 
     public static void printInferred(){
+        PotionControl.LOGGER.info("Inferring json files for Potions");
+
         PotionInfoWriter.clearDirectoryContents(new File(MAIN_DIR));
         List<PotionInfo> infos = inferInfoForAllRegisteredPotions();
         PotionInfoWriter.writeAllCurrentPotionInfos(infos, MAIN_DIR);
@@ -73,11 +75,12 @@ public class PotionInfoInferrerWriter {
             if(stack.isItemEqual(milk)) hasMilk = true;
             else savedCurativeItems.add(stack.copy());
         }
-        if(!savedCurativeItems.isEmpty())
+        if(!savedCurativeItems.isEmpty() || ConfigHandler.dev.printInferredExpanded)
             info.curativeItems = savedCurativeItems;
         if(!hasMilk) info.milkRemovable = false;
 
-        if(potion.isInstant()) info.setInstant(true);
+        if(potion.isInstant() || ConfigHandler.dev.printInferredExpanded)
+            info.setInstant(potion.isInstant());
 
         inferRepeatingProperties(potion, info);
 
@@ -85,15 +88,18 @@ public class PotionInfoInferrerWriter {
         for(int lvl = 0; lvl < TileEntityBeacon.EFFECTS_LIST.length; lvl++)
             for(Potion pot : TileEntityBeacon.EFFECTS_LIST[lvl])
                 if(pot == potion) beaconLevels.add(lvl);
-        if(!beaconLevels.isEmpty())
+        if(!beaconLevels.isEmpty() || ConfigHandler.dev.printInferredExpanded)
             info.beaconLevels = beaconLevels;
 
         Map<IAttribute, AttributeModifier> map = ((PotionAccessor) potion).pc_getAttributeModifierMap();
-        info.setAttributeModifierMap(map.isEmpty() ? null : map);
+        info.setAttributeModifierMap(map.isEmpty() && !ConfigHandler.dev.printInferredExpanded ? null : map);
 
         List<TextFormatting> fmts = probeDisplayColor(potion);
-        if(!fmts.isEmpty())
+        if(!fmts.isEmpty() || ConfigHandler.dev.printInferredExpanded)
             info.setTextDisplayColors(fmts);
+
+        info.setMaxLevel(-1);
+        info.setMaxDuration(-1);
 
         return info;
     }

@@ -38,7 +38,7 @@ public class PotionTypeInfoWriter {
                 writeSinglePotionTypeInfo(info, baseOut);
             }
         } catch (Exception e) {
-            PotionControl.LOGGER.warn("Writing loaded potion type infos failed!");
+            PotionControl.LOGGER.warn("Writing potion type infos failed!");
         }
     }
 

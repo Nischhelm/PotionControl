@@ -20,6 +20,7 @@ public class PotionTypeInfoInferrerWriter {
     public static final String MAIN_DIR = "config/potioncontrol/potiontypes/inferred-inactive";
 
     public static void printInferred(){
+        PotionControl.LOGGER.info("Inferring json files for Potion Types");
         PotionTypeInfoWriter.clearDirectoryContents(new File(MAIN_DIR));
         List<PotionTypeInfo> infos = inferInfoForAllRegisteredPotions();
         PotionTypeInfoWriter.writeAllCurrentPotionTypeInfos(infos, MAIN_DIR);
