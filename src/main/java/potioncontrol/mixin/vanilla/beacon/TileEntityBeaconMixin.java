@@ -21,7 +21,8 @@ public abstract class TileEntityBeaconMixin {
 
     @Inject(
             method = "<clinit>",
-            at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Sets;newHashSet()Ljava/util/HashSet;")
+            at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Sets;newHashSet()Ljava/util/HashSet;"),
+            remap = false
     )
     private static void pc_modifyBeaconEffects(CallbackInfo ci) {
         Map<Integer, LinkedHashSet<Potion>> levels = new LinkedHashMap<>();

@@ -1,5 +1,6 @@
 package potioncontrol;
 
+import net.minecraft.init.PotionTypes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.MinecraftForge;
@@ -103,15 +104,21 @@ public class PotionControl {
         public static void onRegisterPotionTypes(RegistryEvent.Register<PotionType> event) {
             if(!ConfigHandler.dev.shouldCreatePotionTypes) return;
             PotionTypeInfo.getAll().stream()
-                    .filter(info -> PotionType.getPotionTypeForName(info.id) == null)
-                    .forEach(info -> event.getRegistry().register(info.create()));
+                    .filter(info -> PotionType.getPotionTypeForName(info.id) == PotionTypes.EMPTY)
+                    .forEach(info -> {
+                        LOGGER.info("Registering Custom PotionType {}", info.id);
+                        event.getRegistry().register(info.create());
+                    });
         }
         @SubscribeEvent
         public static void onRegisterPotions(RegistryEvent.Register<Potion> event) {
             if(!ConfigHandler.dev.shouldCreatePotions) return;
             PotionInfo.getAll().stream()
                     .filter(info -> Potion.getPotionFromResourceLocation(info.id) == null)
-                    .forEach(info -> event.getRegistry().register(info.create()));
+                    .forEach(info -> {
+                        LOGGER.info("Registering Custom Potion {}", info.id);
+                        event.getRegistry().register(info.create());
+                    });
         }
     }
 }
