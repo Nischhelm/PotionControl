@@ -10,10 +10,12 @@
     "accessor.LanguageMapAccessor",
     "accessor.PotionAccessor",
     "accessor.PotionEffectAccessor",
-    "accessor.PotionHelperAccessor"
+    "accessor.PotionHelperAccessor",
+    "accessor.EntityTrackerAccessor"
   ],
   "client": [
     "accessor.I18nAccessor",
-    "accessor.LocaleAccessor"
+    "accessor.LocaleAccessor",
+    "accessor.GuiAccessor"
   ]
 }

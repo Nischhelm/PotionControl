@@ -80,6 +80,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:dynamicsurroundingshud-${dynamicsurroundingshud_version}")
     compileOnly fg.deobf("curse.maven:orelib-${orelib_version}")
     implementation fg.deobf("curse.maven:potion-descriptions-403303:3191544")
+    implementation fg.deobf("curse.maven:neat-${neat_version}")
 }
 
 mixin {

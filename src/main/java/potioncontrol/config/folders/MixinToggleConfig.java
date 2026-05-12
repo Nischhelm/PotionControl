@@ -93,4 +93,24 @@ public class MixinToggleConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.beaconmodify.json", defaultValue = true)
     public boolean modifyBeaconEffects = true;
+
+    @Config.Comment("Adds the emerald item to denote ILLAGER type mobs just like rotten flesh and spider eyes denote UNDEAD and ARTHROPOD.")
+    @Config.Name("Render Illager Emerald (Neat)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.neat.illagerrender.json", defaultValue = true)
+    @MixinConfig.CompatHandling(modid = "neat", desired = true, reason = "Requires mod to properly function")
+    public boolean neatIllagerRender = true;
+
+    @Config.Comment("Renders the current potion effects of the targeted mob in the Neat overlay")
+    @Config.Name("Render Potion Effects (Neat)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.neat.potionrender.json", defaultValue = true)
+    @MixinConfig.CompatHandling(modid = "neat", desired = true, reason = "Requires mod to properly function")
+    public boolean neatPotionRender = true;
+
+    @Config.Comment("Syncs not just the effects of players but of all entities to the client")
+    @Config.Name("Sync Entity Potions (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.potionsync.json", defaultValue = true)
+    public boolean syncPotions = true;
 }
