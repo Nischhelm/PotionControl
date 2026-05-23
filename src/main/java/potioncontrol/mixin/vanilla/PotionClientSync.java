@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import potioncontrol.config.ConfigHandler;
 import potioncontrol.mixin.accessor.EntityTrackerAccessor;
 
 @Mixin(EntityLivingBase.class)
@@ -25,26 +26,33 @@ public abstract class PotionClientSync extends Entity {
         if(this.world.isRemote) return;
         if((Object) this instanceof EntityPlayer) return;
 
+        int dsqr = ConfigHandler.mixinToggles.syncPotionsDistance * ConfigHandler.mixinToggles.syncPotionsDistance;
+
         ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
-                e.trackingPlayers.forEach(p ->
-                    p.connection.sendPacket(new SPacketEntityEffect(this.getEntityId(), effect))));
+                e.trackingPlayers.stream()
+                        .filter(p -> p.getDistanceSq(this) < dsqr)
+                        .forEach(p -> p.connection.sendPacket(new SPacketEntityEffect(this.getEntityId(), effect))));
     }
 
     @Inject(method = "onNewPotionEffect", at = @At("TAIL"))
     private void pc_sendPackets_onNew(PotionEffect effect, CallbackInfo ci){
         if(this.world.isRemote) return;
         if((Object) this instanceof EntityPlayer) return;
+        int dsqr = ConfigHandler.mixinToggles.syncPotionsDistance * ConfigHandler.mixinToggles.syncPotionsDistance;
         ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
-                e.trackingPlayers.forEach(p ->
-                        p.connection.sendPacket(new SPacketEntityEffect(this.getEntityId(), effect))));
+                e.trackingPlayers.stream()
+                        .filter(p -> p.getDistanceSq(this) < dsqr)
+                        .forEach(p -> p.connection.sendPacket(new SPacketEntityEffect(this.getEntityId(), effect))));
     }
 
     @Inject(method = "onFinishedPotionEffect", at = @At("TAIL"))
     private void pc_sendPackets_onFinish(PotionEffect effect, CallbackInfo ci){
         if(this.world.isRemote) return;
         if((Object) this instanceof EntityPlayer) return;
+        int dsqr = ConfigHandler.mixinToggles.syncPotionsDistance * ConfigHandler.mixinToggles.syncPotionsDistance;
         ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
-                e.trackingPlayers.forEach(p ->
-                        p.connection.sendPacket(new SPacketRemoveEntityEffect(this.getEntityId(), effect.getPotion()))));
+                e.trackingPlayers.stream()
+                        .filter(p -> p.getDistanceSq(this) < dsqr)
+                        .forEach(p -> p.connection.sendPacket(new SPacketRemoveEntityEffect(this.getEntityId(), effect.getPotion()))));
     }
 }

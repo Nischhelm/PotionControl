@@ -108,9 +108,12 @@ public class MixinToggleConfig {
     @MixinConfig.CompatHandling(modid = "neat", desired = true, reason = "Requires mod to properly function")
     public boolean neatPotionRender = true;
 
-    @Config.Comment("Syncs not just the effects of players but of all entities to the client")
-    @Config.Name("Sync Entity Potions (Vanilla)")
+    @Config.Comment({
+            "Distance in which not just the potion effects of players are synced to client but the effects all entities.",
+            "Set to -1 to disable the mixin"
+    })
+    @Config.Name("Sync Entity Potions Distance (Vanilla)")
+    @Config.RangeInt(min = -1)
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.potionsync.json", defaultValue = true)
-    public boolean syncPotions = true;
+    public int syncPotionsDistance = 32;
 }

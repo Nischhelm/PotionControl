@@ -6,6 +6,7 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import potioncontrol.config.EarlyConfigReader;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class PotionControlPlugin implements IFMLLoadingPlugin {
 			graphClasses(); //this is a good position in the loading process, so we do it here, right during MC init while early jsons are enqueued
 			return true;
 		});
+		FermiumRegistryAPI.enqueueMixin(false, "mixins.potioncontrol.vanilla.potionsync.json", () -> EarlyConfigReader.getInt("Sync Entity Potions Distance (Vanilla)", 32) >= 0);
 	}
 
 	@Override
