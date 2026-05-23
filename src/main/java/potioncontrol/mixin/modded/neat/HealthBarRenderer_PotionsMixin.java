@@ -2,8 +2,6 @@ package potioncontrol.mixin.modded.neat;
 
 import com.google.common.collect.Ordering;
 import com.llamalad7.mixinextras.sugar.Local;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import potioncontrol.mixin.accessor.GuiAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -16,6 +14,8 @@ import net.minecraft.potion.PotionEffect;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import potioncontrol.mixin.accessor.GuiAccessor;
 import vazkii.neat.HealthBarRenderer;
 
 import java.util.Collection;

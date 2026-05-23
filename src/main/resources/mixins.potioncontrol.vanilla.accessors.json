@@ -6,16 +6,16 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "accessor.EntityTrackerAccessor",
     "accessor.I18nAccessor_translation",
     "accessor.LanguageMapAccessor",
     "accessor.PotionAccessor",
     "accessor.PotionEffectAccessor",
-    "accessor.PotionHelperAccessor",
-    "accessor.EntityTrackerAccessor"
+    "accessor.PotionHelperAccessor"
   ],
   "client": [
+    "accessor.GuiAccessor",
     "accessor.I18nAccessor",
-    "accessor.LocaleAccessor",
-    "accessor.GuiAccessor"
+    "accessor.LocaleAccessor"
   ]
 }
