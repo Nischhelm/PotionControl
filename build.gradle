@@ -124,7 +124,7 @@ shadowJar {
 
     exclude "META-INF/versions/9/module-info*" //idk why this even exists, can and needs to be deleted
 
-    archiveClassifier.set('1.12.2')
+    archiveClassifier.set('')
 }
 
 reobf {
@@ -147,6 +147,7 @@ jar {
         attr['ForceLoadAsMod']              = gradle.startParameter.taskNames[0] != 'runClient' && gradle.startParameter.taskNames[0] != 'runServer'
         attributes(attr)
     }
+    archiveClassifier.set('THIN')
 }
 
 build.dependsOn(shadowJar)
