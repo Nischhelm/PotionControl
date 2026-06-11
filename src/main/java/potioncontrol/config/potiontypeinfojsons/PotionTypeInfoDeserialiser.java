@@ -70,7 +70,7 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
 
                 effects.add(new PotionEffect(potion, dur, amp, ambient, particles));
             }
-            if(!effects.isEmpty()) info.effects = effects;
+            info.effects = effects;
         }
 
         if(potionType != null && jsonObj.has("brews_to")){
@@ -169,7 +169,7 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
         // id
         o.addProperty("id", PotionTypeInfo.getTypeId(info));
 
-        // curative items
+        // effects
         if (info.effects != null) {
             JsonArray effects = new JsonArray();
             for(PotionEffect effect : info.effects) {
