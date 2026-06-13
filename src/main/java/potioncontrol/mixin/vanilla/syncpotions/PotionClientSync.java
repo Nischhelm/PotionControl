@@ -1,4 +1,4 @@
-package potioncontrol.mixin.vanilla;
+package potioncontrol.mixin.vanilla.syncpotions;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.mixin.accessor.EntityTrackerAccessor;
+import potioncontrol.network.PacketHandler;
 
 @Mixin(EntityLivingBase.class)
 public abstract class PotionClientSync extends Entity {
@@ -31,7 +32,7 @@ public abstract class PotionClientSync extends Entity {
         ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
                 e.trackingPlayers.stream()
                         .filter(p -> p.getDistanceSq(this) < dsqr)
-                        .forEach(p -> p.connection.sendPacket(new SPacketEntityEffect(this.getEntityId(), effect))));
+                        .forEach(p -> PacketHandler.addAddPacketForPlayer(p, new SPacketEntityEffect(this.getEntityId(), effect))));
     }
 
     @Inject(method = "onNewPotionEffect", at = @At("TAIL"))
@@ -42,7 +43,7 @@ public abstract class PotionClientSync extends Entity {
         ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
                 e.trackingPlayers.stream()
                         .filter(p -> p.getDistanceSq(this) < dsqr)
-                        .forEach(p -> p.connection.sendPacket(new SPacketEntityEffect(this.getEntityId(), effect))));
+                        .forEach(p -> PacketHandler.addAddPacketForPlayer(p, new SPacketEntityEffect(this.getEntityId(), effect))));
     }
 
     @Inject(method = "onFinishedPotionEffect", at = @At("TAIL"))
@@ -53,6 +54,6 @@ public abstract class PotionClientSync extends Entity {
         ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
                 e.trackingPlayers.stream()
                         .filter(p -> p.getDistanceSq(this) < dsqr)
-                        .forEach(p -> p.connection.sendPacket(new SPacketRemoveEntityEffect(this.getEntityId(), effect.getPotion()))));
+                        .forEach(p -> PacketHandler.addRemovePacketForPlayer(p, new SPacketRemoveEntityEffect(this.getEntityId(), effect.getPotion()))));
     }
 }

@@ -21,6 +21,10 @@ public class DebugConfig {
     @Config.RequiresMcRestart
     public boolean printLoaded = false;
 
+    @Config.Comment("If enabled, will log sent and avoided additional potion effect packet count for \"Sync Entity Potions\".")
+    @Config.Name("Sync Potions Debug Mode")
+    public boolean syncPotionsDebugMode = false;
+
     @Config.Comment("Disable this to remove PotionControls main feature which hooks into all registered potions code to modify how they behave. \n" +
             "Some features will still work. This is mainly meant for testing if this mods black magic mixins is responsible for a crash (hope not)")
     @Config.Name("(MixinToggle) Enable Potion Injection")

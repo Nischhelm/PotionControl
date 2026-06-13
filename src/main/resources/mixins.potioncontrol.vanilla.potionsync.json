@@ -6,6 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.PotionClientSync"
+    "vanilla.syncpotions.PotionClientSync",
+    "vanilla.syncpotions.SPacketEntityEffect_StoresPotionEffect"
   ]
 }

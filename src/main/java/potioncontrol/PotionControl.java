@@ -29,6 +29,7 @@ import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoConfigReader;
 import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoInferrerWriter;
 import potioncontrol.config.potiontypeinfojsons.PotionTypeInfoWriter;
 import potioncontrol.handlers.PotionAddedHandler;
+import potioncontrol.network.PacketHandler;
 import potioncontrol.util.PotionInfo;
 import potioncontrol.util.PotionTypeInfo;
 
@@ -64,6 +65,8 @@ public class PotionControl {
         } catch (Exception e){
             CONFIG = new Configuration(new File(Loader.instance().getConfigDir(), MODID + ".cfg"));
         }
+
+        if(ConfigHandler.mixinToggles.syncPotionsDistance >= 0) PacketHandler.preInit();
 
         if(ConfigHandler.mixinToggles.modifyMaxAmpDura) MinecraftForge.EVENT_BUS.register(PotionAddedHandler.class);
 
