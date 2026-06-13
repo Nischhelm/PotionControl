@@ -8,13 +8,15 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import potioncontrol.mixin.accessor.GuiAccessor;
 import vazkii.neat.HealthBarRenderer;
 
@@ -26,15 +28,13 @@ public abstract class HealthBarRenderer_PotionsMixin {
 
     @Unique private static final int pc$zLevel = 0;
 
-    @ModifyVariable(
+    @Inject(
             method ="renderHealthBar",
-            at = @At(value = "LOAD", ordinal = 0),
-            name = "armor",
-            remap = false
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;popMatrix()V", ordinal = 1)
     )
-    public int pc_renderPotions(int armor, EntityLivingBase passedEntity, @Local Minecraft mc) {
+    public void pc_renderPotions(EntityLivingBase passedEntity, float partialTicks, Entity viewPoint, CallbackInfo ci, @Local Minecraft mc) {
         Collection<PotionEffect> effects = passedEntity.getActivePotionEffects();
-        if (effects.isEmpty()) return armor;
+        if (effects.isEmpty()) return;
 
         GlStateManager.enableBlend();
         GlStateManager.pushMatrix();
@@ -68,8 +68,6 @@ public abstract class HealthBarRenderer_PotionsMixin {
             ((GuiAccessor)mc.ingameGUI).setZLevel(tmp);
         }
         GlStateManager.popMatrix();
-
-        return armor;
     }
 
     @Unique
