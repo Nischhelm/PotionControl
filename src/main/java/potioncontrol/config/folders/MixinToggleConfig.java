@@ -110,7 +110,8 @@ public class MixinToggleConfig {
 
     @Config.Comment({
             "Distance in which not just the potion effects of players are synced to client but the effects all entities.",
-            "Set to -1 to disable the mixin"
+            "Set to -1 to disable the mixin",
+            "Probably incompatible with JEID i didnt check yet" //TODO
     })
     @Config.Name("Sync Entity Potions Distance (Vanilla)")
     @Config.RangeInt(min = -1)
