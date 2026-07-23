@@ -24,3 +24,4 @@ gradle-app.setting
 !src/**/libs/
 **/out/
 !src/**/out/
+!libs/FermiumBooter-1.5.0-indev.jar
