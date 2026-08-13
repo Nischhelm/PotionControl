@@ -5,7 +5,6 @@ plugins {
     id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
     id 'wtf.gofancy.fancygradle' version "${fancy_gradle_version}"
     id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_gradle_version}"
-    id 'com.github.johnrengelman.shadow' version "${shadow_gradle_version}"
 }
 
 version = mod_version
@@ -62,12 +61,13 @@ dependencies {
     compileOnly "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
 
-    implementation fg.deobf("libs:FermiumBooter:1.5.0-indev")
-//    implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
+    implementation fg.deobf("curse.maven:fermiumbooter:${fermiumbooter_version}")
+    implementation fg.deobf("curse.maven:betterconfig:${betterconfig_version}")
     implementation fg.deobf("curse.maven:lycanitesmobs-${lycanites_version}")
     implementation fg.deobf("curse.maven:potioncore-${potioncore_version}")
     implementation fg.deobf("curse.maven:rustic-${rustic_version}")
 
+    implementation fg.deobf("curse.maven:electroblobs-wizardry-265642:6950392")
 
     compileOnly fg.deobf("curse.maven:jei-${jei_version}")
     compileOnly fg.deobf("curse.maven:contenttweaker-${contenttweaker_version}")
@@ -75,7 +75,7 @@ dependencies {
     implementation fg.deobf("CraftTweaker2:ZenScript:${zs_version}")
     implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:${zs_version}")
 
-    shadow 'io.github.classgraph:classgraph:4.8.184'
+    implementation fg.deobf("curse.maven:quark-243121:2924091")
 
     compileOnly fg.deobf("curse.maven:dynamicsurroundings-${dynamicsurroundings_version}")
     compileOnly fg.deobf("curse.maven:dynamicsurroundingshud-${dynamicsurroundingshud_version}")
@@ -119,19 +119,6 @@ processResources {
     }
 }
 
-shadowJar {
-    configurations = [project.configurations.shadow]
-    mergeServiceFiles()
-
-    exclude "META-INF/versions/9/module-info*" //idk why this even exists, can and needs to be deleted
-
-    archiveClassifier.set('')
-}
-
-reobf {
-    shadowJar {}
-}
-
 jar {
     manifest {
         def attr = [:]
@@ -148,11 +135,9 @@ jar {
         attr['ForceLoadAsMod']              = gradle.startParameter.taskNames[0] != 'runClient' && gradle.startParameter.taskNames[0] != 'runServer'
         attributes(attr)
     }
-    archiveClassifier.set('THIN')
 }
 
-build.dependsOn(shadowJar)
-jar.finalizedBy('reobfShadowJar')
+jar.finalizedBy('reobfJar')
 
 publishMods {
     file = jar.archiveFile
