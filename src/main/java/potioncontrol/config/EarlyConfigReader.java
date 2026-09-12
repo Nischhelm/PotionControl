@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -21,6 +22,8 @@ public class EarlyConfigReader {
     public static final String CONFIG_PATH = "config/potioncontrol.cfg";
 
     private static Set<String> blacklistConfig = null;
+    private static List<String> potionRegistrationBlacklist = null;
+    private static List<String> potionTypeRegistrationBlacklist = null;
 
     private static List<String> lines = null;
     private static List<String> readLines(){
@@ -57,6 +60,20 @@ public class EarlyConfigReader {
         return blacklistConfig;
     }
 
+    public static List<String> getPotionRegistrationBlacklist(){
+        if(potionRegistrationBlacklist == null)
+            potionRegistrationBlacklist = readConfigList(ConfigRef.REGISTRY_POTION_BLACKLIST_CONFIG_NAME, Function.identity());
+
+        return potionRegistrationBlacklist;
+    }
+
+    public static List<String> getPotionTypeRegistrationBlacklist(){
+        if(potionTypeRegistrationBlacklist == null)
+            potionTypeRegistrationBlacklist = readConfigList(ConfigRef.REGISTRY_POTIONTYPE_BLACKLIST_CONFIG_NAME, Function.identity());
+
+        return potionTypeRegistrationBlacklist;
+    }
+
     private static File configFile = null;
     private static String configIntString = null;
 
@@ -86,5 +103,30 @@ public class EarlyConfigReader {
         }
         //If config is not generated yet or missing entries, we use the default value that will get written into it right after this
         else return defaultValue;
+    }
+
+    public static <V> List<V> readConfigList(String name, Function<String, V> valueMapper) {
+        List<V> output = new ArrayList<>();
+
+        boolean isReading = false;
+        String nameToCheckFor = (name.contains(" ") ? "\"" + name + "\"" : name) + " <";
+
+        boolean found = false;
+        for (String line : readLines()) {
+            if (line.contains(nameToCheckFor)) {
+                isReading = true;
+                continue;
+            }
+            if (!isReading) continue; //unimportant lines
+
+            found = true;
+
+            if (line.contains(">")) break; //end of bracket
+
+            output.add(valueMapper.apply(line.trim()));
+        }
+        if (!found) PotionControl.LOGGER.warn("Didnt find config list to early-read for {}", name);
+
+        return output;
     }
 }

@@ -123,6 +123,8 @@ public class PotionInfo {
     public List<String> blacklistedTags = null;
 
     //TODO: sources
+    //TODO: onTick, onTimeout, onRemove, onApply, onChange
+    //TODO: at least effects heal/hurt/explode/addEffect/removeEffect
 
     //-------- CONSTRUCTOR --------
 

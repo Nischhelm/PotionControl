@@ -46,6 +46,7 @@ import java.util.Map;
                 "before:potiondescriptions"
 )
 public class PotionControl {
+    //TODO: blacklisted creature attributes (undead/artrh)
     public static final String MODID = "potioncontrol";
     public static final String VERSION = "1.0.3.1";
     public static final String NAME = "PotionControl";

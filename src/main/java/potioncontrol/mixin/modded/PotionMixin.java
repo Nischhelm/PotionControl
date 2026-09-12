@@ -16,7 +16,7 @@ import potioncontrol.util.PotionInfo;
 
 import java.util.List;
 
-@Mixin(targets = {"net.minecraft.potion.Potion"}, value = PotionDummy.class) //needs to be two separate Potion classes for the refmaps to not write the owner class in front of the searge method names
+@Mixin(targets = {"net.minecraft.potion.Potion", "potioncontrol.core.PotionDummy"}) //needs to be two separate Potion classes for the refmaps to not write the owner class in front of the searge method names
 @SuppressWarnings({"MixinSuperClass"})
 //copy of vanilla.VanillaBasePotionMixin and vanilla.VanillaPotionMixin just for all modded potions and their intermediaries
 public abstract class PotionMixin extends Potion { //needs to extend for refmaps to work
