@@ -61,8 +61,9 @@ dependencies {
     compileOnly "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
 
-    implementation fg.deobf("curse.maven:fermiumbooter:${fermiumbooter_version}")
-    implementation fg.deobf("curse.maven:betterconfig:${betterconfig_version}")
+    implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
+//    implementation fg.deobf("curse.maven:betterconfig-${betterconfig_version}")
+    implementation fg.deobf("libs:BetterConfig:1.12.2-1.1.1")
     implementation fg.deobf("curse.maven:lycanitesmobs-${lycanites_version}")
     implementation fg.deobf("curse.maven:potioncore-${potioncore_version}")
     implementation fg.deobf("curse.maven:rustic-${rustic_version}")
