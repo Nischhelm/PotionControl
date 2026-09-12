@@ -1,7 +1,6 @@
 package potioncontrol.core;
 
 import net.minecraft.potion.Potion;
-import potioncontrol.Tags;
 import potioncontrol.util.PotionInfo;
 
 //Only needs to extend Potion to fix refmaps of PotionMixin

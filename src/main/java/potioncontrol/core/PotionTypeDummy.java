@@ -1,7 +1,6 @@
 package potioncontrol.core;
 
 import net.minecraft.potion.PotionType;
-import potioncontrol.Tags;
 
 //only used for replacing unregistered vanilla potion types
 public class PotionTypeDummy extends PotionType {
