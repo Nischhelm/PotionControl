@@ -2,12 +2,12 @@ package potioncontrol.config.folders;
 
 import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@MixinConfig(name = PotionControl.MODID)
+@MixinConfig(name = Tags.MODID)
 public class DebugConfig {
     @Config.Comment("Potion classes that should not be modified at all by this mod. \n" +
             "Use this if there are crashes when this mod tries to automatically modify some mods enchantments. \n" +

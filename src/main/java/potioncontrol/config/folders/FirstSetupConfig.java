@@ -2,9 +2,9 @@ package potioncontrol.config.folders;
 
 import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 
-@MixinConfig(name = PotionControl.MODID)
+@MixinConfig(name = Tags.MODID)
 public class FirstSetupConfig {
 
     @Config.Comment({

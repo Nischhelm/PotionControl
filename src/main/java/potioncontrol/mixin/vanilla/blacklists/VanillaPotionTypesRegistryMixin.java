@@ -11,7 +11,7 @@ public abstract class VanillaPotionTypesRegistryMixin {
 
     @ModifyExpressionValue(method = "getRegisteredPotionType", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/RegistryNamespacedDefaultedByKey;getObject(Ljava/lang/Object;)Ljava/lang/Object;"))
     private static Object onRegister(Object original, String id) {
-        if(!id.equals("empty") && original == PotionTypes.EMPTY) return PotionTypeDummy.dummy;
+        if(!id.equals("empty") && original == PotionTypes.EMPTY) return new PotionTypeDummy(id);
         return original;
     }
 }

@@ -2,9 +2,9 @@ package potioncontrol.config.folders;
 
 import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 
-@MixinConfig(name = PotionControl.MODID)
+@MixinConfig(name = Tags.MODID)
 public class MixinToggleConfig {
     @Config.Comment("Makes potion effects properly display their levels above 4 and below 1 in Dynamic Surroundings HUDs potion effect overlay")
     @Config.Name("Potion Level Display (DSHuds)")

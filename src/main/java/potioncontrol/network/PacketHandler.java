@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class PacketHandler {
     public static int caughtCounter = 0;
 
     public static void preInit() {
-        instance = NetworkRegistry.INSTANCE.newSimpleChannel(PotionControl.MODID);
+        instance = NetworkRegistry.INSTANCE.newSimpleChannel(Tags.MODID);
 
         instance.registerMessage(new SPacketEntityEffects.ClientHandler(), SPacketEntityEffects.class, 1, Side.CLIENT);
         MinecraftForge.EVENT_BUS.register(PacketHandler.class);

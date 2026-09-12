@@ -5,7 +5,6 @@ import net.minecraft.init.PotionTypes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -38,35 +37,22 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 @Mod(
-        modid = PotionControl.MODID,
-        version = PotionControl.VERSION,
-        name = PotionControl.NAME,
+        modid = Tags.MODID,
+        version = Tags.VERSION,
+        name = Tags.NAME,
         dependencies =
                 "required-after:fermiumbooter@[1.3.2,);"+
+                "required:betterconfig;"+//@[1.2.0,);"+
                 "before:potiondescriptions"
 )
 public class PotionControl {
     //TODO: blacklisted creature attributes (undead/artrh)
-    public static final String MODID = "potioncontrol";
-    public static final String VERSION = "1.0.3.1";
-    public static final String NAME = "PotionControl";
-    public static final Logger LOGGER = LogManager.getLogger(PotionControl.NAME);
-    public static Configuration CONFIG = null;
+    public static final Logger LOGGER = LogManager.getLogger(Tags.NAME);
     public static boolean configNeedsSaving = false;
     public static boolean loadingComplete = false;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        try {
-            Field field = ConfigManager.class.getDeclaredField("CONFIGS");
-            field.setAccessible(true);
-            @SuppressWarnings("unchecked")
-            Map<String, Configuration> map = (Map<String, Configuration>) field.get(null);
-            CONFIG = map.get(new File(Loader.instance().getConfigDir(), MODID + ".cfg").getAbsolutePath());
-        } catch (Exception e){
-            CONFIG = new Configuration(new File(Loader.instance().getConfigDir(), MODID + ".cfg"));
-        }
-
         if(ConfigHandler.mixinToggles.syncPotionsDistance >= 0) PacketHandler.preInit();
 
         if(ConfigHandler.mixinToggles.modifyMaxAmpDura) MinecraftForge.EVENT_BUS.register(PotionAddedHandler.class);
@@ -94,7 +80,7 @@ public class PotionControl {
         if(ConfigHandler.dev.printInferredTypes) PotionTypeInfoInferrerWriter.printInferred();
         if (ConfigHandler.debug.printLoaded) PotionTypeInfoWriter.printLoaded();
 
-        if(configNeedsSaving) BetterConfigManager.sync(MODID);
+        if(configNeedsSaving) BetterConfigManager.sync(Tags.MODID);
 
         loadingComplete = true;
     }

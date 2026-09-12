@@ -1,10 +1,7 @@
 package potioncontrol.config.folders;
 
-import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
-import potioncontrol.PotionControl;
 
-@MixinConfig(name = PotionControl.MODID)
 public class BrewingStandConfig {
     @Config.Comment({
             "Multiply the brewing duration of all brewing actions in the vanilla brewing stand by this amount.",
