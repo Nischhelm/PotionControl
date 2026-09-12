@@ -14,8 +14,6 @@ public abstract class VanillaPotionRegistryMixin {
 
     @WrapWithCondition(method = "registerPotions", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/RegistryNamespaced;register(ILjava/lang/Object;Ljava/lang/Object;)V"))
     private static boolean onRegister(RegistryNamespaced<ResourceLocation, Potion> instance, int id, Object loc, Object pot) {
-        if(ConfigHandler.blacklists.blacklistedRegistryPotions.isEmpty()) return true;
-
         //Prevent registration of config defined potions
         if (ConfigHandler.blacklists.blacklistedRegistryPotions.contains(loc.toString())) {
             PotionControl.LOGGER.info("Preventing registration of potion {}", loc.toString());

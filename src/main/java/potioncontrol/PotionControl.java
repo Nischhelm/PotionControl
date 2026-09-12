@@ -5,10 +5,7 @@ import net.minecraft.init.PotionTypes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -31,10 +28,6 @@ import potioncontrol.handlers.PotionAddedHandler;
 import potioncontrol.network.PacketHandler;
 import potioncontrol.util.PotionInfo;
 import potioncontrol.util.PotionTypeInfo;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.Map;
 
 @Mod(
         modid = Tags.MODID,
