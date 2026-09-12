@@ -1,18 +1,18 @@
 package potioncontrol.config.folders;
 
 import net.minecraftforge.common.config.Config;
-import potioncontrol.util.ConfigRef;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlacklistConfig {
     @Config.Comment("Potions in this list will be prevented from being registered in the game. There will be no way to access them at all.")
-    @Config.Name(ConfigRef.REGISTRY_POTION_BLACKLIST_CONFIG_NAME)
+    @Config.Name("Registered Potion Blacklist")
     @Config.RequiresMcRestart
-    public String[] blacklistedRegistryPotions = {
-    };
+    public List<String> blacklistedRegistryPotions = new ArrayList<>();
 
     @Config.Comment("Potion Types in this list will be prevented from being registered in the game. There will be no way to access them at all.")
-    @Config.Name(ConfigRef.REGISTRY_POTIONTYPE_BLACKLIST_CONFIG_NAME)
+    @Config.Name("Registered Potion Types Blacklist")
     @Config.RequiresMcRestart
-    public String[] blacklistedRegistryPotionTypes = {
-    };
+    public List<String> blacklistedRegistryPotionTypes = new ArrayList<>();
 }

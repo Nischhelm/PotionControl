@@ -3,7 +3,9 @@ package potioncontrol.config.folders;
 import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
 import potioncontrol.PotionControl;
-import potioncontrol.util.ConfigRef;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @MixinConfig(name = PotionControl.MODID)
 public class DebugConfig {
@@ -12,9 +14,9 @@ public class DebugConfig {
             "You can find the class name in config/potioncontrol/tmp/enchclasses.dump\n" +
             "Class names noted here need to look like net.minecraft.potion.PotionAttackDamage\n" +
             "Vanilla enchants will always be targeted, so putting their classes in here won't do anything")
-    @Config.Name(ConfigRef.BLACKLIST_CONFIG_NAME)
+    @Config.Name("Blacklisted Potion Classes")
     @Config.RequiresMcRestart
-    public String[] disabledClasses = {};
+    public List<String> disabledClasses = new ArrayList<>();
 
     @Config.Comment("If enabled, writes all currently loaded potion and potion type infos to /config/potioncontrol/potion[type]s/loaded/ during startup. Can be used to check if a given config json is actually loaded (and loaded correctly).")
     @Config.Name("Print Loaded Potion+Type Infos")

@@ -1,5 +1,6 @@
 package potioncontrol;
 
+import meldexun.betterconfig.api.BetterConfigManager;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import potioncontrol.config.ConfigHandler;
-import potioncontrol.config.EarlyConfigReader;
 import potioncontrol.config.classdump.PotionClassWriter;
 import potioncontrol.config.descriptions.DescriptionReader;
 import potioncontrol.config.descriptions.EmptyPotionWriter;
@@ -94,10 +94,7 @@ public class PotionControl {
         if(ConfigHandler.dev.printInferredTypes) PotionTypeInfoInferrerWriter.printInferred();
         if (ConfigHandler.debug.printLoaded) PotionTypeInfoWriter.printLoaded();
 
-        if(configNeedsSaving) ConfigManager.sync(MODID, Config.Type.INSTANCE);
-
-        //this just as cache clear
-        EarlyConfigReader.clearLines();
+        if(configNeedsSaving) BetterConfigManager.sync(MODID);
 
         loadingComplete = true;
     }

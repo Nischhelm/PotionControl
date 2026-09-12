@@ -7,17 +7,17 @@ import net.minecraft.util.registry.RegistryNamespaced;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import potioncontrol.PotionControl;
-import potioncontrol.config.EarlyConfigReader;
+import potioncontrol.config.ConfigHandler;
 
 @Mixin(Potion.class)
 public abstract class VanillaPotionRegistryMixin {
 
     @WrapWithCondition(method = "registerPotions", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/RegistryNamespaced;register(ILjava/lang/Object;Ljava/lang/Object;)V"))
     private static boolean onRegister(RegistryNamespaced<ResourceLocation, Potion> instance, int id, Object loc, Object pot) {
-        if(EarlyConfigReader.getPotionRegistrationBlacklist().isEmpty()) return true;
+        if(ConfigHandler.blacklists.blacklistedRegistryPotions.isEmpty()) return true;
 
         //Prevent registration of config defined potions
-        if (EarlyConfigReader.getPotionRegistrationBlacklist().contains(loc.toString())) {
+        if (ConfigHandler.blacklists.blacklistedRegistryPotions.contains(loc.toString())) {
             PotionControl.LOGGER.info("Preventing registration of potion {}", loc.toString());
             return false;
         }

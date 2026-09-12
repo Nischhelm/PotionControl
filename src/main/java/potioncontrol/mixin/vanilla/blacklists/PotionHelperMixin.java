@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import potioncontrol.config.provider.BlacklistConfigProvider;
+import potioncontrol.config.ConfigHandler;
 
 @Mixin(PotionHelper.class)
 public abstract class PotionHelperMixin {
@@ -19,12 +19,12 @@ public abstract class PotionHelperMixin {
     )
     private static void pc_unregisterRecipes(PotionType typeIn, Ingredient ingredient, PotionType typeOut, CallbackInfo ci) {
         ResourceLocation locIn = typeIn.getRegistryName();
-        if(locIn != null && BlacklistConfigProvider.getRegistryPotionTypeBlacklist().contains(locIn.toString())) {
+        if(locIn != null && ConfigHandler.blacklists.blacklistedRegistryPotionTypes.contains(locIn.toString())) {
             ci.cancel();
             return;
         }
         ResourceLocation locOut = typeOut.getRegistryName();
-        if(locOut != null && BlacklistConfigProvider.getRegistryPotionTypeBlacklist().contains(locOut.toString()))
+        if(locOut != null && ConfigHandler.blacklists.blacklistedRegistryPotionTypes.contains(locOut.toString()))
             ci.cancel();
     }
 }

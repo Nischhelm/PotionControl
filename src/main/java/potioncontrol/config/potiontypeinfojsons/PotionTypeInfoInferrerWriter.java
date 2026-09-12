@@ -3,7 +3,6 @@ package potioncontrol.config.potiontypeinfojsons;
 import net.minecraft.potion.PotionType;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
-import potioncontrol.util.ConfigRef;
 import potioncontrol.util.PotionTypeInfo;
 import potioncontrol.util.brewing.BrewRecipeUtil;
 
@@ -35,7 +34,6 @@ public class PotionTypeInfoInferrerWriter {
                 PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
-        PotionControl.CONFIG.get("general.first setup", ConfigRef.DO_INFER_CONFIG_NAME_TYPE, ConfigHandler.dev.printInferredTypes).set(false);
         ConfigHandler.dev.printInferredTypes = false;
         PotionControl.configNeedsSaving = true;
     }

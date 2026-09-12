@@ -11,7 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import potioncontrol.config.potioninfojsons.PotionInfoInferrerWriter;
-import potioncontrol.core.PotionDummy;
 import potioncontrol.util.PotionInfo;
 
 import java.util.List;

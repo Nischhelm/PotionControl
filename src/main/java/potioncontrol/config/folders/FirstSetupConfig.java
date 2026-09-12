@@ -3,7 +3,6 @@ package potioncontrol.config.folders;
 import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
 import potioncontrol.PotionControl;
-import potioncontrol.util.ConfigRef;
 
 @MixinConfig(name = PotionControl.MODID)
 public class FirstSetupConfig {
@@ -16,7 +15,7 @@ public class FirstSetupConfig {
             "To do so, copy everything to /config/potioncontrol/potions/active/, then delete every file + line in file that should stay default/untouched.",
             "WARNING: All files in /inferred-inactive/ will be overwritten every time you start the game with this option enabled"
     })
-    @Config.Name(ConfigRef.DO_INFER_CONFIG_NAME_POTION)
+    @Config.Name("Print Inferred Potion Infos")
     @Config.RequiresMcRestart
     public boolean printInferredPotions = true;
 
@@ -28,7 +27,7 @@ public class FirstSetupConfig {
             "To do so, copy everything to /config/potioncontrol/potiontypes/active/, then delete every file + line in file that should stay default/untouched.",
             "WARNING: All files in /inferred-inactive/ will be overwritten every time you start the game with this option enabled"
     })
-    @Config.Name(ConfigRef.DO_INFER_CONFIG_NAME_TYPE)
+    @Config.Name("Print Inferred Potion Type Infos")
     @Config.RequiresMcRestart
     public boolean printInferredTypes = true;
 

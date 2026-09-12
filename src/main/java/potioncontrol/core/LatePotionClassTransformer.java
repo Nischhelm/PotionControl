@@ -6,7 +6,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.util.Annotations;
-import potioncontrol.config.EarlyConfigReader;
+import potioncontrol.config.ConfigHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,7 +43,7 @@ public class LatePotionClassTransformer implements IClassTransformer {
             public void visitEnd() {
                 Set<String> modifiedPotionClasses = new HashSet<>(PotionControlPlugin.potionClasses);
                 modifiedPotionClasses.removeAll(PotionControlPlugin.actuallyEarlyPotions);
-                EarlyConfigReader.getClassBlacklistConfig().forEach(modifiedPotionClasses::remove);
+                ConfigHandler.debug.disabledClasses.forEach(modifiedPotionClasses::remove);
                 System.out.println("PotionControl modifying " + modifiedPotionClasses.size() + " late potion classes");
                 Annotations.setValue(this.node, "targets", new ArrayList<>(modifiedPotionClasses));
             }
