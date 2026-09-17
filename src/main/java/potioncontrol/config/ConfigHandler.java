@@ -13,7 +13,7 @@ import potioncontrol.config.folders.*;
 
 @BetterConfig(
 		modid = Tags.MODID,
-		version = Tags.VERSION,
+		version = Tags.CFG_VERSION,
 		bigCategoryComments = false
 )
 @LoadEarly
