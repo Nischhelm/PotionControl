@@ -1,6 +1,7 @@
 package potioncontrol.config.folders;
 
 import fermiumbooter.annotations.MixinConfig;
+import meldexun.betterconfig.api.Order;
 import net.minecraftforge.common.config.Config;
 import potioncontrol.Tags;
 

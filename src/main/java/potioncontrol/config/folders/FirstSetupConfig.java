@@ -1,6 +1,7 @@
 package potioncontrol.config.folders;
 
 import fermiumbooter.annotations.MixinConfig;
+import meldexun.betterconfig.api.Order;
 import net.minecraftforge.common.config.Config;
 import potioncontrol.Tags;
 
@@ -17,6 +18,7 @@ public class FirstSetupConfig {
     })
     @Config.Name("Print Inferred Potion Infos")
     @Config.RequiresMcRestart
+    @Order(0)
     public boolean printInferredPotions = true;
 
     @Config.Comment({
@@ -29,6 +31,7 @@ public class FirstSetupConfig {
     })
     @Config.Name("Print Inferred Potion Type Infos")
     @Config.RequiresMcRestart
+    @Order(1)
     public boolean printInferredTypes = true;
 
     @Config.Comment({
@@ -37,11 +40,13 @@ public class FirstSetupConfig {
             "Every property not present in a json will keep the object unmodified for this property, so reduction is advised."
     })
     @Config.Name("Print Inferred Expanded")
+    @Order(2)
     public boolean printInferredExpanded = false;
 
     @Config.Comment("Which time scale to use for durations in inferred potion type infos (MIN as float)")
     @Config.Name("Duration Time Scale")
     @Config.RequiresMcRestart
+    @Order(3)
     public EnumTimeScale durationScale = EnumTimeScale.MIN;
     public enum EnumTimeScale {TICK, SEC, MIN}
 
@@ -52,21 +57,25 @@ public class FirstSetupConfig {
     })
     @Config.Name("Brewing Recipe Direction")
     @Config.RequiresMcRestart
+    @Order(4)
     public EnumBrewRecipeDirection recipeDirection = EnumBrewRecipeDirection.FROM;
     public enum EnumBrewRecipeDirection {FROM, TO, BOTH, NONE}
 
     @Config.Comment("Whether to follow vanillas weird convention of using amplifiers (=lvl-1) instead of levels in inferred potion type infos")
     @Config.Name("Levels as Amplifiers")
     @Config.RequiresMcRestart
+    @Order(5)
     public boolean asAmplifier = false;
 
     @Config.Comment("Property jsons for potions found in /config/potioncontrol/potions/active/... that are unknown in game will be created and filled with the given properties.")
     @Config.Name("Should create unknown Potions")
     @Config.RequiresMcRestart
+    @Order(6)
     public boolean shouldCreatePotions = false;
 
     @Config.Comment("Property jsons for potion types found in /config/potioncontrol/potiontypes/active/... that are unknown in game will be created and filled with the given properties.")
     @Config.Name("Should create unknown Potion Types")
     @Config.RequiresMcRestart
+    @Order(7)
     public boolean shouldCreatePotionTypes = true;
 }

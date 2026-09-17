@@ -1,5 +1,6 @@
 package potioncontrol.config.folders;
 
+import meldexun.betterconfig.api.Order;
 import net.minecraftforge.common.config.Config;
 
 import java.util.LinkedHashSet;
@@ -12,11 +13,13 @@ public class BlacklistConfig {
     })
     @Config.Name("Registered Potion Blacklist")
     @Config.RequiresMcRestart
+    @Order(0)
     public Set<String> blacklistedRegistryPotions = new LinkedHashSet<>();
 
     @Config.Comment("Potion Types in this list will be prevented from being registered in the game. There will be no way to access them at all.")
     @Config.Name("Registered Potion Types Blacklist")
     @Config.RequiresMcRestart
+    @Order(1)
     public Set<String> blacklistedRegistryPotionTypes = new LinkedHashSet<>();
 
     @Config.Comment({
@@ -26,5 +29,6 @@ public class BlacklistConfig {
             "Disabling this toggle will force you to manually blacklist all connected types for each potion you unregister."
     })
     @Config.Name("Potions disable their types")
+    @Order(2)
     public boolean potionsDisableTheirTypes = true;
 }

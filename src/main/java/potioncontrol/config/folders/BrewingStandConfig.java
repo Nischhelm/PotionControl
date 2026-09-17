@@ -1,5 +1,6 @@
 package potioncontrol.config.folders;
 
+import meldexun.betterconfig.api.Order;
 import net.minecraftforge.common.config.Config;
 
 public class BrewingStandConfig {
@@ -10,5 +11,6 @@ public class BrewingStandConfig {
     })
     @Config.Name("Global Brew Time Multiplier")
     @Config.RangeDouble(min = 0)
+    @Order(0)
     public float brewTimeMultiplier = 1;
 }
