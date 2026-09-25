@@ -18,8 +18,6 @@ public class PotionControlPlugin implements IFMLLoadingPlugin {
 	public static final Set<String> potionClasses = new HashSet<>();
 
 	public PotionControlPlugin() {
-		MixinBootstrap.init();
-
 		FermiumRegistryAPI.enqueueMixin(false, "mixins.potioncontrol.vanilla.accessors.json", () -> {
 			graphClasses(); //this is a good position in the loading process, so we do it here, right during MC init while early jsons are enqueued
 			return true;

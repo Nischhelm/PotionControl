@@ -34,7 +34,7 @@ import potioncontrol.util.PotionTypeInfo;
         version = Tags.VERSION,
         name = Tags.NAME,
         dependencies =
-                "required-after:fermiumbooter@[1.5.0,);"+
+                "required-after:fermiumbooter@[1.5.2,);"+
                 "required:betterconfig@[1.2.0,);"+
                 "before:potiondescriptions"
 )
