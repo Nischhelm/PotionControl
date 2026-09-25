@@ -4,7 +4,10 @@ import fermiumbooter.FermiumRegistryAPI;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
+import net.minecraftforge.fml.relauncher.CoreModManager;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.apache.commons.lang3.StringUtils;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 import potioncontrol.config.ConfigHandler;
 
 import java.util.HashSet;
@@ -27,14 +30,20 @@ public class PotionControlPlugin implements IFMLLoadingPlugin {
 	@Override
 	public String[] getASMTransformerClass() {
 		return new String[]{
-				EarlyPotionClassTransformer.class.getName(),
-				LatePotionClassTransformer.class.getName()
+				ClassTransformers.EarlyPotions.class.getName(),
+				ClassTransformers.LatePotions.class.getName(),
+				ClassTransformers.LogEarliness.class.getName()
 		};
 	}
 	
 	@Override public String getModContainerClass() {return null;}
 	@Override public String getSetupClass() {return null;}
-	@Override public void injectData(Map<String, Object> data) { }
+	@Override public void injectData(Map<String, Object> data) {
+		if (Boolean.FALSE.equals(data.get("runtimeDeobfuscationEnabled"))) {
+			MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
+			CoreModManager.getReparseableCoremods().removeIf(s -> StringUtils.containsIgnoreCase(s, "fermiumbooter"));
+		}
+	}
 	@Override public String getAccessTransformerClass() {return null;}
 
 	public static void graphClasses(){
