@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
 
-public class PotionTypeDeRegisterHelper {
+public class PotionTypeUnregisterHelper {
     public static boolean isBlacklisted(PotionType potionType, ResourceLocation loc) {
         if(ConfigHandler.blacklists.potionsDisableTheirTypes && potionType.getEffects().size() == 1) {
             ResourceLocation potionLoc = potionType.getEffects().get(0).getPotion().getRegistryName();

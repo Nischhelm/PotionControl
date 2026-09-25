@@ -6,7 +6,7 @@ import potioncontrol.util.PotionInfo;
 //Only needs to extend Potion to fix refmaps of PotionMixin
 //also used for replacing unregistered vanilla potions
 public class PotionDummy extends Potion {
-    //This is only used for de-registered vanilla potions
+    //This is only used for unregistered vanilla potions
     public static final Potion dummy = new PotionDummy().setRegistryName("minecraft", "dummy").setPotionName("dummy");
 
     public PotionDummy() {

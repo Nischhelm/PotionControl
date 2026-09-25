@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import potioncontrol.util.PotionTypeDeRegisterHelper;
+import potioncontrol.util.PotionTypeUnregisterHelper;
 
 @Mixin(PotionHelper.class)
 public abstract class PotionHelperMixin {
@@ -17,7 +17,7 @@ public abstract class PotionHelperMixin {
             cancellable = true
     )
     private static void pc_unregisterRecipes(PotionType typeIn, Ingredient ingredient, PotionType typeOut, CallbackInfo ci) {
-        if(PotionTypeDeRegisterHelper.isBlacklisted(typeIn, typeIn.getRegistryName()) || PotionTypeDeRegisterHelper.isBlacklisted(typeOut, typeOut.getRegistryName()))
+        if(PotionTypeUnregisterHelper.isBlacklisted(typeIn, typeIn.getRegistryName()) || PotionTypeUnregisterHelper.isBlacklisted(typeOut, typeOut.getRegistryName()))
             ci.cancel();
     }
 }

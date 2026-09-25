@@ -7,7 +7,7 @@ import net.minecraft.util.registry.RegistryNamespacedDefaultedByKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import potioncontrol.PotionControl;
-import potioncontrol.util.PotionTypeDeRegisterHelper;
+import potioncontrol.util.PotionTypeUnregisterHelper;
 
 @Mixin(PotionType.class)
 public abstract class VanillaPotionTypeRegistryMixin {
@@ -15,7 +15,7 @@ public abstract class VanillaPotionTypeRegistryMixin {
     @WrapWithCondition(method = "registerPotionType", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/RegistryNamespacedDefaultedByKey;register(ILjava/lang/Object;Ljava/lang/Object;)V"))
     private static boolean onRegister(RegistryNamespacedDefaultedByKey<ResourceLocation, PotionType> instance, int id, Object loc, Object potionType) {
         //Prevent registration of config defined potions
-        if (PotionTypeDeRegisterHelper.isBlacklisted((PotionType) potionType, (ResourceLocation) loc)) {
+        if (PotionTypeUnregisterHelper.isBlacklisted((PotionType) potionType, (ResourceLocation) loc)) {
             PotionControl.LOGGER.info("Preventing registration of potion type {}", loc.toString());
             return false;
         }
