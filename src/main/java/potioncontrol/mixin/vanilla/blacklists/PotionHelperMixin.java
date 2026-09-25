@@ -17,7 +17,7 @@ public abstract class PotionHelperMixin {
             cancellable = true
     )
     private static void pc_unregisterRecipes(PotionType typeIn, Ingredient ingredient, PotionType typeOut, CallbackInfo ci) {
-        if(PotionTypeDeRegisterHelper.isBlacklisted(typeIn) || PotionTypeDeRegisterHelper.isBlacklisted(typeOut))
+        if(PotionTypeDeRegisterHelper.isBlacklisted(typeIn, typeIn.getRegistryName()) || PotionTypeDeRegisterHelper.isBlacklisted(typeOut, typeOut.getRegistryName()))
             ci.cancel();
     }
 }

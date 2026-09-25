@@ -2,16 +2,31 @@ package potioncontrol.util;
 
 import net.minecraft.potion.PotionType;
 import net.minecraft.util.ResourceLocation;
+import potioncontrol.PotionControl;
 import potioncontrol.config.ConfigHandler;
 
 public class PotionTypeDeRegisterHelper {
-    public static boolean isBlacklisted(PotionType potionType) {
-        if(ConfigHandler.blacklists.potionsDisableTheirTypes && potionType.getEffects().size() == 1){
-            ResourceLocation potLoc = potionType.getEffects().get(0).getPotion().getRegistryName();
-            return potLoc != null && ConfigHandler.blacklists.blacklistedRegistryPotions.contains(potLoc.toString());
+    public static boolean isBlacklisted(PotionType potionType, ResourceLocation loc) {
+        if(ConfigHandler.blacklists.potionsDisableTheirTypes && potionType.getEffects().size() == 1) {
+            ResourceLocation potionLoc = potionType.getEffects().get(0).getPotion().getRegistryName();
+            if(potionLoc != null) {
+                String potionRegName = potionLoc.toString();
+                if(
+                        potionRegName.equals("minecraft:dummy") ||      // vanilla potion already blacklisted -> doesn't have its old registry name
+                        ConfigHandler.blacklists.blacklistedRegistryPotions.contains(potionRegName) // modded potion blacklisted
+                )
+                    return true;
+            }
         }
 
-        ResourceLocation typeLoc = potionType.getRegistryName();
-        return typeLoc != null && ConfigHandler.blacklists.blacklistedRegistryPotionTypes.contains(typeLoc.toString());
+        ResourceLocation typeLoc = loc != null ? loc : potionType.getRegistryName();
+        if(typeLoc != null && ConfigHandler.blacklists.blacklistedRegistryPotionTypes.contains(typeLoc.toString())){
+            if(typeLoc.toString().equals("minecraft:empty")){
+                PotionControl.LOGGER.info("Unable to prevent the registration of default potiontype minecraft:empty. It is needed for the game to work. Skipping...");
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 }

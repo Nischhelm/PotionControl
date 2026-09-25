@@ -29,7 +29,7 @@ public abstract class ForgePotionRegistryMixin<V extends IForgeRegistryEntry<V>>
             }
         } else if (value instanceof PotionType) {
             //Prevent registration of config defined potions
-            if (PotionTypeDeRegisterHelper.isBlacklisted((PotionType) value)) {
+            if (PotionTypeDeRegisterHelper.isBlacklisted((PotionType) value, value.getRegistryName())) {
                 PotionControl.LOGGER.info("Preventing registration of PotionType {}", value.getRegistryName().toString());
                 ci.cancel();
             }

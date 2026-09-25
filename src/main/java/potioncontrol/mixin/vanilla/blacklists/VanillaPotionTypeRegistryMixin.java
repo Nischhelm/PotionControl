@@ -15,7 +15,7 @@ public abstract class VanillaPotionTypeRegistryMixin {
     @WrapWithCondition(method = "registerPotionType", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/RegistryNamespacedDefaultedByKey;register(ILjava/lang/Object;Ljava/lang/Object;)V"))
     private static boolean onRegister(RegistryNamespacedDefaultedByKey<ResourceLocation, PotionType> instance, int id, Object loc, Object potionType) {
         //Prevent registration of config defined potions
-        if (PotionTypeDeRegisterHelper.isBlacklisted((PotionType) potionType)) {
+        if (PotionTypeDeRegisterHelper.isBlacklisted((PotionType) potionType, (ResourceLocation) loc)) {
             PotionControl.LOGGER.info("Preventing registration of potion type {}", loc.toString());
             return false;
         }
