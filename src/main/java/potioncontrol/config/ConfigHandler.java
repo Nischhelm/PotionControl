@@ -1,6 +1,7 @@
 package potioncontrol.config;
 
 import meldexun.betterconfig.api.BetterConfig;
+import meldexun.betterconfig.api.BetterConfigManager;
 import meldexun.betterconfig.api.LoadEarly;
 import meldexun.betterconfig.api.Order;
 import net.minecraftforge.common.config.Config;
@@ -49,7 +50,7 @@ public class ConfigHandler {
         @SubscribeEvent
         public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
             if (event.getModID().equals(Tags.MODID)) {
-                ConfigManager.sync(Tags.MODID, Config.Type.INSTANCE);
+                BetterConfigManager.sync(Tags.MODID);
             }
         }
     }
