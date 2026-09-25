@@ -2,6 +2,7 @@ package potioncontrol.config.potiontypeinfojsons;
 
 import net.minecraft.potion.PotionType;
 import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.util.PotionTypeInfo;
 import potioncontrol.util.brewing.BrewRecipeUtil;
@@ -19,7 +20,7 @@ public class PotionTypeInfoInferrerWriter {
     public static final String MAIN_DIR = "config/potioncontrol/potiontypes/inferred-inactive";
 
     public static void printInferred(){
-        PotionControl.LOGGER.info("Inferring json files for Potion Types");
+        Tags.LOGGER.info("Inferring json files for Potion Types");
         PotionTypeInfoWriter.clearDirectoryContents(new File(MAIN_DIR));
         List<PotionTypeInfo> infos = inferInfoForAllRegisteredPotions();
         PotionTypeInfoWriter.writeAllCurrentPotionTypeInfos(infos, MAIN_DIR);
@@ -27,11 +28,11 @@ public class PotionTypeInfoInferrerWriter {
         //Create empty folders for each mod in /potiontypes/
         File baseOut = new File(PotionTypeInfoConfigReader.MAIN_DIR);
         if (!baseOut.exists() && !baseOut.mkdirs())
-            PotionControl.LOGGER.warn("Could not create directory: {}", baseOut.getPath());
+            Tags.LOGGER.warn("Could not create directory: {}", baseOut.getPath());
         for(String modid : infos.stream().map(info -> info.modId).collect(Collectors.toSet())){ //make one empty folder per mod
             File modDir = new File(baseOut, modid);
             if (!modDir.exists() && !modDir.mkdirs())
-                PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
+                Tags.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
         ConfigHandler.dev.printInferredTypes = false;

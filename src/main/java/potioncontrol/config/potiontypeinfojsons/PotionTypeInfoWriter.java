@@ -2,7 +2,7 @@ package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.util.PotionTypeInfo;
 
@@ -28,7 +28,7 @@ public class PotionTypeInfoWriter {
         try {
             File baseOut = new File(path);
             if (!baseOut.exists() && !baseOut.mkdirs()) {
-                PotionControl.LOGGER.warn("Could not create directory: {}", baseOut.getPath());
+                Tags.LOGGER.warn("Could not create directory: {}", baseOut.getPath());
             }
 
             // Clear any existing files so the directory reflects only the current run
@@ -38,7 +38,7 @@ public class PotionTypeInfoWriter {
                 writeSinglePotionTypeInfo(info, baseOut);
             }
         } catch (Exception e) {
-            PotionControl.LOGGER.warn("Writing potion type infos failed!");
+            Tags.LOGGER.warn("Writing potion type infos failed!");
         }
     }
 
@@ -50,7 +50,7 @@ public class PotionTypeInfoWriter {
 
         File modDir = new File(baseOut, modid);
         if (!modDir.exists() && !modDir.mkdirs()) {
-            PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
+            Tags.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
         File outFile = new File(modDir, potionid + ".json");
@@ -62,7 +62,7 @@ public class PotionTypeInfoWriter {
         try (Writer w = new OutputStreamWriter(Files.newOutputStream(outFile.toPath()), StandardCharsets.UTF_8)) {
             gson.toJson(info, PotionTypeInfo.class, w);
         } catch (IOException e) {
-            PotionControl.LOGGER.warn("Writing potion type info for {} failed!", id);
+            Tags.LOGGER.warn("Writing potion type info for {} failed!", id);
         }
     }
 
@@ -75,7 +75,7 @@ public class PotionTypeInfoWriter {
                 clearDirectoryContents(f);
             }
             if (!f.delete()) {
-                PotionControl.LOGGER.warn("Could not delete {} while clearing {}", f.getPath(), dir.getPath());
+                Tags.LOGGER.warn("Could not delete {} while clearing {}", f.getPath(), dir.getPath());
             }
         }
     }

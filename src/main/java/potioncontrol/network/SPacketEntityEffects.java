@@ -10,7 +10,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.mixin.accessor.SPacketEntityEffectAccessor;
 import potioncontrol.mixin.accessor.SPacketRemoveEntityEffectAccessor;
@@ -29,7 +29,7 @@ public class SPacketEntityEffects implements IMessage {
         int newPotId = ((SPacketEntityEffectAccessor)packet).pc_getEffectId() & 0xFF;
         Potion newPot = Potion.getPotionById(newPotId);
         if(newPot == null) {
-            PotionControl.LOGGER.warn("Received addPotionEffect packet request with an invalid potion id {}, skipping", newPotId);
+            Tags.LOGGER.warn("Received addPotionEffect packet request with an invalid potion id {}, skipping", newPotId);
             return true;
         }
 
@@ -67,7 +67,7 @@ public class SPacketEntityEffects implements IMessage {
         Potion newPot = acc.pc_getPotion();
         int newPotId = Potion.getIdFromPotion(newPot);
         if(newPotId == -1) {
-            PotionControl.LOGGER.warn("Unable to find id for potion of class {}, added in removePotionEffect packet, skipping", newPot.getClass());
+            Tags.LOGGER.warn("Unable to find id for potion of class {}, added in removePotionEffect packet, skipping", newPot.getClass());
             return true;
         }
 

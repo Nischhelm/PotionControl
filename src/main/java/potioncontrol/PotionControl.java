@@ -11,8 +11,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.config.classdump.PotionClassWriter;
 import potioncontrol.config.descriptions.DescriptionReader;
@@ -40,7 +38,6 @@ import potioncontrol.util.PotionTypeInfo;
 )
 public class PotionControl {
     //TODO: blacklisted creature attributes (undead/artrh)
-    public static final Logger LOGGER = LogManager.getLogger(Tags.NAME);
     public static boolean configNeedsSaving = false;
     public static boolean loadingComplete = false;
 
@@ -86,7 +83,7 @@ public class PotionControl {
             PotionTypeInfo.getAll().stream()
                     .filter(info -> PotionType.getPotionTypeForName(info.id) == PotionTypes.EMPTY)
                     .forEach(info -> {
-                        LOGGER.info("Registering Custom PotionType {}", info.id);
+                        Tags.LOGGER.info("Registering Custom PotionType {}", info.id);
                         event.getRegistry().register(info.create());
                     });
         }
@@ -96,7 +93,7 @@ public class PotionControl {
             PotionInfo.getAll().stream()
                     .filter(info -> Potion.getPotionFromResourceLocation(info.id) == null)
                     .forEach(info -> {
-                        LOGGER.info("Registering Custom Potion {}", info.id);
+                        Tags.LOGGER.info("Registering Custom Potion {}", info.id);
                         event.getRegistry().register(info.create());
                     });
         }

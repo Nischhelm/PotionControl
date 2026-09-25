@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespacedDefaultedByKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.util.PotionTypeUnregisterHelper;
 
 @Mixin(PotionType.class)
@@ -16,7 +16,7 @@ public abstract class VanillaPotionTypeRegistryMixin {
     private static boolean onRegister(RegistryNamespacedDefaultedByKey<ResourceLocation, PotionType> instance, int id, Object loc, Object potionType) {
         //Prevent registration of config defined potions
         if (PotionTypeUnregisterHelper.isBlacklisted((PotionType) potionType, (ResourceLocation) loc)) {
-            PotionControl.LOGGER.info("Preventing registration of potion type {}", loc.toString());
+            Tags.LOGGER.info("Preventing registration of potion type {}", loc.toString());
             return false;
         }
         return true;

@@ -2,7 +2,7 @@ package potioncontrol.util;
 
 import net.minecraft.potion.PotionType;
 import net.minecraft.util.ResourceLocation;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 
 public class PotionTypeUnregisterHelper {
@@ -22,7 +22,7 @@ public class PotionTypeUnregisterHelper {
         ResourceLocation typeLoc = loc != null ? loc : potionType.getRegistryName();
         if(typeLoc != null && ConfigHandler.blacklists.blacklistedRegistryPotionTypes.contains(typeLoc.toString())){
             if(typeLoc.toString().equals("minecraft:empty")){
-                PotionControl.LOGGER.info("Unable to prevent the registration of default potiontype minecraft:empty. It is needed for the game to work. Skipping...");
+                Tags.LOGGER.info("Unable to prevent the registration of default potiontype minecraft:empty. It is needed for the game to work. Skipping...");
                 return false;
             }
             return true;

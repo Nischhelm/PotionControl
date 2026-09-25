@@ -13,7 +13,7 @@ import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.config.folders.FirstSetupConfig;
 import potioncontrol.util.PotionTypeInfo;
@@ -47,7 +47,7 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
                 String potionId = obj.get("potion").getAsString();
                 Potion potion = Potion.getPotionFromResourceLocation(potionId);
                 if(potion == null){
-                    PotionControl.LOGGER.warn("Unable to find potion {} for effect of potion type {}, skipping", potionId, id);
+                    Tags.LOGGER.warn("Unable to find potion {} for effect of potion type {}, skipping", potionId, id);
                     continue;
                 }
 

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.entity.ai.attributes.BaseAttribute;
 import net.minecraft.potion.Potion;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.mixin.accessor.PotionAccessor;
 import potioncontrol.util.PotionInfo;
 
@@ -23,7 +23,7 @@ public class PotionInfoConfigReader {
             List<PotionInfo> readInfos = readPerFileConfigs();
             PotionInfo.registerAll(readInfos);
         } catch (Exception e){
-            PotionControl.LOGGER.warn("Reading potion configs failed!");
+            Tags.LOGGER.warn("Reading potion configs failed!");
             e.printStackTrace(System.out);
         }
     }
@@ -56,10 +56,10 @@ public class PotionInfoConfigReader {
                 try (InputStream in = Files.newInputStream(f.toPath())) {
                     PotionInfo info = readSingleWithGson(in);
                     if (info == null)
-                        PotionControl.LOGGER.warn("Skipping invalid potion json: {}", f.getPath());
+                        Tags.LOGGER.warn("Skipping invalid potion json: {}", f.getPath());
                     else infos.add(info);
                 } catch (Exception ex) {
-                    PotionControl.LOGGER.warn("Failed reading potion json: {}", f.getPath());
+                    Tags.LOGGER.warn("Failed reading potion json: {}", f.getPath());
                     ex.printStackTrace(System.out);
                 }
             }

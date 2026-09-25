@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import potioncontrol.PotionControl;
 import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 
@@ -50,7 +49,7 @@ public class PacketHandler {
             int packetsSent = collectionPackets.values().stream()
                     .mapToInt(SPacketEntityEffects::getPacketCount)
                     .sum();
-            PotionControl.LOGGER.info("Sending {} packets, avoided {}", packetsSent, caughtCounter);
+            Tags.LOGGER.info("Sending {} packets, avoided {}", packetsSent, caughtCounter);
         }
         caughtCounter = 0;
 

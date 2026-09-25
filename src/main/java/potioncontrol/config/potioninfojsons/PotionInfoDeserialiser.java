@@ -10,7 +10,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.util.BaseAttributeRegistry;
 import potioncontrol.util.PotionInfo;
@@ -78,7 +78,7 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
                 String itemName = obj.get("item").getAsString();
                 Item item = Item.getByNameOrId(itemName);
                 if(item == null){
-                    PotionControl.LOGGER.warn("Unable to find curative Item {} for potion {}, skipping", itemName, id);
+                    Tags.LOGGER.warn("Unable to find curative Item {} for potion {}, skipping", itemName, id);
                     continue;
                 }
                 int meta = 0;
@@ -106,7 +106,7 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
                 JsonObject obj = (JsonObject) attributeModifier;
                 BaseAttribute attribute = BaseAttributeRegistry.get(obj.get("attribute").getAsString());
                 if(attribute == null){
-                    PotionControl.LOGGER.warn("Unknown attribute {} for potion {}, skipping",  obj.get("attribute").getAsString(), id);
+                    Tags.LOGGER.warn("Unknown attribute {} for potion {}, skipping",  obj.get("attribute").getAsString(), id);
                     continue;
                 }
                 String modifierName = obj.get("modifierName").getAsString();

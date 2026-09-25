@@ -9,6 +9,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.text.TextFormatting;
 import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.mixin.accessor.PotionAccessor;
 import potioncontrol.util.PotionInfo;
@@ -26,7 +27,7 @@ public class PotionInfoInferrerWriter {
     public static final String MAIN_DIR = "config/potioncontrol/potions/inferred-inactive";
 
     public static void printInferred(){
-        PotionControl.LOGGER.info("Inferring json files for Potions");
+        Tags.LOGGER.info("Inferring json files for Potions");
 
         PotionInfoWriter.clearDirectoryContents(new File(MAIN_DIR));
         List<PotionInfo> infos = inferInfoForAllRegisteredPotions();
@@ -35,11 +36,11 @@ public class PotionInfoInferrerWriter {
         //Create empty folders for each mod in /potions/
         File baseOut = new File(PotionInfoConfigReader.MAIN_DIR);
         if (!baseOut.exists() && !baseOut.mkdirs())
-            PotionControl.LOGGER.warn("Could not create directory: {}", baseOut.getPath());
+            Tags.LOGGER.warn("Could not create directory: {}", baseOut.getPath());
         for(String modid : infos.stream().map(info -> info.modId).collect(Collectors.toSet())){ //make one empty folder per mod
             File modDir = new File(baseOut, modid);
             if (!modDir.exists() && !modDir.mkdirs())
-                PotionControl.LOGGER.warn("Could not create directory: {}", modDir.getPath());
+                Tags.LOGGER.warn("Could not create directory: {}", modDir.getPath());
         }
 
         ConfigHandler.dev.printInferredPotions = false;
@@ -208,7 +209,7 @@ public class PotionInfoInferrerWriter {
             }
             return fmts;
         } catch (Throwable ignored) {
-            PotionControl.LOGGER.warn("Failed to probe display color for {}", potion.getRegistryName());
+            Tags.LOGGER.warn("Failed to probe display color for {}", potion.getRegistryName());
         }
         return fmts;
     }

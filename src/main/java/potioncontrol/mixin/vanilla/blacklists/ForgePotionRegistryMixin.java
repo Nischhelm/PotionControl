@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.util.PotionTypeUnregisterHelper;
 
@@ -24,13 +24,13 @@ public abstract class ForgePotionRegistryMixin<V extends IForgeRegistryEntry<V>>
 
             //Prevent registration of config defined potions
             if (ConfigHandler.blacklists.blacklistedRegistryPotions.contains(loc.toString())) {
-                PotionControl.LOGGER.info("Preventing registration of Potion {}", loc.toString());
+                Tags.LOGGER.info("Preventing registration of Potion {}", loc.toString());
                 ci.cancel();
             }
         } else if (value instanceof PotionType) {
             //Prevent registration of config defined potions
             if (PotionTypeUnregisterHelper.isBlacklisted((PotionType) value, value.getRegistryName())) {
-                PotionControl.LOGGER.info("Preventing registration of PotionType {}", value.getRegistryName().toString());
+                Tags.LOGGER.info("Preventing registration of PotionType {}", value.getRegistryName().toString());
                 ci.cancel();
             }
         }

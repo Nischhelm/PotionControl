@@ -2,7 +2,7 @@ package potioncontrol.config.potiontypeinfojsons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import potioncontrol.PotionControl;
+import potioncontrol.Tags;
 import potioncontrol.util.PotionTypeInfo;
 import potioncontrol.util.brewing.BrewRecipeUtil;
 
@@ -22,7 +22,7 @@ public class PotionTypeInfoConfigReader {
             List<PotionTypeInfo> readInfos = readPerFileConfigs();
             PotionTypeInfo.registerAll(readInfos);
         } catch (Exception e){
-            PotionControl.LOGGER.warn("Reading potion type configs failed!");
+            Tags.LOGGER.warn("Reading potion type configs failed!");
             e.printStackTrace(System.out);
         }
     }
@@ -55,10 +55,10 @@ public class PotionTypeInfoConfigReader {
                 try (InputStream in = Files.newInputStream(f.toPath())) {
                     PotionTypeInfo info = readSingleWithGson(in);
                     if (info == null)
-                        PotionControl.LOGGER.warn("Skipping invalid potion json: {}", f.getPath());
+                        Tags.LOGGER.warn("Skipping invalid potion json: {}", f.getPath());
                     else infos.add(info);
                 } catch (Exception ex) {
-                    PotionControl.LOGGER.warn("Failed reading potion json: {}", f.getPath());
+                    Tags.LOGGER.warn("Failed reading potion json: {}", f.getPath());
                     ex.printStackTrace(System.out);
                 }
             }
