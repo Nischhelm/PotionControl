@@ -5,7 +5,6 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import org.spongepowered.asm.launch.MixinBootstrap;
 import potioncontrol.config.ConfigHandler;
 
 import java.util.HashSet;
@@ -28,7 +27,6 @@ public class PotionControlPlugin implements IFMLLoadingPlugin {
 	@Override
 	public String[] getASMTransformerClass() {
 		return new String[]{
-				ModCompatClassTransformer.class.getName(),
 				EarlyPotionClassTransformer.class.getName(),
 				LatePotionClassTransformer.class.getName()
 		};
