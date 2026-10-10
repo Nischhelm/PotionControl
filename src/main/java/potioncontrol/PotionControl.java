@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import potioncontrol.config.ConfigHandler;
-import potioncontrol.config.classdump.PotionClassWriter;
 import potioncontrol.config.descriptions.DescriptionReader;
 import potioncontrol.config.descriptions.EmptyPotionWriter;
 import potioncontrol.config.descriptions.NamesReader;
@@ -53,7 +52,6 @@ public class PotionControl {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        PotionClassWriter.postInit(); //write /tmp/potionclasses.dump for next startup (sad that this is after late mixin load. classgraph could fix that if i could get it to work. then i wouldn't even need a custom file)
         if(event.getSide() == Side.CLIENT) {
             DescriptionReader.readDescriptions();
             EmptyPotionWriter.write(DescriptionReader.PATH);

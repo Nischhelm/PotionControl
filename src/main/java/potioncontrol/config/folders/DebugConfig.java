@@ -11,16 +11,12 @@ import java.util.Set;
 @MixinConfig(name = Tags.MODID)
 public class DebugConfig {
     @Config.Comment("Disable this to remove PotionControls main feature which hooks into all registered potions code to modify how they behave. \n" +
-            "Some features will still work. This is mainly meant for testing if this mods black magic mixins is responsible for a crash (hope not)")
-    @Config.Name("(MixinToggle) Enable Potion Injection")
+            "Some features will still work. This is mainly meant for testing if this mods ASM modification of potion classes is responsible for a crash")
+    @Config.Name("(ASM & Mixin Toggle) Enable Potion Injection")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(
-            earlyMixin = "mixins.potioncontrol.vanilla.main.json",
-            lateMixin = "mixins.potioncontrol.modded.json",
-            defaultValue = true
-    )
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.main.json", defaultValue = true)
     @Order(0)
-    public static boolean enablePotionInjection = true;
+    public boolean enablePotionInjection = true;
 
     @Config.Comment("Potion classes that should not be modified at all by this mod. \n" +
             "Use this if there are crashes when this mod tries to automatically modify some mods enchantments. \n" +

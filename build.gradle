@@ -20,10 +20,11 @@ minecraft {
         client {
             args "--username=Nischhelm"
 
-            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
+            jvmArg "-Dfml.coreMods.load=meldexun.betterconfig.asm.BetterConfigPlugin,${mixin_loader_class}"
             jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
             jvmArg "-Dmixin.debug.export=true"
+            jvmArg "-Dmeldexun.asm.export=true"
 
             workingDirectory project.file('run')
 
@@ -33,10 +34,11 @@ minecraft {
 
         server {
 
-            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
+            jvmArg "-Dfml.coreMods.load=meldexun.betterconfig.asm.BetterConfigPlugin,${mixin_loader_class}"
             jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
             jvmArg "-Dmixin.debug.export=true"
+            jvmArg "-Dmeldexun.asm.export=true"
 
             workingDirectory project.file('run')
 

@@ -8,8 +8,6 @@
   "mixins": [
     "vanilla.main.BaseAttributeMixin",
     "vanilla.main.PotionAttackDamageMixin",
-    "vanilla.main.PotionTypeMixin",
-    "vanilla.main.VanillaBasePotionMixin",
-    "vanilla.main.VanillaPotionMixin"
+    "vanilla.main.PotionTypeMixin"
   ]
 }
