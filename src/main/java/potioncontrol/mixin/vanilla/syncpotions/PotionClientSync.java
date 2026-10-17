@@ -22,18 +22,19 @@ public abstract class PotionClientSync extends Entity {
         super(worldIn);
     }
 
-    @Inject(method = "onChangedPotionEffect", at = @At("TAIL"))
-    private void pc_sendPackets_onChange(PotionEffect effect, boolean p_70695_2_, CallbackInfo ci){
-        if(this.world.isRemote) return;
-        if((Object) this instanceof EntityPlayer) return;
-
-        int dsqr = ConfigHandler.mixinToggles.syncPotionsDistance * ConfigHandler.mixinToggles.syncPotionsDistance;
-
-        ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
-                e.trackingPlayers.stream()
-                        .filter(p -> p.getDistanceSq(this) < dsqr)
-                        .forEach(p -> PacketHandler.addAddPacketForPlayer(p, new SPacketEntityEffect(this.getEntityId(), effect))));
-    }
+    //Too laggy
+//    @Inject(method = "onChangedPotionEffect", at = @At("TAIL"))
+//    private void pc_sendPackets_onChange(PotionEffect effect, boolean p_70695_2_, CallbackInfo ci){
+//        if(this.world.isRemote) return;
+//        if((Object) this instanceof EntityPlayer) return;
+//
+//        int dsqr = ConfigHandler.mixinToggles.syncPotionsDistance * ConfigHandler.mixinToggles.syncPotionsDistance;
+//
+//        ((EntityTrackerAccessor)((WorldServer) this.world).getEntityTracker()).getEntries().forEach(e ->
+//                e.trackingPlayers.stream()
+//                        .filter(p -> p.getDistanceSq(this) < dsqr)
+//                        .forEach(p -> PacketHandler.addAddPacketForPlayer(p, new SPacketEntityEffect(this.getEntityId(), effect))));
+//    }
 
     @Inject(method = "onNewPotionEffect", at = @At("TAIL"))
     private void pc_sendPackets_onNew(PotionEffect effect, CallbackInfo ci){
