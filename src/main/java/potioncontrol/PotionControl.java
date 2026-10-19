@@ -47,7 +47,6 @@ public class PotionControl {
         if(ConfigHandler.mixinToggles.modifyMaxAmpDura) MinecraftForge.EVENT_BUS.register(PotionAddedHandler.class);
 
         PotionInfoConfigReader.preInit(); //read PotionInfo's from /potions
-        PotionTypeInfoConfigReader.preInit(); //read PotionTypeInfo's from /potiontypes
     }
 
     @Mod.EventHandler
@@ -77,6 +76,7 @@ public class PotionControl {
     public static class EventHandler{
         @SubscribeEvent
         public static void onRegisterPotionTypes(RegistryEvent.Register<PotionType> event) {
+            PotionTypeInfoConfigReader.preInit(); //read PotionTypeInfo's from /potiontypes, moved here so all potions are already registered
             if(!ConfigHandler.dev.shouldCreatePotionTypes) return;
             PotionTypeInfo.getAll().stream()
                     .filter(info -> PotionType.getPotionTypeForName(info.id) == PotionTypes.EMPTY)
