@@ -27,7 +27,8 @@ public class FirstSetupConfig {
             "If enabled, during startup this mod will infer info about all registered potion types and print them out in /config/potioncontrol/potiontypes/inferred-inactive/.",
             "The created json files can be used as blueprints from which to work off of.",
             "To do so, copy everything to /config/potioncontrol/potiontypes/active/, then delete every file + line in file that should stay default/untouched.",
-            "WARNING: All files in /inferred-inactive/ will be overwritten every time you start the game with this option enabled"
+            "WARNING: All files in /inferred-inactive/ will be overwritten every time you start the game with this option enabled",
+            "Note: brewing recipes will only be inferred if \"Mixin Toggles.Modify Brewing Recipes (Vanilla)\" is enabled."
     })
     @Config.Name("Print Inferred Potion Type Infos")
     @Config.RequiresMcRestart
