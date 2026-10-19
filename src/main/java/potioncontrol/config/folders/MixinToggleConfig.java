@@ -14,7 +14,10 @@ public class MixinToggleConfig {
     @MixinConfig.CompatHandling(modid = "dshuds", desired = true, reason = "Requires mod to properly function", warnIngame = false)
     public boolean potionAmplifierVisibility = true;
 
-    @Config.Comment("Writes only the actually missing descriptions in log instead of all of them if its \"Log missing descriptions\" config is enabled")
+    @Config.Comment({
+            "Writes only the actually missing descriptions in log instead of all of them if its \"Log missing descriptions\" config is enabled",
+            "Also allows to use linebreaks using \\n"
+    })
     @Config.Name("Fix Missing Desc Log (PotionDescriptions)")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(lateMixin = "mixins.potioncontrol.potiondescriptions.json", defaultValue = true)
