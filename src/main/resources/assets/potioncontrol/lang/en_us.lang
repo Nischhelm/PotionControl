@@ -1,5 +1,11 @@
 ### A lot of these are taken from RLCraft Dregora, compiled by KameiB ###
 
+# Potion Type Name Formats (used for potiontypes/names.txt)
+potioncontrol.format.potion=Potion of %s
+potioncontrol.format.splash_potion=Splash Potion of %s
+potioncontrol.format.lingering_potion=Lingering Potion of %s
+potioncontrol.format.tipped_arrow=Arrow of %s
+
 # Elenai Dodge
 description.effect.forceful=Increases the distance the player will dodge.
 description.effect.feeble=Decreases the distance the player will dodge.

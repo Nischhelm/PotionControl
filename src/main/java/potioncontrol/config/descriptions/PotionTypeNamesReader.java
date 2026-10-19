@@ -1,5 +1,6 @@
 package potioncontrol.config.descriptions;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.potion.PotionType;
 import net.minecraft.util.ResourceLocation;
@@ -41,10 +42,10 @@ public class PotionTypeNamesReader {
                 PotionType type = PotionType.REGISTRY.getObject(new ResourceLocation(typeId));
                 if(type == PotionTypes.EMPTY && !typeId.equals("minecraft:empty")) continue;
 
-                typeToName.put("potion.effect." + typeId, "Potion of " + translatedName);
-                typeToName.put("splash_potion.effect." + typeId, "Splash Potion of " + translatedName);
-                typeToName.put("lingering_potion.effect." + typeId, "Lingering Potion of " + translatedName);
-                typeToName.put("tipped_arrow.effect." + typeId, "Arrow of " + translatedName);
+                typeToName.put("potion.effect." + typeId, I18n.format("potioncontrol.format.potion", translatedName));
+                typeToName.put("splash_potion.effect." + typeId, I18n.format("potioncontrol.format.splash_potion", translatedName));
+                typeToName.put("lingering_potion.effect." + typeId, I18n.format("potioncontrol.format.lingering_potion", translatedName));
+                typeToName.put("tipped_arrow.effect." + typeId, I18n.format("potioncontrol.format.tipped_arrow", translatedName));
             }
         }
         catch(IOException ignored) {}
