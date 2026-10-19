@@ -49,6 +49,12 @@ public class MixinToggleConfig {
     @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.amplifierdisplay.json", defaultValue = true)
     public boolean fixPotionLevelDisplay = true;
 
+    @Config.Comment("Displays Potion Levels between 1 and 10 as roman numerals, the rest as numbers")
+    @Config.Name("Fix Potion Potency Tooltips (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.potencyformat.json", defaultValue = true)
+    public boolean fixPotionTooltipPotency = true;
+
     @Config.Comment("Allows to modify tipped arrow potion durations (in ticks) via potion type jsons (key: tipped_arrow_duration)")
     @Config.Name("Modify Tipped Arrow Time (Vanilla)")
     @Config.RequiresMcRestart
