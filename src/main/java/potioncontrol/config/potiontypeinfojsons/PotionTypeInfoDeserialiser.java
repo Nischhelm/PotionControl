@@ -34,7 +34,6 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
 
         String id = getAsString(jsonObj, "id");
         if (id == null) return null;
-        PotionType potionType = PotionType.getPotionTypeForName(id);
 
         PotionTypeInfo info = new PotionTypeInfo(id);
 
@@ -73,92 +72,105 @@ public class PotionTypeInfoDeserialiser implements JsonDeserializer<PotionTypeIn
             info.effects = effects;
         }
 
-        if(potionType != null && jsonObj.has("brews_to")){
-            JsonArray arr = jsonObj.getAsJsonArray("brews_to");
+        // Store for later, after all PotionTypes are registered
+        if(jsonObj.has("brews_to"))
+            info.rawBrewsTo = jsonObj.getAsJsonArray("brews_to");
 
-            List<BrewRecipe> recipes = new ArrayList<>();
-
-            for(JsonElement el : arr){
-                JsonObject obj = el.getAsJsonObject();
-
-                PotionType typeOut = null;
-                ItemStack stackOut = null;
-                if(obj.has("to")){
-                    if(obj.get("to").isJsonObject()){
-                        JsonObject to = obj.get("to").getAsJsonObject();
-                        stackOut = getAsItemStack(to);
-                        if(stackOut.isEmpty()) continue;
-                    } else if(obj.get("to").isJsonPrimitive()) {
-                        typeOut = PotionType.getPotionTypeForName(obj.get("to").getAsString());
-                        if(typeOut == null) continue;
-                    }
-                }
-
-                ItemStack reagentStack = ItemStack.EMPTY;
-                if(obj.has("reagent")) {
-                    if (obj.get("reagent").isJsonObject()) {
-                        reagentStack = getAsItemStack(obj.getAsJsonObject("reagent"));
-                    } else if(obj.get("reagent").isJsonPrimitive()) {
-                        Item reagent = Item.getByNameOrId(obj.get("reagent").getAsString());
-                        if(reagent != null) reagentStack = new ItemStack(reagent);
-                    }
-                }
-
-                int brewTime = -1;
-                if(obj.has("brew_time"))
-                    brewTime = obj.get("brew_time").getAsInt();
-
-                BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(potionType), reagentStack, Input.getFromObj(typeOut != null ? typeOut : stackOut));
-                if(brewTime != -1) recipe.setBrewTime(brewTime);
-                recipes.add(recipe);
-            }
-            info.brewsTo = recipes;
-        }
-
-        if(potionType != null && jsonObj.has("brews_from")){
-            JsonArray arr = jsonObj.getAsJsonArray("brews_from");
-            List<BrewRecipe> recipes = new ArrayList<>();
-
-            for(JsonElement el : arr){
-                JsonObject obj = el.getAsJsonObject();
-
-                PotionType typeIn = null;
-                ItemStack stackIn = null;
-                if(obj.has("from")){
-                    if(obj.get("from").isJsonObject()){
-                        JsonObject from = obj.get("from").getAsJsonObject();
-                        stackIn = getAsItemStack(from);
-                        if(stackIn.isEmpty()) continue;
-                    } else if(obj.get("from").isJsonPrimitive()) {
-                        typeIn = PotionType.getPotionTypeForName(obj.get("from").getAsString());
-                        if(typeIn == null) continue;
-                    }
-                }
-
-                ItemStack reagentStack = ItemStack.EMPTY;
-                if(obj.has("reagent")) {
-                    if (obj.get("reagent").isJsonObject()) {
-                        reagentStack = getAsItemStack(obj.getAsJsonObject("reagent"));
-                    } else if(obj.get("reagent").isJsonPrimitive()) {
-                        Item reagent = Item.getByNameOrId(obj.get("reagent").getAsString());
-                        if(reagent != null) reagentStack = new ItemStack(reagent);
-                    }
-                }
-                int brewTime = -1;
-                if(obj.has("brew_time"))
-                    brewTime = obj.get("brew_time").getAsInt();
-
-                BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(typeIn != null ? typeIn : stackIn), reagentStack, Input.getFromObj(potionType));
-                if(brewTime != -1) recipe.setBrewTime(brewTime);
-                recipes.add(recipe);
-            }
-            info.brewsFrom = recipes;
-        }
+        if(jsonObj.has("brews_from"))
+            info.rawBrewsFrom = jsonObj.getAsJsonArray("brews_from");
 
         if(jsonObj.has("tipped_arrow_duration"))
             info.setTippedDuration(jsonObj.get("tipped_arrow_duration").getAsInt());
 
         return info;
+    }
+
+    public static void resolveBrewingRecipes(PotionTypeInfo info) {
+        PotionType potionType = PotionType.getPotionTypeForName(info.id);
+        if (potionType == null) {
+            Tags.LOGGER.warn("Cannot resolve brewing recipes for {}: PotionType not found", info.id);
+            return;
+        }
+
+        if (info.rawBrewsTo != null) {
+            List<BrewRecipe> recipes = new ArrayList<>();
+            for (JsonElement el : info.rawBrewsTo) {
+                JsonObject obj = el.getAsJsonObject();
+
+                PotionType typeOut = null;
+                ItemStack stackOut = null;
+                if (obj.has("to")) {
+                    if (obj.get("to").isJsonObject()) {
+                        JsonObject to = obj.get("to").getAsJsonObject();
+                        stackOut = getAsItemStack(to);
+                        if (stackOut.isEmpty()) continue;
+                    } else if (obj.get("to").isJsonPrimitive()) {
+                        typeOut = PotionType.getPotionTypeForName(obj.get("to").getAsString());
+                        if (typeOut == null) continue;
+                    }
+                }
+
+                ItemStack reagentStack = ItemStack.EMPTY;
+                if (obj.has("reagent")) {
+                    if (obj.get("reagent").isJsonObject()) {
+                        reagentStack = getAsItemStack(obj.getAsJsonObject("reagent"));
+                    } else if (obj.get("reagent").isJsonPrimitive()) {
+                        Item reagent = Item.getByNameOrId(obj.get("reagent").getAsString());
+                        if (reagent != null) reagentStack = new ItemStack(reagent);
+                    }
+                }
+
+                int brewTime = -1;
+                if (obj.has("brew_time"))
+                    brewTime = obj.get("brew_time").getAsInt();
+
+                BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(potionType), reagentStack, Input.getFromObj(typeOut != null ? typeOut : stackOut));
+                if (brewTime != -1) recipe.setBrewTime(brewTime);
+                recipes.add(recipe);
+            }
+            info.brewsTo = recipes;
+            info.rawBrewsTo = null;
+        }
+
+        if (info.rawBrewsFrom != null) {
+            List<BrewRecipe> recipes = new ArrayList<>();
+            for (JsonElement el : info.rawBrewsFrom) {
+                JsonObject obj = el.getAsJsonObject();
+
+                PotionType typeIn = null;
+                ItemStack stackIn = null;
+                if (obj.has("from")) {
+                    if (obj.get("from").isJsonObject()) {
+                        JsonObject from = obj.get("from").getAsJsonObject();
+                        stackIn = getAsItemStack(from);
+                        if (stackIn.isEmpty()) continue;
+                    } else if (obj.get("from").isJsonPrimitive()) {
+                        typeIn = PotionType.getPotionTypeForName(obj.get("from").getAsString());
+                        if (typeIn == null) continue;
+                    }
+                }
+
+                ItemStack reagentStack = ItemStack.EMPTY;
+                if (obj.has("reagent")) {
+                    if (obj.get("reagent").isJsonObject()) {
+                        reagentStack = getAsItemStack(obj.getAsJsonObject("reagent"));
+                    } else if (obj.get("reagent").isJsonPrimitive()) {
+                        Item reagent = Item.getByNameOrId(obj.get("reagent").getAsString());
+                        if (reagent != null) reagentStack = new ItemStack(reagent);
+                    }
+                }
+
+                int brewTime = -1;
+                if (obj.has("brew_time"))
+                    brewTime = obj.get("brew_time").getAsInt();
+
+                BrewRecipe recipe = BrewRecipeUtil.addRecipe(Input.getFromObj(typeIn != null ? typeIn : stackIn), reagentStack, Input.getFromObj(potionType));
+                if (brewTime != -1) recipe.setBrewTime(brewTime);
+                recipes.add(recipe);
+            }
+            info.brewsFrom = recipes;
+            info.rawBrewsFrom = null;
+        }
     }
 
     @Override

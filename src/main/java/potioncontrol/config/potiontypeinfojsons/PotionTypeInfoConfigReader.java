@@ -68,6 +68,9 @@ public class PotionTypeInfoConfigReader {
 
     //Done in post init to clear vanilla brewing recipes and replace with the ones from json
     public static void applyManualOverrides(){
+        for(PotionTypeInfo info : PotionTypeInfo.getAll())
+            PotionTypeInfoDeserialiser.resolveBrewingRecipes(info);
+
         for(PotionTypeInfo info : PotionTypeInfo.getAll()){
             if(info.brewsTo != null){
                 BrewRecipeUtil.removeForType(PotionTypeInfo.getPotionTypeObject(info), true);

@@ -1,5 +1,6 @@
 package potioncontrol.util;
 
+import com.google.gson.JsonArray;
 import com.google.gson.annotations.SerializedName;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
@@ -72,6 +73,10 @@ public class PotionTypeInfo {
     @SerializedName("tipped_arrow_duration")
     public int tippedDuration;
     public boolean overwritesTippedDuration;
+
+    // Raw JSON for deferred parsing (after all PotionTypes are registered)
+    public transient JsonArray rawBrewsTo;
+    public transient JsonArray rawBrewsFrom;
 
     //TODO: modcompat for inspirations cauldron brewing, rustic alchemy
 
