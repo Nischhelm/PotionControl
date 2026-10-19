@@ -1,7 +1,8 @@
 package potioncontrol.config.descriptions;
 
-import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,21 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Writes a file with just the registry ids of all registered potions for users to fill
+ * Writes a file with just the registry ids of all registered entries for users to fill
  */
-public class EmptyPotionWriter {
-    public static void write(String path){
+public class RegistryNamesWriter {
+    public static <T extends IForgeRegistryEntry<T>> void write(String path, IForgeRegistry<T> registry){
         Path configPath = Paths.get(path);
         if(Files.exists(configPath)) return;
 
-        //Write empty line per enchant
         List<String> lines = new ArrayList<>();
-        Potion.REGISTRY.forEach(e -> {
-            ResourceLocation potionid = e.getRegistryName();
-            if(potionid == null) return;
+        registry.forEach(e -> {
+            ResourceLocation id = e.getRegistryName();
+            if(id == null) return;
 
-            // Add the concrete class of the registered enchantment
-            lines.add(potionid.getNamespace() + ":" + potionid.getPath() + "=");
+            lines.add(id.getNamespace() + ":" + id.getPath() + "=");
         });
 
         try {

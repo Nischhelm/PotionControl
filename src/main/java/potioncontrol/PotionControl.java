@@ -5,6 +5,7 @@ import net.minecraft.init.PotionTypes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -13,8 +14,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import potioncontrol.config.ConfigHandler;
 import potioncontrol.config.descriptions.DescriptionReader;
-import potioncontrol.config.descriptions.EmptyPotionWriter;
+import potioncontrol.config.descriptions.RegistryNamesWriter;
 import potioncontrol.config.descriptions.NamesReader;
+import potioncontrol.config.descriptions.PotionTypeNamesReader;
 import potioncontrol.config.potioninfojsons.PotionInfoConfigReader;
 import potioncontrol.config.potioninfojsons.PotionInfoInferrerWriter;
 import potioncontrol.config.potioninfojsons.PotionInfoWriter;
@@ -53,9 +55,11 @@ public class PotionControl {
     public void postInit(FMLPostInitializationEvent event) {
         if(event.getSide() == Side.CLIENT) {
             DescriptionReader.readDescriptions();
-            EmptyPotionWriter.write(DescriptionReader.PATH);
+            RegistryNamesWriter.write(DescriptionReader.PATH, ForgeRegistries.POTIONS);
             NamesReader.init();
-            EmptyPotionWriter.write(NamesReader.PATH);
+            RegistryNamesWriter.write(NamesReader.PATH, ForgeRegistries.POTIONS);
+            PotionTypeNamesReader.init();
+            RegistryNamesWriter.write(PotionTypeNamesReader.PATH, ForgeRegistries.POTION_TYPES);
         }
 
         PotionInfoConfigReader.applyManualOverrides(); //apply manual overrides for attribute modifiers
