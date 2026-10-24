@@ -5,7 +5,6 @@ import meldexun.betterconfig.api.BetterConfigManager;
 import meldexun.betterconfig.api.LoadEarly;
 import meldexun.betterconfig.api.Order;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -40,9 +39,14 @@ public class ConfigHandler {
 	@Order(3)
 	public static BrewingStandConfig brewingStand = new BrewingStandConfig();
 
+	@Config.Comment("Modify hardcoded values of vanilla potion effects, like how much Instant Health heals")
+	@Config.Name("Vanilla Potion Values")
+	@Order(4)
+	public static VanillaPotionConfig vanillaPotions = new VanillaPotionConfig();
+
 	@Config.Comment("Debug Options")
 	@Config.Name("Debug")
-	@Order(4)
+	@Order(5)
 	public static DebugConfig debug = new DebugConfig();
 
     @Mod.EventBusSubscriber(modid = Tags.MODID)
