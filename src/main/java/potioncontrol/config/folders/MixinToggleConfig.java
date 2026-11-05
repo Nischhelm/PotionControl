@@ -62,6 +62,16 @@ public class MixinToggleConfig {
     public boolean modifyTippedArrowTime = true;
 
     @Config.Comment({
+            "Instant potion effects from drinking, splash and lingering potions skip Forge's PotionApplicableEvent.",
+            "This fires the event for them too, so anything that blocks an effect through that event",
+            "(potion immunities, entity blacklists, ...) also blocks its instant application."
+    })
+    @Config.Name("Instant Potions Fire Applicable Event (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.potioncontrol.vanilla.instantapplicable.json", defaultValue = true)
+    public boolean instantPotionsFireApplicableEvent = true;
+
+    @Config.Comment({
             "Allows to modify brewing recipes via potion type jsons",
             "If enabled, potion types that have the brews_from or brews_to set will have vanilla-style recipes in that direction replaced by the given ones",
             "Modded recipes are left untouched, only the ones added by the PotionHelper.addMix / CT IPotionRecipe.add method are modified",
