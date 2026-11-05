@@ -2,7 +2,6 @@ package potioncontrol.config.potioninfojsons;
 
 import com.google.gson.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.BaseAttribute;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import potioncontrol.Tags;
 import potioncontrol.config.ConfigHandler;
-import potioncontrol.util.BaseAttributeRegistry;
 import potioncontrol.util.PotionInfo;
 
 import java.util.*;
@@ -101,21 +99,18 @@ public class PotionInfoDeserialiser implements JsonDeserializer<PotionInfo>, Jso
         // attribute modifiers
         if (jsonObj.has("attributeModifiers")) {
             JsonArray attributeModifiers = jsonObj.getAsJsonArray("attributeModifiers");
-            Map<IAttribute, AttributeModifier> map = new HashMap<>();
+            //Attributes are resolved later in postInit (PotionInfoConfigReader.applyManualOverrides), modded attributes might not be constructed yet
+            Map<String, AttributeModifier> map = new LinkedHashMap<>();
             for (JsonElement attributeModifier : attributeModifiers) {
                 JsonObject obj = (JsonObject) attributeModifier;
-                BaseAttribute attribute = BaseAttributeRegistry.get(obj.get("attribute").getAsString());
-                if(attribute == null){
-                    Tags.LOGGER.warn("Unknown attribute {} for potion {}, skipping",  obj.get("attribute").getAsString(), id);
-                    continue;
-                }
+                String attributeName = obj.get("attribute").getAsString();
                 String modifierName = obj.get("modifierName").getAsString();
                 double amount = obj.get("amount").getAsDouble();
                 int operation = obj.get("operation").getAsInt();
                 UUID uuid = UUID.fromString(obj.get("uuid").getAsString());
-                map.put(attribute, new AttributeModifier(uuid, modifierName, amount, operation));
+                map.put(attributeName, new AttributeModifier(uuid, modifierName, amount, operation));
             }
-            info.attributeModifierMap = map;
+            info.unresolvedAttributeModifiers = map;
         }
 
         if(jsonObj.has("removesOnApplication")) {

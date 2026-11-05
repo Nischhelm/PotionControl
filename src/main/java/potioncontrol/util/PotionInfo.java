@@ -104,6 +104,9 @@ public class PotionInfo {
     @SerializedName("attributeModifiers")
     public Map<IAttribute, AttributeModifier> attributeModifierMap = null;
 
+    //Attribute names as read from json, resolved to IAttributes in postInit since modded attributes may not exist yet during preInit
+    public transient Map<String, AttributeModifier> unresolvedAttributeModifiers = null;
+
     @SerializedName("prioritisesDuration")
     public boolean prioritisesDuration = false;
 

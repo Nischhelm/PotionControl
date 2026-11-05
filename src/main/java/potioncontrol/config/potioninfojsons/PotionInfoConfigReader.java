@@ -2,17 +2,19 @@ package potioncontrol.config.potioninfojsons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.BaseAttribute;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.potion.Potion;
 import potioncontrol.Tags;
 import potioncontrol.mixin.accessor.PotionAccessor;
+import potioncontrol.util.BaseAttributeRegistry;
 import potioncontrol.util.PotionInfo;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PotionInfoConfigReader {
     public static final String MAIN_DIR = "config/potioncontrol/potions/active";
@@ -70,9 +72,17 @@ public class PotionInfoConfigReader {
     //Done in post init to overwrite the final field potion.attributeModifierMap
     public static void applyManualOverrides(){
         for(PotionInfo info : PotionInfo.getAll()){
-            if(info.attributeModifierMap == null) continue;
+            if(info.unresolvedAttributeModifiers == null) continue;
+            Map<IAttribute, AttributeModifier> map = new LinkedHashMap<>();
+            info.unresolvedAttributeModifiers.forEach((attributeName, modifier) -> {
+                BaseAttribute attribute = BaseAttributeRegistry.get(attributeName);
+                if(attribute == null) Tags.LOGGER.warn("Unknown attribute {} for potion {}, skipping", attributeName, info.id);
+                else map.put(attribute, modifier);
+            });
+            info.attributeModifierMap = map;
+
             Potion potion = PotionInfo.getPotionObject(info);
-            if(!(potion instanceof PotionAccessor)) return;
+            if(!(potion instanceof PotionAccessor)) continue;
             ((PotionAccessor) potion).pc_getAttributeModifierMap().entrySet().removeIf(entry -> entry.getKey() instanceof BaseAttribute); //keeps theoretical iattributes that arent BaseAttribute
             ((PotionAccessor) potion).pc_getAttributeModifierMap().putAll(info.attributeModifierMap);
         }
