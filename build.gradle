@@ -162,6 +162,7 @@ publishMods {
             server = true
 
             requires("fermiumbooter")
+            requires("better-config")
         }
     }
 
@@ -173,6 +174,7 @@ publishMods {
             modLoaders.add("forge")
 
             requires("fermiumbooter")
+            requires("better-config")
         }
     }
 }
