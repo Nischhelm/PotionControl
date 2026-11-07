@@ -71,6 +71,11 @@ public class VanillaPotionConfig {
     @Order(12)
     public MiningFatigueConfig miningFatigue = new MiningFatigueConfig();
 
+    @Config.Comment("Modify what Fire Resistance protects against")
+    @Config.Name("Fire Resistance")
+    @Order(13)
+    public FireResistanceConfig fireResistance = new FireResistanceConfig();
+
     @MixinConfig(name = Tags.MODID)
     public static class InstantHealthConfig {
         @Config.Comment("Enables the options in this category")
@@ -392,11 +397,26 @@ public class VanillaPotionConfig {
 
         @Config.Comment({
                 "Level of Mining Fatigue elder guardians give players nearby. Vanilla: 3",
-                "Default 5 (0.00243 with default multipliers) is about as strong as vanilla level III (0.0027)"
+                "Default 5 (0.00243 with default multipliers) is about as strong as vanilla level III (0.0027)",
+                "Note that this is still dependent on \"Modify Mining Fatigue\" so it won't do apply without it enabled."
         })
         @Config.Name("Elder Guardian Mining Fatigue Level")
         @Config.RangeInt(min = 1)
         @Order(3)
         public int elderGuardianLevel = 5;
+    }
+
+    @MixinConfig(name = Tags.MODID)
+    public static class FireResistanceConfig {
+        @Config.Comment({
+                "Entities with Fire Resistance can't be set on fire at all (lava, fire blocks, fire aspect, flame arrows, ...)",
+                "Entities that are already burning get extinguished when they gain Fire Resistance.",
+                "Entities that are naturally immune to fire (blazes, magma cubes, ghasts, ...) are not affected and can still burn."
+        })
+        @Config.Name("Prevent Burning")
+        @Config.RequiresMcRestart
+        @MixinConfig.MixinToggle(mixinJson = "mixins.potioncontrol.vanilla.values.fireresistance.json", defaultValue = false)
+        @Order(0)
+        public boolean preventBurning = false;
     }
 }
